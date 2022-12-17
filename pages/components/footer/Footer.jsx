@@ -215,28 +215,37 @@ const Footer = ({ games }) => {
       </div>
 
       {/* test */}
-      {games.map((item) => (
-        <div key={item.id} style={{
-          color:"black"
-        }}>
-          <div>{item.name}</div>
-          <div>{item.developer}</div>
-          <div>
-            <img src={item.img} alt="" />
-          </div>
-          <div>{item.minimum_system.os}</div>
-          <div>{item.minimum_system.memory}</div>
-          <div>{item.minimum_system.storage}</div>
-          <div>
-            {item.screen_shoot.map((img) => (
-              <div key={img.id_img}>
-                <img src={img.img_shoot} alt="" />
+      {games ? (
+        <div>
+          {games.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                color: "black",
+              }}
+            >
+              <div>{item.name}</div>
+              <div>{item.developer}</div>
+              <div>
+                <img src={item.img} alt="" />
               </div>
-            ))}
-          </div>
-          <div>{item.price}</div>
+              <div>{item.minimum_system.os}</div>
+              <div>{item.minimum_system.memory}</div>
+              <div>{item.minimum_system.storage}</div>
+              <div>
+                {item.screen_shoot.map((img) => (
+                  <div key={img.id_img}>
+                    <img src={img.img_shoot} alt="" />
+                  </div>
+                ))}
+              </div>
+              <div>{item.price}</div>
+            </div>
+          ))}
         </div>
-      ))}
+      ) : (
+        ""
+      )}
     </section>
   );
 };
