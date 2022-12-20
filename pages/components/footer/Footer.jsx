@@ -10,8 +10,7 @@ import React from "react";
 import footer from "../footer/Footer.module.css";
 import Link from "next/link";
 
-const Footer = ({ games }) => {
-  console.log(games);
+const Footer = () => {
   return (
     <section className={footer.footer}>
       <img
@@ -214,62 +213,6 @@ const Footer = ({ games }) => {
           </Grid>
         </Container>
       </div>
-      {games ? (
-        <div>
-          {games.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                color: "black",
-              }}
-            >
-              <div>{item.id}</div>
-              <div>{item.price}</div>
-              <div>{item.sale}</div>
-              <div>{item.name}</div>
-              <div>{item.rate}</div>
-              <div>{item.genres}</div>
-              <div>{item.developer}</div>
-              <div>{item.publisher}</div>
-              <div>{item.release_date}</div>
-              <img src={item.img} style={{ maxWidth: "50%" }} />
-              <img src={item.img_header} style={{ maxWidth: "50%" }} />
-              <div>{item.system}</div>
-              <div>{item.language_sp}</div>
-              <div>{item.description}</div>
-              <div>
-                {item.screen_shoot.map((img) => (
-                  <img
-                    key={img.id_img}
-                    src={img.img_shoot}
-                    style={{ maxWidth: "50%" }}
-                  />
-                ))}
-              </div>
-              <div>
-                <div>{item.minimum_system.os}</div>
-                <div>{item.minimum_system.processor}</div>
-                <div>{item.minimum_system.memory}</div>
-                <div>{item.minimum_system.graphics}</div>
-                <div>{item.minimum_system.direct}</div>
-                <div>{item.minimum_system.storage}</div>
-              </div>
-              <div>
-                <div>{item.recommend_system.os}</div>
-                <div>{item.recommend_system.processor}</div>
-                <div>{item.recommend_system.memory}</div>
-                <div>{item.recommend_system.graphics}</div>
-                <div>{item.recommend_system.direct}</div>
-                <div>{item.recommend_system.storage}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        ""
-      )}
     </section>
   );
 };

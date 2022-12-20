@@ -12,44 +12,44 @@ import {
 import { app } from "../../lib/firebase";
 
 const Layout = (props) => {
-  const db = getFirestore(app);
-  const [games, setGames] = useState([]);
+  // const db = getFirestore(app);
+  // const [games, setGames] = useState([]);
 
-  useEffect(() => {
-    const q = query(collection(db, "games"));
+  // useEffect(() => {
+  //   const q = query(collection(db, "games"));
 
-    getDocs(q)
-      .then((snapshot) => {
-        const games = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        setGames(games);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  //   getDocs(q)
+  //     .then((snapshot) => {
+  //       const games = snapshot.docs.map((item) => ({
+  //         id: item.id,
+  //         ...item.data(),
+  //       }));
+  //       setGames(games);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    const q = query(collection(db, "games"));
+  // useEffect(() => {
+  //   const q = query(collection(db, "games"));
 
-    getDocs(q)
-      .then((snapshot) => {
-        const games = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        const game = games.splice(
-          games.findIndex((item) => item.id == 50),
-          1
-        )[0];
-        console.log(game);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  //   getDocs(q)
+  //     .then((snapshot) => {
+  //       const games = snapshot.docs.map((item) => ({
+  //         id: item.id,
+  //         ...item.data(),
+  //       }));
+  //       const game = games.splice(
+  //         games.findIndex((item) => item.id == 50),
+  //         1
+  //       )[0];
+  //       console.log(game);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }, []);
 
   return (
     <div>
