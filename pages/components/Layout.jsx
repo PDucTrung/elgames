@@ -57,7 +57,7 @@ const Layout = (props) => {
 
       {props.children}
 
-      <Footer games={games} />
+      <Footer />
 
       <BackToTop />
     </div>
