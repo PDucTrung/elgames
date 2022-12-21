@@ -11,15 +11,18 @@ import "@fontsource/josefin-sans/400.css";
 import "@fontsource/josefin-sans/500.css";
 import "@fontsource/josefin-sans/600.css";
 import "@fontsource/josefin-sans/700.css";
+import "./components/load/LoadAnimation.css"
 import Layout from "./components/Layout";
 import { StyledEngineProvider } from "@mui/material";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div>
+    <Provider store={store}>
       <Head>
         <title>Endless Games</title>
       </Head>
@@ -28,7 +31,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </Layout>
       </StyledEngineProvider>
-    </div>
+    </Provider>
   );
 }
 

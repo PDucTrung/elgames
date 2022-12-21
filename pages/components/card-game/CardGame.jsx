@@ -10,9 +10,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const CardGame = ({ item }) => {
-  // const convertVnd = (item) => {
-  //   return Intl.NumberFormat().format(item).split(".").join(",");
-  // };
+  const convertVnd = (item) => {
+    return Intl.NumberFormat().format(item).split(".").join(",");
+  };
   return (
     <Grid
       xs={6}
@@ -25,7 +25,7 @@ const CardGame = ({ item }) => {
         padding: "10px 0",
       }}
     >
-      {/* <Grid
+      <Grid
         width={"92%"}
         margin={"auto"}
         position={"relative"}
@@ -230,7 +230,7 @@ const CardGame = ({ item }) => {
             </Link>
           </Box>
         </ListItemIcon>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };
