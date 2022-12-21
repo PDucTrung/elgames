@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Container, Grid, Box, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import games from "../games/Games.module.css";
@@ -19,6 +19,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Link from "next/link";
+import { Form } from "react-bootstrap";
 //
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -27,85 +28,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProductsList } from "../../store/feature/games/games.slice";
 
 const Games = () => {
-  const { products, currentPage, totalPage, pageChanged, filterChanged, genres } =
-    useSelector(selectProductsList);
+  const {
+    products,
+    currentPage,
+    totalPage,
+    pageChanged,
+    filterChanged,
+    genres,
+  } = useSelector(selectProductsList);
   const [sort, setSort] = React.useState("");
   const [value, setValue] = React.useState([0, 2000000]);
   const dispatch = useDispatch();
+  const filterRef = useRef();
 
   // pagination
   const handleChangePage = (event, value) => {
     event.preventDefault();
     dispatch(pageChanged(value - 1));
   };
-
-  console.log(genres);
-
-  const game = [
-    {
-      id: 1,
-      name: "Far Cry 6 Standard Edition",
-      price: 990000,
-      sale: 75,
-      img: "/img/game-1.jpg",
-    },
-    {
-      id: 2,
-      name: "Marvel’s Spider-Man: Miles Morales",
-      price: 1043100,
-      sale: 10,
-      img: "/img/game-2.jpg",
-    },
-    {
-      id: 3,
-      name: "Gotham Knights",
-      price: 990000,
-      sale: 50,
-      img: "/img/game-3.jpg",
-    },
-    {
-      id: 4,
-      name: "Saints Row",
-      price: 599000,
-      sale: 30,
-      img: "/img/game-4.jpg",
-    },
-    {
-      id: 5,
-      name: "Death Stranding Directors Cut",
-      price: 699000,
-      sale: 60,
-      img: "/img/game-5.jpg",
-    },
-    {
-      id: 6,
-      name: "Dying Light Enhanced Edition",
-      price: 329000,
-      sale: 45,
-      img: "/img/game-6.jpg",
-    },
-    {
-      id: 7,
-      name: "Dying Light 2 Stay Human",
-      price: 300000,
-      sale: 55,
-      img: "/img/game-7.jpg",
-    },
-    {
-      id: 8,
-      name: "Day Gone",
-      price: 990000,
-      sale: 70,
-      img: "/img/game-8.jpg",
-    },
-    {
-      id: 9,
-      name: "Rage 2",
-      price: 1250000,
-      sale: 60,
-      img: "/img/game-9.jpg",
-    },
-  ];
 
   // sort
   const handleChange = (event) => {
@@ -258,7 +198,8 @@ const Games = () => {
                 <br />
                 <div>
                   <p className={games.title}>Genres</p>
-                  <FormGroup
+
+                  <FormControl
                     sx={{
                       padding: "16px 0",
                       "& .Mui-checked": {
@@ -280,22 +221,50 @@ const Games = () => {
                       },
                     }}
                   >
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Adventure"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Rogue-Like"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Open World"
-                    />
-                    <FormControlLabel control={<Checkbox />} label="Fighting" />
-                    <FormControlLabel control={<Checkbox />} label="Horror" />
-                    <FormControlLabel control={<Checkbox />} label="Survival" />
-                  </FormGroup>
+                    <Form
+                      style={{
+                        fontFamily: "var(--font-default)",
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        gap: "16px",
+                      }}
+                      action=""
+                      onChange={() => {
+                        const newFilter = [];
+                        filterRef.current.elements.filter.forEach(
+                          (checkbox) => {
+                            if (checkbox.checked)
+                              newFilter.push(checkbox.value);
+                          }
+                        );
+
+                        dispatch(filterChanged(newFilter));
+                      }}
+                      ref={filterRef}
+                    >
+                      {genres.map((item) => (
+                        <Form.Check
+                          className={games.checkbox}
+                          key={item}
+                          name="filter"
+                          type="checkbox"
+                          label={item}
+                          value={item}
+                        />
+                      ))}
+                    </Form>
+
+                    {/* {genres.map((item) => (
+                      <FormControlLabel
+                        key={item}
+                        control={<Checkbox value={item} />}
+                        label={item}
+                        value={item}
+                      />
+                    ))} */}
+                  </FormControl>
                 </div>
 
                 <br />

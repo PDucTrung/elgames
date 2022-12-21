@@ -58,3 +58,18 @@
   -webkit-box-orient: vertical;
   display: -webkit-box;
 }
+
+.checkbox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.checkbox input{
+  width: 25px;
+  height: 25px;
+  border-radius: 0 !important;
+  border: 2px solid var(--blue) !important;
+  cursor: pointer;
+}
