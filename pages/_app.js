@@ -11,14 +11,14 @@ import "@fontsource/josefin-sans/400.css";
 import "@fontsource/josefin-sans/500.css";
 import "@fontsource/josefin-sans/600.css";
 import "@fontsource/josefin-sans/700.css";
-import "./components/load/LoadAnimation.css"
+import "./components/load/LoadAnimation.css";
 import Layout from "./components/Layout";
 import { StyledEngineProvider } from "@mui/material";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./store/store";
 
 function MyApp({ Component, pageProps }) {
   return (
