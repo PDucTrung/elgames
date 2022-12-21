@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProductsList } from "../store/feature/games/games.slice";
 
 const Games = () => {
-  const { products, currentPage, totalPage, pageChanged, filterChanged } =
+  const { products, currentPage, totalPage, pageChanged, filterChanged, genres } =
     useSelector(selectProductsList);
   const [sort, setSort] = React.useState("");
   const [value, setValue] = React.useState([0, 2000000]);
@@ -39,7 +39,7 @@ const Games = () => {
     dispatch(pageChanged(value - 1));
   };
 
-  console.log(products);
+  console.log(genres);
 
   const game = [
     {
