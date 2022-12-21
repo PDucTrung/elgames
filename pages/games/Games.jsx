@@ -24,7 +24,7 @@ import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProductsList } from "../store/feature/games/games.slice";
+import { selectProductsList } from "../../store/feature/games/games.slice";
 
 const Games = () => {
   const { products, currentPage, totalPage, pageChanged, filterChanged, genres } =

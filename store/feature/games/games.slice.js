@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { collection, getFirestore, getDocs, query } from "firebase/firestore";
-import { app } from "../../../../lib/firebase";
+import { app } from "../../../lib/firebase";
 
 const initialState = {
   data: [],

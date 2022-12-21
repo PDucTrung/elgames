@@ -11,11 +11,12 @@ import {
 } from "firebase/firestore";
 import { app } from "../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
+
+import LoadAnimation from "./load/LoadAnimation";
 import {
   loadProduct,
   selectProductStatus,
-} from "../store/feature/games/games.slice";
-import LoadAnimation from "./load/LoadAnimation";
+} from "../../store/feature/games/games.slice";
 
 const Layout = (props) => {
   const dispatch = useDispatch();
@@ -28,7 +29,9 @@ const Layout = (props) => {
   return (
     <main>
       {loading ? (
-        <div><LoadAnimation></LoadAnimation></div>
+        <div>
+          <LoadAnimation></LoadAnimation>
+        </div>
       ) : (
         <div>
           <Header />
