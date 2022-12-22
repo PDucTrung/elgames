@@ -36,7 +36,7 @@ const BlogDetail = () => {
           display="flex"
           justifyContent={"center"}
         >
-          <p className="title">name</p>
+          <p className="title">Simple Guidance For You In CyberPunk 2077</p>
         </Grid>
         <Grid
           sx={{
@@ -53,7 +53,9 @@ const BlogDetail = () => {
           <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
 
           <Grid color={"var(--blue)"}>
-            <span className="title">name</span>
+            <span className="title">
+              Simple Guidance For You In CyberPunk 2077
+            </span>
           </Grid>
         </Grid>
       </Box>
