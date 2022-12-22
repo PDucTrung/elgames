@@ -17,6 +17,7 @@ import {
   loadProduct,
   selectProductStatus,
 } from "../../store/feature/games/games.slice";
+import { loadBlogs } from "../../store/feature/blogs/blogs.slice";
 
 const Layout = (props) => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Layout = (props) => {
 
   useEffect(() => {
     dispatch(loadProduct());
+    dispatch(loadBlogs());
   }, []);
 
   return (

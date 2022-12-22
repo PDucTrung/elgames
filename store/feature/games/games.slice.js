@@ -34,29 +34,29 @@ export const loadProduct = createAsyncThunk(
   }
 );
 
-export const loadProductById = createAsyncThunk("products/byId", async (id) => {
-  const q = query(collection(getFirestore(app), "games"));
+// export const loadProductById = createAsyncThunk("products/byId", async (id) => {
+//   const q = query(collection(getFirestore(app), "games"));
 
-  const promise = getDocs(q)
-    .then((snapshot) => {
-      const games = snapshot.docs.map((item) => ({
-        id: item.id,
-        ...item.data(),
-      }));
-      const game = games.splice(
-        games.findIndex((item) => item.id == id),
-        1
-      )[0];
-      return data;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+//   const promise = getDocs(q)
+//     .then((snapshot) => {
+//       const games = snapshot.docs.map((item) => ({
+//         id: item.id,
+//         ...item.data(),
+//       }));
+//       const game = games.splice(
+//         games.findIndex((item) => item.id == id),
+//         1
+//       )[0];
+//       return data;
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     });
 
-  const data = await promise;
+//   const data = await promise;
 
-  return data;
-});
+//   return data;
+// });
 
 const productsSlice = createSlice({
   name: "products",
@@ -94,10 +94,10 @@ export const selectAllProducts = (state) => state.products.data;
 export const selectProductById = (productId) => (state) =>
   state.products.data.find((product) => product.id == productId);
 
-export const selectProductStatus = (state) => state.products.loading;
+export const selectProductStatus = (state) => state.products.loading || state.blogs.loading;
 
 // export const selectProductStatus = (state) =>
-//   state.products.loading || state.categories.loading;
+//   state.products.loading || state.genres.loading;
 
 export const selectProductsList = (state) => {
   const filteredProducts = state.products.data.filter((product) => {

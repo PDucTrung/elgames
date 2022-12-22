@@ -4,8 +4,17 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import blogdetal from "../blog-detail/BlogDetail.module.css";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { selectBlogsById } from "../../store/feature/blogs/blogs.slice";
+import { useSelector } from "react-redux";
+import { padding } from "@mui/system";
 
 const BlogDetail = () => {
+  const router = useRouter();
+  const {
+    query: { bid },
+  } = router;
+  const blog = useSelector(selectBlogsById(bid));
   const {
     register,
     formState: { errors },
@@ -36,7 +45,7 @@ const BlogDetail = () => {
           display="flex"
           justifyContent={"center"}
         >
-          <p className="title">Simple Guidance For You In CyberPunk 2077</p>
+          <p className="title">{blog.name}</p>
         </Grid>
         <Grid
           sx={{
@@ -53,9 +62,7 @@ const BlogDetail = () => {
           <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
 
           <Grid color={"var(--blue)"}>
-            <span className="title">
-              Simple Guidance For You In CyberPunk 2077
-            </span>
+            <span className="title">{blog.name}</span>
           </Grid>
         </Grid>
       </Box>
@@ -71,18 +78,18 @@ const BlogDetail = () => {
                     fontFamily: "var(--font-title)",
                   }}
                 >
-                  Simple Guidance For You In CyberPunk 2077
+                  {blog.name}
                 </Box>
                 <Box>
                   <div className={blogdetal["box-user"]}>
-                    <img src="/img/user-1.jpg" alt="user" />
-                    <div>Joker</div>
+                    <img src={blog.user.img} alt="user" />
+                    <div>{blog.user.name}</div>
                   </div>
-                  <div className={blogdetal.date}>January 7, 2022</div>
+                  <div className={blogdetal.date}>{blog.date}</div>
                 </Box>
                 <Box padding={"32px 0"}>
                   <img
-                    src="/img/bg-blog-1.jpg"
+                    src={blog.img_bg}
                     alt=""
                     style={{
                       maxWidth: "100%",
@@ -97,51 +104,58 @@ const BlogDetail = () => {
                     gap: "24px",
                   }}
                 >
-                  <div className={blogdetal.title}>
-                    Set spirit. Beginning. Created great. Dominion deep fourth.
-                    Divide bearing Midst very god rule fill.
-                  </div>
-                  <p>
-                    Likeness beast were have gathering you’re. Seed you’ll were
-                    made two herb Day fifth give over dominion you. So night
-                    were One whose fourth face replenish from upon doesn’t dry
-                    herb you’ll heaven the and great. Their was. Their face
-                    signs without midst beast void second. Brought creepeth
-                    creeping form days without. Face had. Earth us god to every
-                    also likeness that dominion after first give one moving open
-                    blessed them beast. Form. Spirit be image thing good called
-                    make and behold upon of herb also set above. Good shall
-                    place together sixth their morning which likeness. Fourth
-                    dry dominion to above day creeping was without creeping
-                    creepeth. Two firmament. Good. Fish created. Forth also
-                    place. Morning, days. Earth morning.
-                  </p>
-                  <p>
-                    Blessed thing fowl him. Was can’t fruit winged night female,
-                    air moving moved made place two own seasons every created
-                    saw tree so called god void in heaven. Gathered multiply
-                    fish. Fruitful and. Fruitful land air. Waters divided. Us.
-                    Given sixth, place. Of you’ll blessed from sixth likeness
-                    stars. He cattle you’re The lesser beginning male i divided
-                    brought above. Isn’t. Beast without fourth.
-                  </p>
-                  <p>
-                    The also said, second signs under doesn’t of. Rule, i stars.
-                    Male. First air, subdue fowl. Of you’ll image blessed their
-                    saw form can’t heaven him is whose. Years he firmament
-                    lesser hath lesser let two. Deep green man. Third herb void
-                    you’re gathering which let also rule. One you’re.
-                  </p>
-                  <p>
-                    Living heaven itself them were. One bring to very us our.
-                    Darkness made i waters. Great stars creeping light which
-                    beast third earth good also living greater days air yielding
-                    given given Called a bring second that third said greater
-                    night let fruitful midst itself void you there air winged
-                    brought. Set spirit. Beginning. Created great. Dominion deep
-                    fourth. Divide bearing Midst very god rule fill.
-                  </p>
+                  <div className={blogdetal.title}>{blog.content}</div>
+                  <p>{blog.text.text1}</p>
+                  <p>{blog.text.text2}</p>
+                  <p>{blog.text.text3}</p>
+                  <p>{blog.text.text4}</p>
                 </Box>
+
+                <Box
+                  marginTop={"36px"}
+                  sx={{ display: "flex", flexDirection: "column", gap: "12px" }}
+                >
+                  <p className={blogdetal.title}>Comments</p>
+                  {blog.comments.map((item) => (
+                    <Box
+                      key={item}
+                      sx={{
+                        display: "flex",
+                        gap: "12px",
+                      }}
+                    >
+                      <img
+                        src={item.avatar}
+                        alt="img-user"
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          verticalAlign: "middle",
+                          borderRadius: "50%",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          width: "100%",
+                          padding: "10px",
+                          backgroundColor: "var(--dark-2)",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "12px",
+                        }}
+                      >
+                        <p>
+                          <strong>{item.username}</strong> - {item.date}
+                        </p>
+                        <p>{item.content}</p>
+                        <Box maxWidth={"120px"}>
+                          <button className="btn">Reply</button>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+
                 <Box
                   marginTop={"36px"}
                   sx={{ display: "flex", flexDirection: "column", gap: "12px" }}

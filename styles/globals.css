@@ -126,3 +126,15 @@ a:hover {
     text-align: center;
   }
 }
+
+@media screen and (max-width: 900px) {
+  .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    max-width: 600px;
+    text-align: center;
+  }
+}
