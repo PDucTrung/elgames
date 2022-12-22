@@ -61,8 +61,10 @@ const GameDetail = () => {
           }}
           fontWeight="bold"
           color={"white"}
+          display="flex"
+          justifyContent={"center"}
         >
-          <p>{game.name}</p>
+          <p className="title">{game.name}</p>
         </Grid>
         <Grid
           sx={{
@@ -78,7 +80,9 @@ const GameDetail = () => {
 
           <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
 
-          <Grid color={"var(--blue)"}>{game.name}</Grid>
+          <Grid color={"var(--blue)"}>
+            <span className="title">{game.name}</span>
+          </Grid>
         </Grid>
       </Box>
 

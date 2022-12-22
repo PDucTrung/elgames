@@ -33,8 +33,10 @@ const BlogDetail = () => {
           }}
           fontWeight="bold"
           color={"white"}
+          display="flex"
+          justifyContent={"center"}
         >
-          <p>name</p>
+          <p className="title">name</p>
         </Grid>
         <Grid
           sx={{
@@ -50,7 +52,9 @@ const BlogDetail = () => {
 
           <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
 
-          <Grid color={"var(--blue)"}>name</Grid>
+          <Grid color={"var(--blue)"}>
+            <span className="title">name</span>
+          </Grid>
         </Grid>
       </Box>
       <section className={blogdetal["section-blog-detail"]}>

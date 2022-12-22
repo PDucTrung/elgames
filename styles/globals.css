@@ -114,3 +114,15 @@ a:hover {
   flex-direction: column;
   gap: 12px;
 }
+
+@media screen and (max-width: 600px) {
+  .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    max-width: 100px;
+    text-align: center;
+  }
+}
