@@ -149,6 +149,7 @@ const Offer = ({ games }) => {
                 <Grid container>
                   {gameof1.map((item) => (
                     <Grid
+                      key={item.id}
                       xs={6}
                       item={true}
                       padding={{
@@ -249,6 +250,7 @@ const Offer = ({ games }) => {
                 <Grid container>
                   {gameof2.map((item) => (
                     <Grid
+                      key={item.id}
                       xs={6}
                       item={true}
                       padding={{

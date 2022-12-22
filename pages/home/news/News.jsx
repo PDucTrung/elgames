@@ -74,7 +74,7 @@ const News = ({ games }) => {
           modules={[Navigation, Autoplay]}
         >
           {gameNew.map((item) => (
-            <SwiperSlide>
+            <SwiperSlide key={item.id}>
               <Grid width={"100%"}>
                 <Link
                   as={"/game-detail/[gid]"}
