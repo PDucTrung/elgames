@@ -35,8 +35,25 @@ export const loadProduct = createAsyncThunk(
 );
 
 export const loadProductById = createAsyncThunk("products/byId", async (id) => {
-  const response = await fetch("https://tfruitapi.vercel.app/games" + id);
-  const data = await response.json();
+  const q = query(collection(getFirestore(app), "games"));
+
+  const promise = getDocs(q)
+    .then((snapshot) => {
+      const games = snapshot.docs.map((item) => ({
+        id: item.id,
+        ...item.data(),
+      }));
+      const game = games.splice(
+        games.findIndex((item) => item.id == id),
+        1
+      )[0];
+      return data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  const data = await promise;
 
   return data;
 });

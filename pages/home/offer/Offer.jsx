@@ -5,8 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import offer from "../offer/Offer.module.css";
 import Link from "next/link";
+import { display } from "@mui/system";
 
-const Offer = () => {
+const Offer = ({ games }) => {
+  const gameOffer = games.filter((item) => item.genres == "Open World");
+  const gameof1 = gameOffer.slice(0, 4);
+  const gameof2 = gameOffer.slice(4, 8);
+  const convertVnd = (item) => {
+    return Intl.NumberFormat().format(item).split(".").join(",");
+  };
   return (
     <div>
       <Container>
@@ -140,612 +147,202 @@ const Offer = () => {
             >
               <SwiperSlide>
                 <Grid container>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
+                  {gameof1.map((item) => (
+                    <Grid
+                      xs={6}
+                      item={true}
+                      padding={{
+                        xs: "8px 0",
+                        sm: "13px 0",
+                      }}
                     >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
+                      <Link
+                        as={"/game-detail/[gid]"}
+                        href={{
+                          pathname: "/game-detail/[gid]",
+                          query: { gid: item.id },
                         }}
+                        style={{ color: "white" }}
                       >
-                        <img
-                          src="/img/game-1.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
                         <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
+                          width={"90%"}
+                          margin={"auto"}
+                          position={"relative"}
+                          sx={{
+                            ":hover": {
+                              "& img": {
+                                opacity: 0.6,
+                              },
+                            },
+                            cursor: "pointer",
+                          }}
                         >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
+                          <img
+                            src={item.img}
+                            alt="img-offer"
+                            style={{
+                              maxWidth: "100%",
+                              verticalAlign: "middle",
                             }}
+                          />
+                          <Grid
+                            width={"100%"}
+                            position="absolute"
+                            left={0}
+                            bottom={0}
+                            display={"flex"}
                           >
-                            Far Cry 6 Standard Edition
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-75%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
+                            <Grid
+                              sx={{
+                                backgroundColor: "gray",
+                                width: "100%",
+                                padding: "10px",
+                              }}
+                            >
+                              {item.name}
+                              <Grid container marginTop={"5px"}>
+                                <Grid
+                                  padding="5px"
+                                  sx={{
+                                    backgroundColor: "green",
+                                    fontWeight: "600",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
                                 >
-                                  {"990,000 ₫"}
-                                </div>
-                                <div>{"247,500 ₫"}</div>
+                                  <div>-{item.sale}%</div>
+                                </Grid>
+                                <Grid
+                                  padding="5px 10px"
+                                  sx={{
+                                    backgroundColor: "var(--dark)",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontSize: "12px",
+                                      textDecoration: "line-through",
+                                      color: "var(--gray)",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    {convertVnd(item.price)} ₫
+                                  </div>
+                                  <div>
+                                    {convertVnd(
+                                      (item.price * (100 - item.sale)) / 100
+                                    )}{" "}
+                                    ₫
+                                  </div>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-2.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            {"Marvel’s Spider-Man: Miles Morales"}
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-10%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"1,043,100 ₫"}
-                                </div>
-                                {"1,159,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid height={"30px"} xs={12} item={true}></Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-3.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            Gotham Knights
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-50%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"495,000 ₫"}
-                                </div>
-                                {"990,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-4.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            Saints Row
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-30%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"391,300 ₫"}
-                                </div>
-                                {"559,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
+                      </Link>
+                    </Grid>
+                  ))}
                 </Grid>
               </SwiperSlide>
               <SwiperSlide>
                 <Grid container>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
+                  {gameof2.map((item) => (
+                    <Grid
+                      xs={6}
+                      item={true}
+                      padding={{
+                        xs: "8px 0",
+                        sm: "13px 0",
+                      }}
                     >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
+                      <Link
+                        as={"/game-detail/[gid]"}
+                        href={{
+                          pathname: "/game-detail/[gid]",
+                          query: { gid: item.id },
                         }}
+                        style={{ color: "white" }}
                       >
-                        <img
-                          src="/img/game-5.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
                         <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
+                          width={"90%"}
+                          margin={"auto"}
+                          position={"relative"}
+                          sx={{
+                            ":hover": {
+                              "& img": {
+                                opacity: 0.6,
+                              },
+                            },
+                            cursor: "pointer",
+                          }}
                         >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
+                          <img
+                            src={item.img}
+                            alt="img-offer"
+                            style={{
+                              maxWidth: "100%",
+                              verticalAlign: "middle",
                             }}
+                          />
+                          <Grid
+                            width={"100%"}
+                            position="absolute"
+                            left={0}
+                            bottom={0}
+                            display={"flex"}
                           >
-                            Death Stranding Directors Cut
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-50%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
+                            <Grid
+                              sx={{
+                                backgroundColor: "gray",
+                                width: "100%",
+                                padding: "10px",
+                              }}
+                            >
+                              {item.name}
+                              <Grid container marginTop={"5px"}>
+                                <Grid
+                                  padding="5px"
+                                  sx={{
+                                    backgroundColor: "green",
+                                    fontWeight: "600",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
                                 >
-                                  {"349,500 ₫"}
-                                </div>
-                                {"699,000 ₫"}
+                                  <div>-{item.sale}%</div>
+                                </Grid>
+                                <Grid
+                                  padding="5px 10px"
+                                  sx={{
+                                    backgroundColor: "var(--dark)",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontSize: "12px",
+                                      textDecoration: "line-through",
+                                      color: "var(--gray)",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    {convertVnd(item.price)} ₫
+                                  </div>
+                                  <div>
+                                    {convertVnd(
+                                      (item.price * (100 - item.sale)) / 100
+                                    )}{" "}
+                                    ₫
+                                  </div>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-6.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            Dying Light Enhanced Edition
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-40%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"197,400 ₫"}
-                                </div>
-                                {"329,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid height={"30px"} xs={12} item={true}></Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-7.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            Dying Light 2 Stay Human
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-70%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"297,000 ₫"}
-                                </div>
-                                {"990,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
-                  <Grid xs={6} item={true}>
-                    <Link
-                      href={"/game-detail/GameDetail"}
-                      style={{ color: "white" }}
-                    >
-                      <Grid
-                        width={"90%"}
-                        margin={"auto"}
-                        position={"relative"}
-                        sx={{
-                          ":hover": {
-                            "& img": {
-                              opacity: 0.6,
-                            },
-                          },
-                          cursor: "pointer",
-                        }}
-                      >
-                        <img
-                          src="/img/game-8.jpg"
-                          alt="img-offer"
-                          style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                        />
-                        <Grid
-                          width={"100%"}
-                          position="absolute"
-                          left={0}
-                          bottom={0}
-                          display={"flex"}
-                        >
-                          <Grid
-                            sx={{
-                              backgroundColor: "gray",
-                              width: "100%",
-                              padding: "10px",
-                            }}
-                          >
-                            Days Gone
-                            <Grid container marginTop={"5px"}>
-                              <Grid
-                                padding="5px"
-                                sx={{
-                                  backgroundColor: "green",
-                                  fontWeight: "600",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <div>-80%</div>
-                              </Grid>
-                              <Grid
-                                padding="5px 10px"
-                                sx={{
-                                  backgroundColor: "var(--dark)",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "12px",
-                                    textDecoration: "line-through",
-                                    color: "var(--gray)",
-                                    textAlign: "center",
-                                  }}
-                                >
-                                  {"227,800 ₫"}
-                                </div>
-                                {"1,139,000 ₫"}
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Link>
-                  </Grid>
+                      </Link>
+                    </Grid>
+                  ))}
                 </Grid>
               </SwiperSlide>
             </Swiper>

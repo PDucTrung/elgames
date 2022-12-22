@@ -8,7 +8,10 @@ import WestRoundedIcon from "@mui/icons-material/WestRounded";
 import news from "../similar/Similar.module.css";
 import Link from "next/link";
 
-const Similar = () => {
+const Similar = ({ gameSimilar }) => {
+  const convertVnd = (item) => {
+    return Intl.NumberFormat().format(item).split(".").join(",");
+  };
   return (
     <div>
       <Container
@@ -69,82 +72,92 @@ const Similar = () => {
           }}
           modules={[Navigation, Autoplay]}
         >
-          <SwiperSlide>
-            <Grid width={"100%"}>
-              <Link href={"/game-detail/GameDetail"} style={{ color: "white" }}>
-                <Grid
-                  width={"90%"}
-                  margin={"auto"}
-                  position={"relative"}
-                  sx={{
-                    ":hover": {
-                      "& img": {
-                        opacity: 0.6,
-                      },
-                    },
-                    cursor: "pointer",
+          {gameSimilar.map((item) => (
+            <SwiperSlide key={item.id}>
+              <Grid width={"100%"}>
+                <Link
+                  as={"/game-detail/[gid]"}
+                  href={{
+                    pathname: "/game-detail/[gid]",
+                    query: { gid: item.id },
                   }}
+                  style={{ color: "white" }}
                 >
-                  <img
-                    src="/img/game-9.jpg"
-                    alt="img-offer"
-                    style={{ maxWidth: "100%", verticalAlign: "middle" }}
-                  />
                   <Grid
-                    width={"100%"}
-                    position="absolute"
-                    left={0}
-                    bottom={0}
-                    display={"flex"}
+                    width={"90%"}
+                    margin={"auto"}
+                    position={"relative"}
+                    sx={{
+                      ":hover": {
+                        "& img": {
+                          opacity: 0.6,
+                        },
+                      },
+                      cursor: "pointer",
+                    }}
                   >
+                    <img
+                      src={item.img}
+                      alt="img-offer"
+                      style={{ maxWidth: "100%", verticalAlign: "middle" }}
+                    />
                     <Grid
-                      sx={{
-                        backgroundColor: "gray",
-                        width: "100%",
-                        padding: "10px",
-                      }}
+                      width={"100%"}
+                      position="absolute"
+                      left={0}
+                      bottom={0}
+                      display={"flex"}
                     >
-                      Rage 2
-                      <Grid container marginTop={"5px"}>
-                        <Grid
-                          padding="5px"
-                          sx={{
-                            backgroundColor: "green",
-                            fontWeight: "600",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <div>-75%</div>
-                        </Grid>
-                        <Grid
-                          padding="5px 10px"
-                          sx={{
-                            backgroundColor: "var(--dark)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              textDecoration: "line-through",
-                              color: "var(--gray)",
-                              textAlign: "center",
+                      <Grid
+                        sx={{
+                          backgroundColor: "gray",
+                          width: "100%",
+                          padding: "10px",
+                        }}
+                      >
+                        {item.name}
+                        <Grid container marginTop={"5px"}>
+                          <Grid
+                            padding="5px"
+                            sx={{
+                              backgroundColor: "green",
+                              fontWeight: "600",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            {"900,000 ₫"}
-                          </div>
-                          {"225,000 ₫"}
+                            <div>-{item.sale}%</div>
+                          </Grid>
+                          <Grid
+                            padding="5px 10px"
+                            sx={{
+                              backgroundColor: "var(--dark)",
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                textDecoration: "line-through",
+                                color: "var(--gray)",
+                                textAlign: "center",
+                              }}
+                            >
+                              {convertVnd(item.price)} đđ
+                            </div>
+                            {convertVnd((item.price * (100 - item.sale)) / 100)}{" "}
+                            đ
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Link>
-            </Grid>
-          </SwiperSlide>
+                </Link>
+              </Grid>
+            </SwiperSlide>
+          ))}
 
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <Link href={"/game-detail/GameDetail"} style={{ color: "white" }}>
               <Grid
                 width={"90%"}
@@ -507,7 +520,7 @@ const Similar = () => {
                 </Grid>
               </Grid>
             </Link>
-          </SwiperSlide>
+          </SwiperSlide> */}
 
           <div className={news.control}>
             <div className="btn-next">

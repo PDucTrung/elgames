@@ -203,7 +203,13 @@ const CardGame = ({ item }) => {
               transition: "0.6s ease-in-out",
             }}
           >
-            <Link href={"/game-detail/GameDetail"}>
+            <Link
+              as={"/game-detail/[gid]"}
+              href={{
+                pathname: "/game-detail/[gid]",
+                query: { gid: item.id },
+              }}
+            >
               <Box
                 width={{ xs: "32px", sm: "50px" }}
                 height={{ xs: "32px", sm: "50px" }}

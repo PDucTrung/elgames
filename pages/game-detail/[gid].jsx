@@ -15,69 +15,24 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
 import FlagIcon from "@mui/icons-material/Flag";
+import { useSelector } from "react-redux";
+import {
+  selectAllProducts,
+  selectProductById,
+} from "../../store/feature/games/games.slice";
+import { useRouter } from "next/router";
 
 const GameDetail = () => {
+  const router = useRouter();
+  const {
+    query: { gid },
+  } = router;
+  const game = useSelector(selectProductById(gid));
+  const games = useSelector(selectAllProducts);
+  const gameSimilar = games.filter((item) => item.genres == game.genres);
   const [qty, setQty] = useState(1);
-  const game = {
-    id: 15,
-    name: "God of War",
-    rate: "4.9",
-    genres: "Open world",
-    developer: "Santa Monica Studio",
-    publisher: "PlayStation PC LLC",
-    release_date: "01/14/22",
-    price: 1139000,
-    sale: 40,
-    img: "/img/game15/game.jpg",
-    img_header: "/img/game15/header.jpg",
-    screen_shoot: [
-      {
-        id_img: 151,
-        img: "/img/game15/screen-shoot-1.jpg",
-      },
-      {
-        id_img: 152,
-        img: "/img/game15/screen-shoot-2.jpg",
-      },
-      {
-        id_img: 153,
-        img: "/img/game15/screen-shoot-3.jpg",
-      },
-      {
-        id_img: 154,
-        img: "/img/game15/screen-shoot-4.jpg",
-      },
-      {
-        id_img: 155,
-        img: "/img/game15/screen-shoot-5.jpg",
-      },
-    ],
-    os: "Window",
-    minimum_system: {
-      os: "Windows 10 64-bit",
-      processor:
-        "Intel i5-2500k (4 core 3.3 GHz) or AMD Ryzen 3 1200 (4 core 3.1 GHz)",
-      memory: "8 GB DDR",
-      storage: "70 GB HDD (SSD Recommended)",
-      direct: "DirectX 11 (feature level 11_1)",
-      graphics: "NVIDIA GTX 960 (4 GB) or AMD R9 290X (4 GB)",
-    },
-    recommend_system: {
-      os: "Windows 10 64-bit",
-      processor:
-        "Intel i5-6600k (4 core 3.5 GHz) or AMD Ryzen 5 2400 G (4 core 3.6 GHz)",
-      memory: "8 GB DDR",
-      storage: "70 GB HDD",
-      direct: "DirectX 11 (feature level 11_1)",
-      graphics: "NVIDIA GTX 1060 (6 GB) or AMD RX 570 (4 GB)",
-    },
-    language_sp:
-      "English, Dutch, French, German, Italian, Japanese, Korean, Polish, Portuguese, Portuguese - Brazil, Russian, Spanish - Spain, Spanish - Latin America, Turkish, Chinese - Traditional, Hungarian, Czech, Greek",
-    description:
-      "His vengeance against the Gods of Olympus years behind him, Kratos now lives as a man in the realm of Norse Gods and monsters. It is in this harsh, unforgiving world that he must fight to survive… and teach his son to do the same.\nKratos is a father again. As mentor and protector to Atreus, a son determined to earn his respect, he is forced to deal with and control the rage that has long defined him while out in a very dangerous world with his son.\nFrom the marble and columns of ornate Olympus to the gritty forests, mountains and caves of pre-Viking Norse lore, this is a distinctly new realm with its own pantheon of creatures, monsters and gods.\nWith an over the shoulder camera that brings the player closer to the action than ever before, fights in God of War™ mirror the pantheon of Norse creatures Kratos will face: grand, gritty and grueling. A new main weapon and new abilities retain the defining spirit of the God of War series while presenting a vision of conflict that forges new ground in the genre.",
-  };
 
-  const [img, setImg] = useState(game.screen_shoot[0].img);
+  const [img, setImg] = useState(game.screen_shoot[0].img_shoot);
   const changeImg = (e) => {
     setImg(e.target.src);
     document.querySelector(".big-img").src = img;
@@ -264,7 +219,7 @@ const GameDetail = () => {
                             }}
                           >
                             <img
-                              src={item.img}
+                              src={item.img_shoot}
                               alt="img-shoot"
                               style={{
                                 maxWidth: "100%",
@@ -615,7 +570,7 @@ const GameDetail = () => {
                   >
                     Platform
                   </div>
-                  <div>{game.os}</div>
+                  <div>{game.system}</div>
                 </div>
                 <div className={styles["container-box-share"]}>
                   <button className={styles["box-share"]}>
@@ -633,7 +588,7 @@ const GameDetail = () => {
 
       <section className={styles["section-slider-similar"]}>
         <p className={styles.title}>MORE LIKE THIS</p>
-        <Similar></Similar>
+        <Similar gameSimilar={gameSimilar}></Similar>
       </section>
     </div>
   );

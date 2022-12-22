@@ -94,7 +94,13 @@ const HomeSlider = () => {
                   One journay, two heroes, and hard definitions
                 </Grid>
                 <Grid>
-                  <Link href={"/game-detail/GameDetail"}>
+                  <Link
+                    as={"/game-detail/[gid]"}
+                    href={{
+                      pathname: "/game-detail/[gid]",
+                      query: { gid: 30 },
+                    }}
+                  >
                     <button className={styles.button}>Purchase now</button>
                   </Link>
                 </Grid>
@@ -156,7 +162,13 @@ const HomeSlider = () => {
                   {"Valhalla is the ultimate Assassin's Creed experience"}
                 </Grid>
                 <Grid>
-                  <Link href={"/game-detail/GameDetail"}>
+                  <Link
+                    as={"/game-detail/[gid]"}
+                    href={{
+                      pathname: "/game-detail/[gid]",
+                      query: { gid: 11 },
+                    }}
+                  >
                     <button className={styles.button}>Purchase now</button>
                   </Link>
                 </Grid>

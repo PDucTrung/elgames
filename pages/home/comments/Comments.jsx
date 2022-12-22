@@ -75,7 +75,7 @@ const Comments = () => {
             <Grid width={"100%"}>
               <Grid
                 width={"90%"}
-                height={"320px"}
+                height={"max-content"}
                 margin={"auto"}
                 sx={{
                   ":hover": {
@@ -138,7 +138,7 @@ const Comments = () => {
             <Grid width={"100%"}>
               <Grid
                 width={"90%"}
-                height={"320px"}
+                height={"max-content"}
                 margin={"auto"}
                 sx={{
                   ":hover": {
@@ -202,7 +202,7 @@ const Comments = () => {
             <Grid width={"100%"}>
               <Grid
                 width={"90%"}
-                height={"320px"}
+                height={"max-content"}
                 margin={"auto"}
                 sx={{
                   ":hover": {

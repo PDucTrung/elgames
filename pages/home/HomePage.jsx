@@ -1,5 +1,7 @@
 import { Container } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectAllProducts } from "../../store/feature/games/games.slice";
 import home from "../home/HomePage.module.css";
 import Categories from "./categories/Categories";
 import Comments from "./comments/Comments";
@@ -12,6 +14,7 @@ import Sales from "./sales/Sales";
 import Service from "./service/Service";
 
 const HomePage = () => {
+  const games = useSelector(selectAllProducts);
   return (
     <div>
       <section className={home["section-sldier"]}>
@@ -32,7 +35,7 @@ const HomePage = () => {
       </section>
 
       <section className={home["section-offer"]}>
-        <Offer></Offer>
+        <Offer games={games}></Offer>
       </section>
 
       <section className={home["section-categories"]}>
@@ -44,7 +47,7 @@ const HomePage = () => {
       </section>
 
       <section className={home["section-news"]}>
-        <News></News>
+        <News games={games}></News>
       </section>
 
       <section className={home["section-live"]}>
