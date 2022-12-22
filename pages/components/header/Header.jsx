@@ -8,12 +8,18 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import Drawer from "@mui/material/Drawer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import header from "../header/Header.module.css";
 import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
 import Link from "next/link";
 import Navigation from "../navigation/Navigation";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { app } from "../../../lib/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
+import { selectUserById } from "../../../store/feature/users/users.slice";
+import { selectTotalwishlistItem } from "../../../store/feature/wishlist/wishlist.slice";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -23,6 +29,29 @@ const Header = () => {
   const [state, setState] = React.useState({
     left: false,
   });
+  const totalWishlist = useSelector(selectTotalwishlistItem);
+
+  // auth
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const auth = getAuth(app);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((auth, error) => {
+      if (auth && !user) {
+        dispatch(
+          setUser({
+            accessToken: auth.accessToken,
+            uid: auth.uid,
+            displayName: auth.displayName,
+            email: auth.email,
+          })
+        );
+      } else {
+        dispatch(setUser(null));
+      }
+    });
+  }, []);
 
   // select language
   const handleChange = (event) => {
@@ -218,77 +247,162 @@ const Header = () => {
                   padding={"18px 0"}
                   borderLeft={"1px solid var(--gray-light)"}
                 >
-                  <div
-                    id="account-menu"
-                    onClick={handleClick}
-                    style={{ cursor: "pointer", padding: "0 30px" }}
-                  >
-                    Account
-                  </div>
-                  {/* menu account */}
-                  <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="account-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    sx={{
-                      "& .MuiPopover-paper": {
-                        top: "61px !important",
-                        width: "123px",
-                        borderRadius: "0%",
-                        color: "white",
-                        background: "var(--bg)",
-                        borderLeft: "1px solid var(--gray-light)",
-                        borderRight: "1px solid var(--gray-light)",
-                      },
-                      "& .MuiMenu-list": {
-                        padding: 0,
-                      },
-                      "& .MuiMenuItem-root": {
-                        borderBottom: "1.5px solid var(--gray-light)",
-                      },
-                      "& .MuiMenuItem-root:hover": {
-                        background: "white",
-                        color: "var(--bg)",
-                      },
-                    }}
-                  >
-                    <MenuItem onClick={handleOpenModalSignIn}>
-                      <Grid margin={"auto"} fontFamily={"var(--font-default)"}>
-                        Sign In
-                      </Grid>
-                    </MenuItem>
-                    <MenuItem onClick={handleOpenModalSignUp}>
-                      <Grid margin={"auto"} fontFamily={"var(--font-default)"}>
-                        Sign Up
-                      </Grid>
-                    </MenuItem>
-                  </Menu>
-                  {/* modal sign in */}
-                  <Modal
-                    open={openModalSignIn}
-                    onClose={handleCloseModalSignIn}
-                    sx={scroll}
-                  >
-                    <Box>
-                      <ModalSignIn
-                        handleCloseModalSignIn={handleCloseModalSignIn}
-                      ></ModalSignIn>
-                    </Box>
-                  </Modal>
-                  {/* modal sign up */}
-                  <Modal
-                    open={openModalSignUp}
-                    onClose={handleCloseModalSignUp}
-                    sx={scroll}
-                  >
-                    <Box>
-                      <ModalSignUp
-                        handleCloseModalSignUp={handleCloseModalSignUp}
-                      ></ModalSignUp>
-                    </Box>
-                  </Modal>
+                  {!auth.currentUser ? (
+                    <div>
+                      <div
+                        id="account-menu"
+                        onClick={handleClick}
+                        style={{ cursor: "pointer", padding: "0 30px" }}
+                      >
+                        Account
+                      </div>
+                      {/* menu account */}
+                      <Menu
+                        id="demo-positioned-menu"
+                        aria-labelledby="account-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        sx={{
+                          "& .MuiPopover-paper": {
+                            top: "61px !important",
+                            width: "123px",
+                            borderRadius: "0%",
+                            color: "white",
+                            background: "var(--bg)",
+                            borderLeft: "1px solid var(--gray-light)",
+                            borderRight: "1px solid var(--gray-light)",
+                          },
+                          "& .MuiMenu-list": {
+                            padding: 0,
+                          },
+                          "& .MuiMenuItem-root": {
+                            borderBottom: "1.5px solid var(--gray-light)",
+                          },
+                          "& .MuiMenuItem-root:hover": {
+                            background: "white",
+                            color: "var(--bg)",
+                          },
+                        }}
+                      >
+                        <MenuItem onClick={handleOpenModalSignIn}>
+                          <Grid
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
+                          >
+                            Sign In
+                          </Grid>
+                        </MenuItem>
+                        <MenuItem onClick={handleOpenModalSignUp}>
+                          <Grid
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
+                          >
+                            Sign Up
+                          </Grid>
+                        </MenuItem>
+                      </Menu>
+                      {/* modal sign in */}
+                      <Modal
+                        open={openModalSignIn}
+                        onClose={handleCloseModalSignIn}
+                        sx={scroll}
+                      >
+                        <Box>
+                          <ModalSignIn
+                            handleCloseModalSignIn={handleCloseModalSignIn}
+                          ></ModalSignIn>
+                        </Box>
+                      </Modal>
+                      {/* modal sign up */}
+                      <Modal
+                        open={openModalSignUp}
+                        onClose={handleCloseModalSignUp}
+                        sx={scroll}
+                      >
+                        <Box>
+                          <ModalSignUp
+                            handleCloseModalSignUp={handleCloseModalSignUp}
+                          ></ModalSignUp>
+                        </Box>
+                      </Modal>
+                    </div>
+                  ) : (
+                    <div>
+                      <div
+                        id="account-menu"
+                        onClick={handleClick}
+                        style={{ cursor: "pointer", padding: "0 30px" }}
+                      >
+                        {auth.currentUser.displayName == null
+                          ? "my account"
+                          : auth.currentUser.displayName}
+                      </div>
+                      {/* menu account */}
+                      <Menu
+                        id="demo-positioned-menu"
+                        aria-labelledby="account-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        sx={{
+                          "& .MuiPopover-paper": {
+                            top: "61px !important",
+                            width: "123px",
+                            borderRadius: "0%",
+                            color: "white",
+                            background: "var(--bg)",
+                            borderLeft: "1px solid var(--gray-light)",
+                            borderRight: "1px solid var(--gray-light)",
+                          },
+                          "& .MuiMenu-list": {
+                            padding: 0,
+                          },
+                          "& .MuiMenuItem-root": {
+                            borderBottom: "1.5px solid var(--gray-light)",
+                          },
+                          "& .MuiMenuItem-root:hover": {
+                            background: "white",
+                            color: "var(--bg)",
+                          },
+                        }}
+                      >
+                        <MenuItem>
+                          <Grid
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
+                          >
+                            Profile
+                          </Grid>
+                        </MenuItem>
+                        <MenuItem>
+                          <Grid
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
+                          >
+                            Library
+                          </Grid>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link
+                            href={"/"}
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                            }}
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
+                            onClick={() => {
+                              auth.signOut();
+                              setOpenModalSignIn(false);
+                            }}
+                          >
+                            Log out
+                          </Link>
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  )}
                 </Grid>
                 <Grid
                   padding={"15px 30px"}
@@ -300,7 +414,7 @@ const Header = () => {
                     href={"/favorites/Favorites"}
                   >
                     <FavoriteBorderIcon></FavoriteBorderIcon>
-                    <Grid className={header["number-icon"]}>1</Grid>
+                    <Grid className={header["number-icon"]}>{totalWishlist}</Grid>
                   </Link>
                 </Grid>
                 <Grid

@@ -5,8 +5,16 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import styles from "../modal-signin/ModalSignIn.module.css";
 import { useForm } from "react-hook-form";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { app } from "../../../lib/firebase";
 
 const ModalSignIn = ({ handleCloseModalSignIn }) => {
+  const auth = getAuth(app);
   const {
     register,
     formState: { errors },
@@ -14,7 +22,7 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
   } = useForm({
     criteriaMode: "all",
   });
-  const onSubmit = (e) => console.log(e);
+  // const onSubmit = (e) => console.log(e);
   return (
     <Box className={styles["form-sign-in"]}>
       <Box
@@ -34,7 +42,12 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
           Please login below account detail
         </Grid>
 
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit((data) => {
+            signInWithEmailAndPassword(auth, data.email, data.password);
+          })}
+        >
           <Grid>
             <input
               className={styles.input}
@@ -42,7 +55,7 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
               name="email"
               id="email-in"
               placeholder="Email"
-              {...register("emailSignin", {
+              {...register("email", {
                 required: "Please enter this field!",
                 pattern: {
                   value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -50,9 +63,9 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
                 },
               })}
             />
-            {errors.emailSignin && (
+            {errors.email && (
               <div className={styles["form-message"]}>
-                {errors.emailSignin.message}
+                {errors.email.message}
               </div>
             )}
           </Grid>
@@ -63,7 +76,7 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
               name="pass"
               id="pass-in"
               placeholder="Password"
-              {...register("passwordSignin", {
+              {...register("password", {
                 required: "Please enter this field!",
                 pattern: {
                   value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
@@ -72,9 +85,9 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
                 },
               })}
             />
-            {errors.passwordSignin && (
+            {errors.password && (
               <div className={styles["form-message"]}>
-                {errors.passwordSignin.message}
+                {errors.password.message}
               </div>
             )}
           </Grid>
@@ -115,7 +128,12 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
           gap: "32px",
         }}
       >
-        <GoogleIcon className={styles.icon}></GoogleIcon>
+        <GoogleIcon
+          className={styles.icon}
+          onClick={() => {
+            signInWithPopup(auth, new GoogleAuthProvider());
+          }}
+        ></GoogleIcon>
         <FacebookIcon className={styles.icon}></FacebookIcon>
       </Grid>
     </Box>

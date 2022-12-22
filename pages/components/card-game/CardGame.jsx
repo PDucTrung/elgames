@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import card from "../card-game/CardGame.module.css";
 import { Box, Container, Grid } from "@mui/material";
 import Link from "next/link";
@@ -8,10 +9,26 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../../store/feature/wishlist/wishlist.slice";
 
 const CardGame = ({ item }) => {
+  const Msg = () => (
+    <span
+      style={{
+        color: "var(--bg)",
+      }}
+    >
+      {"Add " + item.name + " to wishlist successful!"}
+    </span>
+  );
+  const dispatch = useDispatch();
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
+  };
+  const handleClickaddToWishlist = () => {
+    dispatch(addItem({ productId: item.id }));
+    // toast(<Msg></Msg>);
   };
   return (
     <Grid
@@ -188,6 +205,7 @@ const CardGame = ({ item }) => {
                   },
                 },
               }}
+              onClick={handleClickaddToWishlist}
             >
               <FavoriteIcon
                 sx={{

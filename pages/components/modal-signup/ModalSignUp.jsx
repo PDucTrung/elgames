@@ -1,12 +1,16 @@
 import React from "react";
-import { Box, Grid} from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import styles from "../modal-signup/ModalSignUp.module.css";
 import { useForm } from "react-hook-form";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { app } from "../../../lib/firebase";
 
 const ModalSignUp = ({ handleCloseModalSignUp }) => {
+  const auth = getAuth(app);
   const {
     register,
     formState: { errors },
@@ -15,7 +19,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
   } = useForm({
     criteriaMode: "all",
   });
-  const onSubmit = (e) => console.log(e);
+  // const onSubmit = (e) => console.log(e);
   return (
     <Box className={styles["form-sign-up"]}>
       <Box
@@ -35,7 +39,23 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
           Please register below account detail
         </Grid>
 
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit((data) => {
+            createUserWithEmailAndPassword(auth, data.email, data.password)
+              .then((credential) => {
+                const userRef = doc(
+                  getFirestore(app),
+                  "users",
+                  credential.user.uid
+                );
+                setDoc(userRef, {
+                  displayName: data.displayName,
+                }).catch(console.error);
+              })
+              .catch(console.error);
+          })}
+        >
           <Grid>
             <input
               className={styles.input}
@@ -43,9 +63,9 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
               name="name"
               id="name-up"
               placeholder="Name"
-              {...register("nameSignup", { required: true })}
+              {...register("displayName", { required: true })}
             />
-            {errors.nameSignup && (
+            {errors.displayName && (
               <div className={styles["form-message"]}>
                 This field is required
               </div>
@@ -54,11 +74,11 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
           <Grid>
             <input
               className={styles.input}
-              type="text"
+              type="email"
               name="email"
               id="email-up"
               placeholder="Email"
-              {...register("emailSignup", {
+              {...register("email", {
                 required: "Please enter this field!",
                 pattern: {
                   value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -66,9 +86,9 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                 },
               })}
             />
-            {errors.emailSignup && (
+            {errors.email && (
               <div className={styles["form-message"]}>
-                {errors.emailSignup.message}
+                {errors.email.message}
               </div>
             )}
           </Grid>
@@ -79,7 +99,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
               name="pass"
               id="pass-up"
               placeholder="Password"
-              {...register("passSignup", {
+              {...register("password", {
                 required: "Please enter this field!",
                 pattern: {
                   value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
@@ -88,9 +108,9 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                 },
               })}
             />
-            {errors.passSignup && (
+            {errors.password && (
               <div className={styles["form-message"]}>
-                {errors.passSignup.message}
+                {errors.password.message}
               </div>
             )}
           </Grid>
@@ -110,7 +130,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                 },
                 validate: {
                   match: (v) =>
-                    v === getValues("passSignup") ||
+                    v === getValues("password") ||
                     "Mật khẩu nhập lại không chính xác",
                 },
               })}

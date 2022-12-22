@@ -61,7 +61,7 @@
 .form-message {
   margin-top: 16px;
   color: var(--red);
-  max-width: 300px;
+  max-width: 240px;
 }
 
 .icon {

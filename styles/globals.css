@@ -138,3 +138,21 @@ a:hover {
     text-align: center;
   }
 }
+
+.swal2-popup {
+  font-family: var(--font-default) !important;
+  border: 3px solid var(--blue) !important;
+  border-radius: 0 !important;
+  font-weight: 400;
+}
+
+.swal2-confirm,
+.swal2-deny {
+  border-radius: 0 !important;
+}
+
+.swal2-popup h2{
+  font-size: 28px !important;
+  font-family: var(--font-title);
+  font-weight: 600;
+}

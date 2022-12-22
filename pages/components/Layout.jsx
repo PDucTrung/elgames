@@ -18,6 +18,8 @@ import {
   selectProductStatus,
 } from "../../store/feature/games/games.slice";
 import { loadBlogs } from "../../store/feature/blogs/blogs.slice";
+import { loadUsers } from "../../store/feature/users/users.slice";
+import { ToastContainer } from "react-toastify";
 
 const Layout = (props) => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const Layout = (props) => {
   useEffect(() => {
     dispatch(loadProduct());
     dispatch(loadBlogs());
+    dispatch(loadUsers());
   }, []);
 
   return (
@@ -43,6 +46,7 @@ const Layout = (props) => {
           <Footer />
 
           <BackToTop />
+          <ToastContainer />
         </div>
       )}
     </main>

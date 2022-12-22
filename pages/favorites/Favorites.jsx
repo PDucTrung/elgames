@@ -3,43 +3,26 @@ import { Container, Grid, Box } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import favorites from "../favorites/Favorites.module.css";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { selectWishlist } from "../../store/feature/wishlist/wishlist.slice";
+import Swal from "sweetalert2";
 
 const Favorites = () => {
-  const game = [
-    {
-      id: 1,
-      name: "Far Cry 6 Standard Edition",
-      price: 990000,
-      sale: 75,
-      img: "/img/game-1.jpg",
-      genres: "Open world",
-      developer: "Ubisoft Toronto",
-      publisher: "Ubisoft",
-      os: "Window",
-    },
-    {
-      id: 2,
-      name: "Marvel’s Spider-Man: Miles Morales",
-      price: 1043100,
-      sale: 10,
-      genres: "Action",
-      developer: "Insomniac Games, Nixxes Software",
-      publisher: "PlayStation PC LLC",
-      img: "/img/game-2.jpg",
-      os: "Window",
-    },
-    {
-      id: 3,
-      name: "Gotham Knights",
-      price: 990000,
-      sale: 50,
-      img: "/img/game-3.jpg",
-      genres: "Action",
-      developer: "Warner Bros. Games Montreal | QLOC",
-      publisher: "Warner Bros. Games",
-      os: "Window",
-    },
-  ];
+  const { items, removeItem } = useSelector(selectWishlist);
+  const dispatch = useDispatch();
+
+  const handleDelete = (productId) => {
+    Swal.fire({
+      title: "Do you want to delete ?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("OK!", "", "success");
+        dispatch(removeItem(productId));
+      }
+    });
+  };
 
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
@@ -96,7 +79,7 @@ const Favorites = () => {
               flexDirection: "column",
             }}
           >
-            {game.map((item) => (
+            {items.map((item) => (
               <Grid
                 key={item.id}
                 container
@@ -108,7 +91,7 @@ const Favorites = () => {
               >
                 <Grid item={true} xs={12} sm={6} md={2} padding={"24px 24px"}>
                   <img
-                    src={item.img}
+                    src={item.game.img}
                     alt="img-game"
                     style={{
                       maxWidth: "100%",
@@ -129,7 +112,7 @@ const Favorites = () => {
                   }}
                 >
                   <p>
-                    <strong>{item.name}</strong>
+                    <strong>{item.game.name}</strong>
                   </p>
                   <p>
                     <span
@@ -139,7 +122,7 @@ const Favorites = () => {
                     >
                       Genres:
                     </span>{" "}
-                    {item.genres}
+                    {item.game.genres}
                   </p>
                   <p>
                     <span
@@ -149,7 +132,7 @@ const Favorites = () => {
                     >
                       Developer:
                     </span>{" "}
-                    {item.developer}
+                    {item.game.developer}
                   </p>
                   <p>
                     <span
@@ -159,7 +142,7 @@ const Favorites = () => {
                     >
                       Publisher:
                     </span>{" "}
-                    {item.publisher}
+                    {item.game.publisher}
                   </p>
                   <p>
                     <span
@@ -169,7 +152,7 @@ const Favorites = () => {
                     >
                       OS:
                     </span>{" "}
-                    {item.os}
+                    {item.game.system}
                   </p>
                 </Grid>
                 <Grid
@@ -193,16 +176,27 @@ const Favorites = () => {
                     }}
                   >
                     <div className={favorites["box-price-wishlist"]}>
-                      <div className={favorites["box-sale"]}>-{item.sale}%</div>
+                      <div className={favorites["box-sale"]}>
+                        -{item.game.sale}%
+                      </div>
                       <div className={favorites["box-price"]}>
                         <p className={favorites["text-sale"]}>
                           {convertVnd(item.price)} đ
                         </p>
                         <p>
-                          {convertVnd((item.price * (100 - item.sale)) / 100)} đ
+                          {convertVnd(
+                            (item.game.price * (100 - item.game.sale)) / 100
+                          )}{" "}
+                          đ
                         </p>
                       </div>
-                      <Link href={"/game-detail/GameDetail"}>
+                      <Link
+                        as={"/game-detail/[gid]"}
+                        href={{
+                          pathname: "/game-detail/[gid]",
+                          query: { gid: item.id },
+                        }}
+                      >
                         <div className={favorites["box-view"]}>View detail</div>
                       </Link>
                     </div>
@@ -214,7 +208,12 @@ const Favorites = () => {
                       justifyContent: "end",
                     }}
                   >
-                    <button className={favorites["box-remove"]}>Remove</button>
+                    <button
+                      className={favorites["box-remove"]}
+                      onClick={()=>handleDelete(item.game.id)}
+                    >
+                      Remove
+                    </button>
                   </Box>
                 </Grid>
               </Grid>

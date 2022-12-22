@@ -94,7 +94,8 @@ export const selectAllProducts = (state) => state.products.data;
 export const selectProductById = (productId) => (state) =>
   state.products.data.find((product) => product.id == productId);
 
-export const selectProductStatus = (state) => state.products.loading || state.blogs.loading;
+export const selectProductStatus = (state) =>
+  state.products.loading || state.blogs.loading || state.users.loading;
 
 // export const selectProductStatus = (state) =>
 //   state.products.loading || state.genres.loading;

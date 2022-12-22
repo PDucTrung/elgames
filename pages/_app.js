@@ -11,6 +11,7 @@ import "@fontsource/josefin-sans/400.css";
 import "@fontsource/josefin-sans/500.css";
 import "@fontsource/josefin-sans/600.css";
 import "@fontsource/josefin-sans/700.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./components/load/LoadAnimation.css";
 import Layout from "./components/Layout";
 import { StyledEngineProvider } from "@mui/material";
