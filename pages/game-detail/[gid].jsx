@@ -9,6 +9,7 @@ import { Autoplay, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import WestRoundedIcon from "@mui/icons-material/WestRounded";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Link from "next/link";
 import Similar from "./similar/Similar";
 import AddIcon from "@mui/icons-material/Add";
@@ -61,6 +62,25 @@ const GameDetail = () => {
   const handleClickaddToWishlist = () => {
     if (user !== null) {
       dispatch(addItem({ productId: Number(gid) }));
+      const Msg = () => (
+        <span
+          style={{
+            color: "var(--bg)",
+            fontFamily: "var(--font-default)",
+          }}
+        >
+          {" "}
+          <span>
+            <CheckCircleOutlineIcon
+              sx={{
+                color: "var(--green)",
+              }}
+            ></CheckCircleOutlineIcon>{" "}
+          </span>
+          <span>{"Add" + game.name + " to wishlist successful!"}</span>
+        </span>
+      );
+      toast(<Msg></Msg>);
     } else {
       toast.warning("You need to login to perform this function", {
         position: "top-right",

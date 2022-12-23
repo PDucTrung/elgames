@@ -9,10 +9,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../../store/feature/wishlist/wishlist.slice";
+import {
+  addItem,
+  selectWishlist,
+} from "../../../store/feature/wishlist/wishlist.slice";
 import { selectUser } from "../../../store/feature/auth/auth.slice";
 import { addCart } from "../../../store/feature/cart/cart.slice";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
@@ -36,10 +41,13 @@ const CardGame = ({ item }) => {
     }
   };
 
+  const { items, removeItem } = useSelector(selectWishlist);
+
   const [isActive, setIsActive] = React.useState(false);
 
   const handleClick = () => {
-    setIsActive(true);
+    setIsActive((current) => !current);
+    // setIsActive(true);
   };
 
   // add cart
@@ -250,13 +258,49 @@ const CardGame = ({ item }) => {
                 },
               }}
               onClick={() => {
-                handleClickaddToWishlist();
                 handleClick();
+                if (isActive) {
+                  dispatch(removeItem(item.id));
+                  const Msg = () => (
+                    <span
+                      style={{
+                        color: "var(--bg)",
+                        fontFamily: "var(--font-default)",
+                      }}
+                    >
+                      <ErrorOutlineIcon
+                        sx={{
+                          color: "var(--red)",
+                        }}
+                      ></ErrorOutlineIcon>{" "}
+                      {"Delete " + item.name + " to wishlist successful!"}
+                    </span>
+                  );
+                  toast(<Msg></Msg>);
+                } else {
+                  handleClickaddToWishlist();
+                  const Msg = () => (
+                    <span
+                      style={{
+                        color: "var(--bg)",
+                        fontFamily: "var(--font-default)",
+                      }}
+                    >
+                      <CheckCircleOutlineIcon
+                        sx={{
+                          color: "var(--green)",
+                        }}
+                      ></CheckCircleOutlineIcon>{" "}
+                      {"Add" + item.name + " to wishlist successful!"}
+                    </span>
+                  );
+                  toast(<Msg></Msg>);
+                }
               }}
             >
               <FavoriteIcon
                 sx={{
-                  color: isActive ? "white":"var(--bg)",
+                  color: isActive ? "white" : "var(--bg)",
                 }}
               ></FavoriteIcon>
             </Box>

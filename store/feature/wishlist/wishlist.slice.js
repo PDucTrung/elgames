@@ -22,17 +22,6 @@ const wishlistSlice = createSlice({
         });
       } else {
         const newItem = [...state, { productId }];
-
-        const Msg = () => (
-          <span
-            style={{
-              color: "var(--bg)",
-            }}
-          >
-            {"Add game " + productId + " to wishlist successful!"}
-          </span>
-        );
-        toast(<Msg></Msg>);
         return newItem;
       }
     },
