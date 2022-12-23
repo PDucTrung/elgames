@@ -18,8 +18,15 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
-import { selectTotalwishlistItem } from "../../../store/feature/wishlist/wishlist.slice";
-import { selectTotalCartItem } from "../../../store/feature/cart/cart.slice";
+import {
+  selectTotalwishlistItem,
+  selectWishlist,
+} from "../../../store/feature/wishlist/wishlist.slice";
+import {
+  selectCart,
+  selectTotalCartItem,
+} from "../../../store/feature/cart/cart.slice";
+import { selectUserById } from "../../../store/feature/users/users.slice";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -53,6 +60,10 @@ const Header = () => {
       }
     });
   }, []);
+
+  // clear cart and list
+  const { clearList } = useSelector(selectWishlist);
+  const { clearCart } = useSelector(selectCart);
 
   // select language
   const handleChange = (event) => {
@@ -369,14 +380,20 @@ const Header = () => {
                         }}
                       >
                         <MenuItem>
-                          <Grid
+                          <Link
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
+                            href={"/profile/Profile"}
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                            }}
                           >
                             Profile
-                          </Grid>
+                          </Link>
                         </MenuItem>
                         <MenuItem>
+                          {" "}
                           <Grid
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
@@ -394,6 +411,8 @@ const Header = () => {
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
                             onClick={() => {
+                              // dispatch(clearCart());
+                              // dispatch(clearList());
                               auth.signOut();
                               setOpenModalSignIn(false);
                             }}

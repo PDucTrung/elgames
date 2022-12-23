@@ -64,14 +64,14 @@ const cartSlice = createSlice({
       );
       return newState;
     },
-    clearItem: (state, action) => {
+    clearCart: (state, action) => {
       return initialState;
     },
   },
 });
 
 export const cartReducer = cartSlice.reducer;
-export const { addCart, incQty, decQty, removeItem, clearItem } =
+export const { addCart, incQty, decQty, removeItem, clearCart } =
   cartSlice.actions;
 
 export const selectTotalCartItem = (state) => state.cart.length;
@@ -97,6 +97,6 @@ export const selectCart = (state) => {
     incQty,
     decQty,
     removeItem,
-    clearItem,
+    clearCart,
   };
 };

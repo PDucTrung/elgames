@@ -11,7 +11,7 @@ import { selectCart } from "../../store/feature/cart/cart.slice";
 import Swal from "sweetalert2";
 
 const Cart = () => {
-  const { items, totalPrice, incQty, decQty, removeItem, clearItem } =
+  const { items, totalPrice, incQty, decQty, removeItem } =
     useSelector(selectCart);
   const dispatch = useDispatch();
   const handleDel = (productId) => {

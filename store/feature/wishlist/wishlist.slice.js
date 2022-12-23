@@ -23,7 +23,6 @@ const wishlistSlice = createSlice({
       } else {
         const newItem = [...state, { productId }];
 
-      
         const Msg = () => (
           <span
             style={{
@@ -44,11 +43,15 @@ const wishlistSlice = createSlice({
       );
       return newState;
     },
+
+    clearList: (state, action) => {
+      return initialState;
+    },
   },
 });
 
 export const wishlistReducer = wishlistSlice.reducer;
-export const { addItem, removeItem } = wishlistSlice.actions;
+export const { addItem, removeItem, clearList } = wishlistSlice.actions;
 
 export const selectTotalwishlistItem = (state) => state.wishlist.length;
 
@@ -64,5 +67,6 @@ export const selectWishlist = (state) => {
   return {
     items,
     removeItem,
+    clearList,
   };
 };
