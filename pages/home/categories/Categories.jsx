@@ -5,6 +5,7 @@ import { Container, Grid } from "@mui/material";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import WestRoundedIcon from "@mui/icons-material/WestRounded";
 import categories from "../categories/Categories.module.css";
+import Link from "next/link";
 
 const Categories = () => {
   return (
@@ -67,195 +68,238 @@ const Categories = () => {
           className={categories["slider-categories"]}
         >
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-1.png" alt="categories" />
-              <div className=""
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(0,0,139)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Adventure</div>
-            </Grid>
+              >
+                <img src="img/category-1.png" alt="categories" />
+                <div
+                  className=""
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(0,0,139)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Adventure</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-2.png" alt="categories" />
-              <div
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(184,134,11)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Rogue-Like</div>
-            </Grid>
+              >
+                <img src="img/category-2.png" alt="categories" />
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(184,134,11)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Rogue-Like</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-3.png" alt="categories" />
-              <div
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(139,0,139)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Open World</div>
-            </Grid>
+              >
+                <img src="img/category-3.png" alt="categories" />
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(139,0,139)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Open World</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-4.png" alt="categories" />
-              <div
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(0,100,0)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Fighting</div>
-            </Grid>
+              >
+                <img src="img/category-4.png" alt="categories" />
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(0,100,0)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Action</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-5.png" alt="categories" />
-              <div
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(0,139,139)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Horror</div>
-            </Grid>
+              >
+                <img src="img/category-5.png" alt="categories" />
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(0,139,139)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Horror</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <SwiperSlide>
-            <Grid
-              position={"relative"}
-              sx={{
-                width: "max-content",
-                cursor: "pointer",
-                overflow: "hidden",
-                "& img": {
-                  transition: "all 0.2s linear",
-                },
-                ":hover": {
-                  "& img": {
-                    transform: "scale(1.1)",
-                  },
-                },
+            <Link
+              href={"/games/Games"}
+              style={{
+                color: "white",
               }}
             >
-              <img src="img/category-6.png" alt="categories" />
-              <div
-                style={{
-                  background:
-                    "linear-gradient(rgba(0,0,0,0), rgb(139,0,0)) 100%",
-                  position: "absolute",
-                  top: 0,
-                  height: "100%",
-                  width: "100%",
+              <Grid
+                position={"relative"}
+                sx={{
+                  width: "max-content",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  "& img": {
+                    transition: "all 0.2s linear",
+                  },
+                  ":hover": {
+                    "& img": {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
-              ></div>
-              <div className={categories["title-category"]}>Survival</div>
-            </Grid>
+              >
+                <img src="img/category-6.png" alt="categories" />
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(rgba(0,0,0,0), rgb(139,0,0)) 100%",
+                    position: "absolute",
+                    top: 0,
+                    height: "100%",
+                    width: "100%",
+                  }}
+                ></div>
+                <div className={categories["title-category"]}>Survival</div>
+              </Grid>
+            </Link>
           </SwiperSlide>
 
           <div className={categories.control}>
