@@ -131,7 +131,13 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
         <GoogleIcon
           className={styles.icon}
           onClick={() => {
-            signInWithPopup(auth, new GoogleAuthProvider());
+            signInWithPopup(auth, new GoogleAuthProvider())
+              .then(function (result) {
+                console.log("result", result);
+              })
+              .catch(function (error) {
+                // console.error(error);
+              });
           }}
         ></GoogleIcon>
         <FacebookIcon className={styles.icon}></FacebookIcon>
