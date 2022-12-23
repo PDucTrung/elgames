@@ -24,7 +24,10 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { selectUser } from "../../store/feature/auth/auth.slice";
 import { addCart } from "../../store/feature/cart/cart.slice";
-import { addItem } from "../../store/feature/wishlist/wishlist.slice";
+import {
+  addItem,
+  selectWishlist,
+} from "../../store/feature/wishlist/wishlist.slice";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -46,7 +49,14 @@ const GameDetail = () => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
 
+  // check wishlist
+  const { items } = useSelector(selectWishlist);
+  const checkWishlist = items.filter((item) => item.id == gid).length;
+
+  // user
   const user = useSelector(selectUser);
+
+  // add wishlist
   const dispatch = useDispatch();
   const handleClickaddToWishlist = () => {
     if (user !== null) {
@@ -570,12 +580,22 @@ const GameDetail = () => {
                       alignItems: "center",
                     }}
                   >
-                    <button
-                      className={styles["btn-add-list"]}
-                      onClick={handleClickaddToWishlist}
-                    >
-                      Add to Whishlist
-                    </button>
+                    {checkWishlist > 0 ? (
+                      <button
+                        disabled={true}
+                        className={styles["btn-disable-list"]}
+                        onClick={handleClickaddToWishlist}
+                      >
+                        In Whishlist
+                      </button>
+                    ) : (
+                      <button
+                        className={styles["btn-add-list"]}
+                        onClick={handleClickaddToWishlist}
+                      >
+                        Add to Whishlist
+                      </button>
+                    )}
                   </Grid>
                 </Grid>
                 <br />

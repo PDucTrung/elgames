@@ -16,6 +16,8 @@ import { addCart } from "../../../store/feature/cart/cart.slice";
 
 const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
+
+  // add wishlist
   const dispatch = useDispatch();
   const handleClickaddToWishlist = () => {
     if (user !== null) {
@@ -34,7 +36,13 @@ const CardGame = ({ item }) => {
     }
   };
 
-  //
+  const [isActive, setIsActive] = React.useState(false);
+
+  const handleClick = () => {
+    setIsActive(true);
+  };
+
+  // add cart
   const Msg = () => (
     <span
       style={{
@@ -233,24 +241,26 @@ const CardGame = ({ item }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: "50%",
-                backgroundColor: "white",
+                backgroundColor: isActive ? "var(--red)" : "white",
                 ":hover": {
-                  backgroundColor: "var(--blue)",
+                  backgroundColor: isActive ? "var(--red)" : "var(--blue)",
                   "& .MuiSvgIcon-root": {
-                    color: "white",
+                    color: isActive ? "white" : "white",
                   },
                 },
               }}
-              onClick={handleClickaddToWishlist}
+              onClick={() => {
+                handleClickaddToWishlist();
+                handleClick();
+              }}
             >
               <FavoriteIcon
                 sx={{
-                  color: "var(--bg)",
+                  color: isActive ? "white":"var(--bg)",
                 }}
               ></FavoriteIcon>
             </Box>
           </Box>
-
           <Box
             sx={{
               opacity: 0,

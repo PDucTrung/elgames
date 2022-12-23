@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Container, Grid, Box, Pagination } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import games from "../games/Games.module.css";
@@ -35,8 +35,9 @@ const Games = () => {
     pageChanged,
     filterChanged,
     genres,
+    filterByPrice,
   } = useSelector(selectProductsList);
-  const [sort, setSort] = React.useState("");
+  const [sort, setSort] = React.useState(0);
   const [value, setValue] = React.useState([0, 2000000]);
   const dispatch = useDispatch();
   const filterRef = useRef();
@@ -54,6 +55,7 @@ const Games = () => {
 
   // filter price
   const handleChangeValue = (event, newValue) => {
+    dispatch(filterByPrice({ a: value[0], b: value[1] }));
     setValue(newValue);
   };
 
@@ -186,11 +188,11 @@ const Games = () => {
                         label="Sort by"
                         onChange={handleChange}
                       >
-                        <MenuItem value={10}>Default</MenuItem>
-                        <MenuItem value={20}>ascending name</MenuItem>
-                        <MenuItem value={30}>descending name</MenuItem>
-                        <MenuItem value={40}>ascending price</MenuItem>
-                        <MenuItem value={50}>descending price</MenuItem>
+                        <MenuItem value={0}>Default</MenuItem>
+                        <MenuItem value={10}>ascending name</MenuItem>
+                        <MenuItem value={20}>descending name</MenuItem>
+                        <MenuItem value={30}>ascending price</MenuItem>
+                        <MenuItem value={40}>descending price</MenuItem>
                       </Select>
                     </FormControl>
                   </Box>
@@ -233,6 +235,7 @@ const Games = () => {
                       action=""
                       onChange={() => {
                         const newFilter = [];
+
                         filterRef.current.elements.filter.forEach(
                           (checkbox) => {
                             if (checkbox.checked)
@@ -311,6 +314,12 @@ const Games = () => {
                       </Grid>
                     </div>
                   </div>
+                </div>
+
+                <br />
+                <br />
+                <div>
+                  <button className="btn">Clear Filter</button>
                 </div>
               </section>
             </Grid>

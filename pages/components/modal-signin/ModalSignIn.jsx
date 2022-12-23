@@ -47,9 +47,6 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
           className={styles.form}
           onSubmit={handleSubmit((data) => {
             signInWithEmailAndPassword(auth, data.email, data.password)
-              .then(function (result) {
-                console.log("result", result);
-              })
               .catch(function (error) {
                 toast.error("Incorrect email or password", {
                   position: "top-right",

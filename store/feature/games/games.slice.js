@@ -7,6 +7,7 @@ const initialState = {
   currentPage: 0,
   filter: [],
   loading: true,
+  sort: "",
 };
 
 const PAGE_SIZE = 9;
@@ -72,6 +73,11 @@ const productsSlice = createSlice({
         filter: action.payload,
       };
     },
+    //
+    filterByPrice: (state, { payload: { a, b } }) => {
+      // console.log(a);
+      // console.log(b);
+    },
   },
 
   extraReducers: (builder) => {
@@ -87,7 +93,8 @@ const productsSlice = createSlice({
 
 export const productsReducer = productsSlice.reducer;
 
-export const { pageChanged, filterChanged } = productsSlice.actions;
+export const { pageChanged, filterChanged, filterByPrice } =
+  productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.data;
 
@@ -97,13 +104,13 @@ export const selectProductById = (productId) => (state) =>
 export const selectProductStatus = (state) =>
   state.products.loading || state.blogs.loading || state.users.loading;
 
-// export const selectProductStatus = (state) =>
-//   state.products.loading || state.genres.loading;
-
 export const selectProductsList = (state) => {
   const filteredProducts = state.products.data.filter((product) => {
-    if (state.products.filter.length === 0) return true;
-    else return state.products.filter.includes(product.genres);
+    if (state.products.filter.length === 0) {
+      return true;
+    } else {
+      return state.products.filter.includes(product.genres);
+    }
   });
 
   const total = filteredProducts.length;
@@ -121,6 +128,9 @@ export const selectProductsList = (state) => {
     totalPage,
     pageChanged,
     filterChanged,
+    //
+    filterByPrice,
+    //
     loading: state.loading,
   };
 };

@@ -18,16 +18,6 @@ export const loadBlogs = createAsyncThunk(
   }
 );
 
-export const loadProductById = createAsyncThunk(
-  "blogs/byId",
-  async (id, thunkApi) => {
-    const response = await fetch("https://tfruitapi.vercel.app/blog/" + id);
-    const data = await response.json();
-
-    return data;
-  }
-);
-
 const blogsSlice = createSlice({
   name: "blogs",
   initialState,
