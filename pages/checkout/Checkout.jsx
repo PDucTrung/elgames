@@ -5,8 +5,12 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { selectCart } from "../../store/feature/cart/cart.slice";
 
 const Checkout = () => {
+   const { items, totalPrice } =
+     useSelector(selectCart);
   const cartLsit = [
     {
       id: 1,
@@ -55,7 +59,7 @@ const Checkout = () => {
     return total;
   };
 
-  if (cartLsit.length == 0) {
+  if (items.length == 0) {
     return (
       <div className={checkout["no-game"]}>
         <div>
@@ -405,7 +409,7 @@ const Checkout = () => {
                   </div>
 
                   {/* card */}
-                  {cartLsit.map((item) => (
+                  {items.map((item) => (
                     <div className={checkout["card-order"]} key={item.id}>
                       <Grid container xs={12}>
                         <Grid
@@ -419,7 +423,7 @@ const Checkout = () => {
                           }}
                         >
                           <img
-                            src={item.img}
+                            src={item.product.img}
                             alt="img-game"
                             style={{
                               maxWidth: "40%",
@@ -428,13 +432,13 @@ const Checkout = () => {
                           />
 
                           <p>
-                            {item.name}{" "}
+                            {item.product.name}{" "}
                             <strong
                               style={{
                                 color: "var(--blue)",
                               }}
                             >
-                              x {item.quanlity}
+                              x {item.quantity}
                             </strong>
                           </p>
                         </Grid>
@@ -447,7 +451,10 @@ const Checkout = () => {
                             padding: "12px",
                           }}
                         >
-                          {convertVnd(item.quanlity * item.price)} đ
+                          {convertVnd(
+                            item.quantity * item.product.price
+                          )}{" "}
+                          đ
                         </Grid>
                       </Grid>
                     </div>
@@ -476,7 +483,7 @@ const Checkout = () => {
                           padding: "12px",
                         }}
                       >
-                        <strong>{convertVnd(totalSum())} đ</strong>
+                        <strong>{convertVnd(totalPrice)} đ</strong>
                       </Grid>
                     </Grid>
                   </div>

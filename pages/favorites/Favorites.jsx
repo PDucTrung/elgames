@@ -27,6 +27,30 @@ const Favorites = () => {
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
+
+    if (items.length == 0) {
+      return (
+        <div className={favorites["no-game"]}>
+          <div>
+            <p
+              style={{
+                color: "white",
+                fontSize: "40px",
+                fontFamily: "var(--font-title)",
+              }}
+            >
+              No game in Wishlist
+            </p>
+          </div>
+          <div>
+            <Link href={"/games/Games"}>
+              <button className="btn">Go to Store</button>
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
   return (
     <div>
       <Box

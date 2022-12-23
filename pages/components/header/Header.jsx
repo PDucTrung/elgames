@@ -18,8 +18,8 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
-import { selectUserById } from "../../../store/feature/users/users.slice";
 import { selectTotalwishlistItem } from "../../../store/feature/wishlist/wishlist.slice";
+import { selectTotalCartItem } from "../../../store/feature/cart/cart.slice";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -30,6 +30,7 @@ const Header = () => {
     left: false,
   });
   const totalWishlist = useSelector(selectTotalwishlistItem);
+  const totalCart = useSelector(selectTotalCartItem);
 
   // auth
   const dispatch = useDispatch();
@@ -414,7 +415,9 @@ const Header = () => {
                     href={"/favorites/Favorites"}
                   >
                     <FavoriteBorderIcon></FavoriteBorderIcon>
-                    <Grid className={header["number-icon"]}>{totalWishlist}</Grid>
+                    <Grid className={header["number-icon"]}>
+                      {totalWishlist}
+                    </Grid>
                   </Link>
                 </Grid>
                 <Grid
@@ -424,7 +427,7 @@ const Header = () => {
                 >
                   <Link className={header["link-icon"]} href={"/cart/Cart"}>
                     <LocalMallIcon></LocalMallIcon>
-                    <Grid className={header["number-icon"]}>1</Grid>
+                    <Grid className={header["number-icon"]}>{totalCart}</Grid>
                   </Link>
                 </Grid>
               </Grid>

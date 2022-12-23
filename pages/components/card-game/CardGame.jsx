@@ -9,26 +9,61 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../store/feature/wishlist/wishlist.slice";
+import { selectUser } from "../../../store/feature/auth/auth.slice";
+import { addCart } from "../../../store/feature/cart/cart.slice";
 
 const CardGame = ({ item }) => {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const handleClickaddToWishlist = () => {
+    if (user !== null) {
+      dispatch(addItem({ productId: item.id }));
+    } else {
+      toast.warning("You need to login to perform this function", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  //
   const Msg = () => (
     <span
       style={{
         color: "var(--bg)",
       }}
     >
-      {"Add " + item.name + " to wishlist successful!"}
+      {"Add " + item.name + " to cart successful!"}
     </span>
   );
-  const dispatch = useDispatch();
+  const handleClickaddToCart = () => {
+    if (user !== null) {
+      dispatch(addCart({ productId: item.id, quantity: 1 }));
+      toast(<Msg></Msg>);
+    } else {
+      toast.warning("You need to login to perform this function", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
-  };
-  const handleClickaddToWishlist = () => {
-    dispatch(addItem({ productId: item.id }));
-    // toast(<Msg></Msg>);
   };
   return (
     <Grid
@@ -174,6 +209,7 @@ const CardGame = ({ item }) => {
                   },
                 },
               }}
+              onClick={handleClickaddToCart}
             >
               <ShoppingCartIcon
                 sx={{

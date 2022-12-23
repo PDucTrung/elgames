@@ -6,78 +6,33 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCart } from "../../store/feature/cart/cart.slice";
+import Swal from "sweetalert2";
 
 const Cart = () => {
-  // const price = 1234768;
-  // console.log(Intl.NumberFormat().format(price).split(".").join(","));
-
-  const cartLsit = [
-    {
-      id: 1,
-      img: "/img/game-1.jpg",
-      name: "Far Cry 6 Standard Edition",
-      price: 990000,
-      platform: "Window",
-      quanlity: 1,
-    },
-    {
-      id: 2,
-      img: "/img/game-2.jpg",
-      name: "Marvel’s Spider-Man: Miles Morales",
-      price: 1043000,
-      platform: "Window",
-      quanlity: 2,
-    },
-    {
-      id: 3,
-      img: "/img/game-3.jpg",
-      name: "Gotham Knights",
-      price: 900000,
-      platform: "Window",
-      quanlity: 3,
-    },
-  ];
-
-  const [game, setGame] = useState(cartLsit);
-
+  const { items, totalPrice, incQty, decQty, removeItem, clearItem } =
+    useSelector(selectCart);
+  const dispatch = useDispatch();
+  const handleDel = (productId) => {
+    Swal.fire({
+      title: "Do you want to delete ?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("OK!", "", "success");
+        dispatch(removeItem(productId));
+      }
+    });
+  };
+console.log(items)
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
 
-  const increment = (id) => {
-    const newCart = [...game];
-    const index = newCart.findIndex((item) => item.id == id);
-    newCart[index].quanlity += 1;
-    setGame(newCart);
-  };
 
-  const decrement = (id) => {
-    const newCart = [...game];
-    const index = newCart.findIndex((item) => item.id == id);
-    if (newCart[index].quanlity > 1) {
-      newCart[index].quanlity -= 1;
-    }
-    setGame(newCart);
-  };
-
-  const handleDelete = (id) => {
-    if (confirm("ban co chac muon xoa")) {
-      const newCart = [...game];
-      const index = newCart.findIndex((item) => item.id == id);
-      newCart.splice(index, 1);
-      setGame(newCart);
-    }
-  };
-
-  const totalSum = () => {
-    let total = 0;
-    for (let i = 0; i < game.length; i++) {
-      total += game[i].quanlity * game[i].price;
-    }
-    return total;
-  };
-
-  if (game.length == 0) {
+  if (items.length == 0) {
     return (
       <div className={cart["no-game"]}>
         <div>
@@ -173,9 +128,9 @@ const Cart = () => {
                 </Grid>
 
                 {/* body */}
-                {game.map((item) => (
+                {items.map((item) => (
                   <Grid
-                    key={item.id}
+                    key={item.product.id}
                     container
                     xs={12}
                     borderBottom={"1px solid var(--gray)"}
@@ -209,7 +164,7 @@ const Cart = () => {
                           <Grid item={true} xs={12} lg={5}>
                             <Link href={"/game-detail/GameDetail"}>
                               <img
-                                src={item.img}
+                                src={item.product.img}
                                 alt="img-game-cart"
                                 style={{
                                   maxWidth: "100%",
@@ -239,7 +194,7 @@ const Cart = () => {
                                   color: "var(--gray)",
                                 }}
                               >
-                                {item.name}
+                                {item.product.name}
                               </span>
                             </p>
                             <p>
@@ -249,7 +204,7 @@ const Cart = () => {
                                   color: "var(--gray)",
                                 }}
                               >
-                                {item.platform}
+                                {item.product.system}
                               </span>
                             </p>
                             <p>
@@ -259,7 +214,7 @@ const Cart = () => {
                                   color: "var(--blue)",
                                 }}
                               >
-                                {convertVnd(item.price)} ₫
+                                {convertVnd(item.product.price)} ₫
                               </span>
                             </p>
                           </Grid>
@@ -279,18 +234,18 @@ const Cart = () => {
                             readOnly
                             type="number"
                             className={cart["input-qty"]}
-                            value={item.quanlity}
+                            value={item.quantity}
                           ></input>
                           <div className={cart["box-quanlity"]}>
                             <div
                               className={cart["icon-qty"]}
-                              onClick={() => increment(item.id)}
+                              onClick={() => dispatch(incQty(item.product.id))}
                             >
                               <AddIcon></AddIcon>
                             </div>
                             <div
                               className={cart["icon-qty"]}
-                              onClick={() => decrement(item.id)}
+                              onClick={() => dispatch(decQty(item.product.id))}
                             >
                               <RemoveIcon></RemoveIcon>
                             </div>
@@ -310,7 +265,8 @@ const Cart = () => {
                       }}
                     >
                       <p>
-                        {convertVnd(item.price * item.quanlity)} <span>₫</span>
+                        {convertVnd(item.product.price * item.quantity)}{" "}
+                        <span>₫</span>
                       </p>
                     </Grid>
                     <Grid
@@ -323,7 +279,7 @@ const Cart = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <div onClick={() => handleDelete(item.id)}>
+                      <div onClick={() => handleDel(item.product.id)}>
                         <DeleteIcon
                           sx={{
                             ":hover": {
@@ -379,7 +335,7 @@ const Cart = () => {
                     }}
                   >
                     {" "}
-                    {totalSum()} ₫
+                    {convertVnd(totalPrice)} ₫
                   </div>
                 </Box>
                 <Box
@@ -397,7 +353,7 @@ const Cart = () => {
                     }}
                   >
                     {" "}
-                    {totalSum()} ₫
+                    {convertVnd(totalPrice)} ₫
                   </div>
                 </Box>
                 <Box

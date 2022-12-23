@@ -82,3 +82,14 @@
   text-decoration: line-through;
   color: var(--gray);
 }
+
+.no-game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px 0;
+  gap: 32px;
+  text-align: center;
+  background-color: var(--bg);
+}

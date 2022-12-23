@@ -15,12 +15,16 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
 import FlagIcon from "@mui/icons-material/Flag";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectAllProducts,
   selectProductById,
 } from "../../store/feature/games/games.slice";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { selectUser } from "../../store/feature/auth/auth.slice";
+import { addCart } from "../../store/feature/cart/cart.slice";
+import { addItem } from "../../store/feature/wishlist/wishlist.slice";
 
 const GameDetail = () => {
   const router = useRouter();
@@ -40,6 +44,53 @@ const GameDetail = () => {
 
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
+  };
+
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const handleClickaddToWishlist = () => {
+    if (user !== null) {
+      dispatch(addItem({ productId: Number(gid) }));
+    } else {
+      toast.warning("You need to login to perform this function", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  //
+  const Msg = () => (
+    <span
+      style={{
+        color: "var(--bg)",
+      }}
+    >
+      {"Add to cart successful!"}
+    </span>
+  );
+  const handleClickaddToCart = () => {
+    if (user !== null) {
+      dispatch(addCart({ productId: Number(gid), quantity: qty }));
+      toast(<Msg></Msg>);
+    } else {
+      toast.warning("You need to login to perform this function", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -519,13 +570,21 @@ const GameDetail = () => {
                       alignItems: "center",
                     }}
                   >
-                    <button className={styles["btn-add-list"]}>
+                    <button
+                      className={styles["btn-add-list"]}
+                      onClick={handleClickaddToWishlist}
+                    >
                       Add to Whishlist
                     </button>
                   </Grid>
                 </Grid>
                 <br />
-                <button className={styles["btn-add"]}>Add to cart</button>
+                <button
+                  className={styles["btn-add"]}
+                  onClick={handleClickaddToCart}
+                >
+                  Add to cart
+                </button>
                 <div className={styles["box-developer"]}>
                   <div
                     style={{

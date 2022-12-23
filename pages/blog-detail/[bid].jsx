@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { selectBlogsById } from "../../store/feature/blogs/blogs.slice";
 import { useSelector } from "react-redux";
-import { padding } from "@mui/system";
 
 const BlogDetail = () => {
   const router = useRouter();
