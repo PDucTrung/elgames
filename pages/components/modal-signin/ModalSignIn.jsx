@@ -12,6 +12,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { app } from "../../../lib/firebase";
+import { toast } from "react-toastify";
 
 const ModalSignIn = ({ handleCloseModalSignIn }) => {
   const auth = getAuth(app);
@@ -45,7 +46,22 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
         <form
           className={styles.form}
           onSubmit={handleSubmit((data) => {
-            signInWithEmailAndPassword(auth, data.email, data.password);
+            signInWithEmailAndPassword(auth, data.email, data.password)
+              .then(function (result) {
+                console.log("result", result);
+              })
+              .catch(function (error) {
+                toast.error("Incorrect email or password", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              });;
           })}
         >
           <Grid>
