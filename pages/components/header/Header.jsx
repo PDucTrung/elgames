@@ -411,8 +411,8 @@ const Header = () => {
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
                             onClick={() => {
-                              // dispatch(clearCart());
-                              // dispatch(clearList());
+                              dispatch(clearCart());
+                              dispatch(clearList());
                               auth.signOut();
                               setOpenModalSignIn(false);
                             }}
