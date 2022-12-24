@@ -21,33 +21,13 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
+  const [isActive, setIsActive] = React.useState(false);
+  const { items, removeItem } = useSelector(selectWishlist);
 
   // add wishlist
   const dispatch = useDispatch();
   const handleClickaddToWishlist = () => {
-    if (user !== null) {
-      dispatch(addItem({ productId: item.id }));
-    } else {
-      toast.warning("You need to login to perform this function", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const { items, removeItem } = useSelector(selectWishlist);
-
-  const [isActive, setIsActive] = React.useState(false);
-
-  const handleClick = () => {
-    setIsActive((current) => !current);
-    // setIsActive(true);
+    dispatch(addItem({ productId: item.id }));
   };
 
   // add cart
@@ -258,43 +238,58 @@ const CardGame = ({ item }) => {
                 },
               }}
               onClick={() => {
-                handleClick();
-                if (isActive) {
-                  dispatch(removeItem(item.id));
-                  const Msg = () => (
-                    <span
-                      style={{
-                        color: "var(--bg)",
-                        fontFamily: "var(--font-default)",
-                      }}
-                    >
-                      <ErrorOutlineIcon
-                        sx={{
-                          color: "var(--red)",
+                if (user !== null) {
+                  const list = items.filter((i) => i.id == item.id);
+                  if (list.length > 0) {
+                    setIsActive(false);
+                    dispatch(removeItem(item.id));
+                    const Msg = () => (
+                      <span
+                        style={{
+                          color: "var(--bg)",
+                          fontFamily: "var(--font-default)",
                         }}
-                      ></ErrorOutlineIcon>{" "}
-                      {"Delete " + item.name + " to wishlist successful!"}
-                    </span>
-                  );
-                  toast(<Msg></Msg>);
+                      >
+                        <ErrorOutlineIcon
+                          sx={{
+                            color: "var(--red)",
+                          }}
+                        ></ErrorOutlineIcon>{" "}
+                        {"Delete " + item.name + " to wishlist successful!"}
+                      </span>
+                    );
+                    toast(<Msg></Msg>);
+                  } else {
+                    setIsActive(true);
+                    handleClickaddToWishlist();
+                    const Msg = () => (
+                      <span
+                        style={{
+                          color: "var(--bg)",
+                          fontFamily: "var(--font-default)",
+                        }}
+                      >
+                        <CheckCircleOutlineIcon
+                          sx={{
+                            color: "var(--green)",
+                          }}
+                        ></CheckCircleOutlineIcon>{" "}
+                        {"Add" + item.name + " to wishlist successful!"}
+                      </span>
+                    );
+                    toast(<Msg></Msg>);
+                  }
                 } else {
-                  handleClickaddToWishlist();
-                  const Msg = () => (
-                    <span
-                      style={{
-                        color: "var(--bg)",
-                        fontFamily: "var(--font-default)",
-                      }}
-                    >
-                      <CheckCircleOutlineIcon
-                        sx={{
-                          color: "var(--green)",
-                        }}
-                      ></CheckCircleOutlineIcon>{" "}
-                      {"Add" + item.name + " to wishlist successful!"}
-                    </span>
-                  );
-                  toast(<Msg></Msg>);
+                  toast.warning("You need to login to perform this function", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
                 }
               }}
             >
