@@ -40,10 +40,9 @@ const GameDetail = () => {
   const gameSimilar = games.filter((item) => item.genres == game.genres);
   const [qty, setQty] = useState(1);
 
-  const [img, setImg] = useState(game.screen_shoot[0].img_shoot);
+  
   const changeImg = (e) => {
-    setImg(e.target.src);
-    document.querySelector(".big-img").src = img;
+    document.querySelector(".big-img").src = e.target.src;
   };
 
   const convertVnd = (item) => {
@@ -223,7 +222,7 @@ const GameDetail = () => {
               <section className={styles["container-left"]}>
                 <img
                   className="big-img"
-                  src={img}
+                  src={game.screen_shoot[0].img_shoot}
                   alt="img-game-detal"
                   style={{
                     maxWidth: "100%",
