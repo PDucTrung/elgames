@@ -85,7 +85,6 @@ const Comments = () => {
                   backgroundColor: "var(--dark-2)",
                   padding: "50px 30px",
                 }}
-                xs={12}
                 container
               >
                 <Grid item={true} xs={3}>
@@ -148,7 +147,6 @@ const Comments = () => {
                   backgroundColor: "var(--dark-2)",
                   padding: "50px 30px",
                 }}
-                xs={12}
                 container
               >
                 <Grid item={true} xs={3}>
@@ -212,7 +210,6 @@ const Comments = () => {
                   backgroundColor: "var(--dark-2)",
                   padding: "50px 30px",
                 }}
-                xs={12}
                 container
               >
                 <Grid item={true} xs={3}>
