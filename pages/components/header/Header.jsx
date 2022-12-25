@@ -265,7 +265,7 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        Account
+                        Login
                       </div>
                       {/* menu account */}
                       <Menu
