@@ -111,12 +111,12 @@ const Profile = () => {
                 />
               </div>
               <div className="form-control">
-                <p>User ID:</p>
+                <p>Name:</p>
                 <input
-                  type="password"
+                  type="text"
                   placeholder="Your Password"
                   className="input"
-                  value={user == null ? "" : user.uid}
+                  value={user == null ? "" : user.displayName}
                   readOnly
                 />
               </div>
