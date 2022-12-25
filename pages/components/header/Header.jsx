@@ -152,13 +152,13 @@ const Header = () => {
           <Grid>
             <Link className={header["link-icon"]} href={"/favorites/Favorites"}>
               <FavoriteBorderIcon></FavoriteBorderIcon>
-              <Grid className={header["number-icon"]}>1</Grid>
+              <Grid className={header["number-icon"]}>{totalWishlist}</Grid>
             </Link>
           </Grid>
           <Grid>
             <Link className={header["link-icon"]} href={"/cart/Cart"}>
               <LocalMallIcon></LocalMallIcon>
-              <Grid className={header["number-icon"]}>1</Grid>
+              <Grid className={header["number-icon"]}>{totalCart}</Grid>
             </Link>
           </Grid>
         </Grid>
