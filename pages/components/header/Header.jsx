@@ -364,7 +364,13 @@ const Header = () => {
                           <Link
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
-                            href={"/profile/Profile"}
+                            as={"/profile/[userName]"}
+                            href={{
+                              pathname: "/profile/[userName]",
+                              query: {
+                                userName: user == null ? "" : user.displayName,
+                              },
+                            }}
                             style={{
                               width: "100%",
                               textAlign: "center",
