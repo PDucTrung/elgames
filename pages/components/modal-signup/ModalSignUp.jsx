@@ -43,15 +43,10 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
           className={styles.form}
           onSubmit={handleSubmit((data) => {
             createUserWithEmailAndPassword(auth, data.email, data.password)
-              .then((credential) => {
-                const userRef = doc(
-                  getFirestore(app),
-                  "users",
-                  credential.user.uid
-                );
-                setDoc(userRef, {
+              .then(() => {
+                updateProfile(auth.currentUser, {
                   displayName: data.displayName,
-                }).catch(console.error);
+                });
               })
               .catch(console.error);
           })}
