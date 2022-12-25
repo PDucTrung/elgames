@@ -346,7 +346,7 @@ const Header = () => {
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
                         {auth.currentUser.displayName == null
-                          ? "my account"
+                          ? "My account"
                           : auth.currentUser.displayName}
                       </div>
                       {/* menu account */}

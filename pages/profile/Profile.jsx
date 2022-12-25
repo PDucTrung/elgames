@@ -1,66 +1,40 @@
 import { Box, Container, Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import profile from "../profile/Profile.module.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { margin } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../store/feature/auth/auth.slice";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, query, collection, getDocs } from "firebase/firestore";
 import { app } from "../../lib/firebase";
 
 const Profile = () => {
-  const db = getFirestore(app);
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+  const [bill, setBill] = useState([]);
+  const convertVnd = (item) => {
+    return Intl.NumberFormat().format(item).split(".").join(",") + " đ";
+  };
+  useEffect(() => {
+    const q = query(collection(getFirestore(app), "checkout"));
 
-  const bill = [
-    {
-      id: 1,
-      date: "12/24/22",
-      cart: [
-        {
-          game: {
-            id: 1,
-            name: "Rage 2",
-            price: 990000,
-          },
-          quanity: 2,
-        },
-        {
-          game: {
-            id: 2,
-            name: "Nier automata",
-            price: 990000,
-          },
-          quanity: 5,
-        },
-      ],
-    },
+    getDocs(q)
+      .then((snapshot) => {
+        const data = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data(),
+        }));
 
-    {
-      id: 2,
-      date: "12/13/22",
-      cart: [
-        {
-          game: {
-            id: 1,
-            name: "Rage 2",
-            price: 990000,
-          },
-          quanity: 2,
-        },
-        {
-          game: {
-            id: 2,
-            name: "haahah",
-            price: 990000,
-          },
-          quanity: 3,
-        },
-      ],
-    },
-  ];
+        setBill(
+          data.filter(
+            (item) => item.uid == (user == null ? "default" : user.uid)
+          )
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
+  console.log(bill);
   return (
     <div>
       <Box
@@ -176,9 +150,9 @@ const Profile = () => {
                 </Grid>
               </Grid>
 
-              {bill.map((item) => (
+              {bill.map((i) => (
                 <Grid
-                  key={item.id}
+                  key={i}
                   container
                   sx={{
                     borderTop: "1px solid var(--gray)",
@@ -194,18 +168,21 @@ const Profile = () => {
                       justifyContent: "center",
                     }}
                   >
-                    {item.date}
+                    {i.date}
                   </Grid>
                   <Grid item={true} padding={"10px"} xs={6}>
-                    {item.cart.map((item) => (
-                      <Box key={item}>
-                        <strong>{item.game.name}</strong> x{" "}
+                    {i.payment.map((item) => (
+                      <Box key={item == null ? null : item.id}>
+                        <strong>
+                          {item == null ? null : item.product.name}
+                        </strong>{" "}
+                        {item == null ? null : "x"}{" "}
                         <span
                           style={{
                             color: "var(--blue)",
                           }}
                         >
-                          {item.quanity}
+                          {item == null ? null : item.quantity}
                         </span>
                       </Box>
                     ))}
@@ -220,7 +197,7 @@ const Profile = () => {
                       justifyContent: "center",
                     }}
                   >
-                    {"totalPrice"}
+                    {i.total == null ? null : convertVnd(i.total)}
                   </Grid>
                 </Grid>
               ))}

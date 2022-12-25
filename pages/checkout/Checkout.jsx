@@ -5,11 +5,19 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCart } from "../../store/feature/cart/cart.slice";
+import { app } from "../../lib/firebase";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { selectUser } from "../../store/feature/auth/auth.slice";
+import Swal from "sweetalert2";
 
 const Checkout = () => {
   const { items, totalPrice } = useSelector(selectCart);
+
+  const user = useSelector(selectUser);
+  const { clearCart } = useSelector(selectCart);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -18,10 +26,27 @@ const Checkout = () => {
   } = useForm({
     criteriaMode: "all",
   });
-  const onSubmit = (e) => console.log(e);
 
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
+  };
+
+  const date = () => {
+    let d = new Date(),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear(),
+      h = "" + d.getHours(),
+      m = "" + d.getMinutes(),
+      s = "" + d.getSeconds();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    if (h.length < 2) h = "0" + h;
+    if (m.length < 2) m = "0" + m;
+    if (s.length < 2) day = "0" + s;
+
+    return [day, month, year].join("-") + " " + [h, m, s].join(":");
   };
 
   if (items.length == 0) {
@@ -106,7 +131,31 @@ const Checkout = () => {
                 <form
                   action=""
                   className="form"
-                  onSubmit={handleSubmit(onSubmit)}
+                  onSubmit={handleSubmit((data) => {
+                    Swal.fire({
+                      title: "Do you want to payment ?",
+                      showDenyButton: true,
+                      confirmButtonText: "Yes",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire("OK!", "", "success");
+                        const reference = collection(
+                          getFirestore(app),
+                          "checkout"
+                        );
+                        dispatch(clearCart());
+                        const bill = {
+                          uid: user == null ? "" : user.uid,
+                          infor: data,
+                          payment: items,
+                          date: date(),
+                          total: totalPrice,
+                        };
+
+                        addDoc(reference, bill).catch(console.error);
+                      }
+                    });
+                  })}
                 >
                   <div className="box-form">
                     <div className="form-control">
