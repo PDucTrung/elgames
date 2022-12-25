@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import card from "../card-game/CardGame.module.css";
 import { Box, Container, Grid } from "@mui/material";
@@ -23,8 +23,8 @@ const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
   const [isActive, setIsActive] = React.useState(false);
   const { items, removeItem } = useSelector(selectWishlist);
+  // const newId = Date.now().toString().slice(-5);
 
-  // add wishlist
   const dispatch = useDispatch();
   const handleClickaddToWishlist = () => {
     dispatch(addItem({ productId: item.id }));

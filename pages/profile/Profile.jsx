@@ -1,19 +1,18 @@
 import { Box, Container, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import profile from "../profile/Profile.module.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { margin } from "@mui/system";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/feature/auth/auth.slice";
+import { getFirestore } from "firebase/firestore";
+import { app } from "../../lib/firebase";
 
 const Profile = () => {
+  const db = getFirestore(app);
   const user = useSelector(selectUser);
-  let email, uid;
-  if (user !== null) {
-    email = user.email;
-    uid = user.uid;
-  }
-  console.log(user);
+  const dispatch = useDispatch();
+
   const bill = [
     {
       id: 1,
@@ -134,7 +133,8 @@ const Profile = () => {
                   type="text"
                   placeholder="Your Email"
                   className="input"
-                  value={email}
+                  value={user == null ? "" : user.email}
+                  readOnly
                 />
               </div>
               <div className="form-control">
@@ -143,11 +143,13 @@ const Profile = () => {
                   type="password"
                   placeholder="Your Password"
                   className="input"
-                  value={uid}
+                  value={user == null ? "" : user.uid}
+                  readOnly
                 />
               </div>
             </form>
           </Box>
+
           <Box
             sx={{
               display: "flex",

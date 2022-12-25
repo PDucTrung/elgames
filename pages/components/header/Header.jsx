@@ -26,7 +26,6 @@ import {
   selectCart,
   selectTotalCartItem,
 } from "../../../store/feature/cart/cart.slice";
-import { selectUserById } from "../../../store/feature/users/users.slice";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -435,7 +434,7 @@ const Header = () => {
                   >
                     <FavoriteBorderIcon></FavoriteBorderIcon>
                     <Grid className={header["number-icon"]}>
-                      {totalWishlist}
+                      {user == null ? 0 : totalWishlist}
                     </Grid>
                   </Link>
                 </Grid>
@@ -446,7 +445,9 @@ const Header = () => {
                 >
                   <Link className={header["link-icon"]} href={"/cart/Cart"}>
                     <LocalMallIcon></LocalMallIcon>
-                    <Grid className={header["number-icon"]}>{totalCart}</Grid>
+                    <Grid className={header["number-icon"]}>
+                      {user == null ? 0 : totalCart}
+                    </Grid>
                   </Link>
                 </Grid>
               </Grid>

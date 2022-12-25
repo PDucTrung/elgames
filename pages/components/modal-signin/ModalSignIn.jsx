@@ -46,8 +46,8 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
         <form
           className={styles.form}
           onSubmit={handleSubmit((data) => {
-            signInWithEmailAndPassword(auth, data.email, data.password)
-              .catch(function (error) {
+            signInWithEmailAndPassword(auth, data.email, data.password).catch(
+              function (error) {
                 toast.error("Incorrect email or password", {
                   position: "top-right",
                   autoClose: 5000,
@@ -58,7 +58,8 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
                   progress: undefined,
                   theme: "light",
                 });
-              });;
+              }
+            );
           })}
         >
           <Grid>
@@ -144,13 +145,11 @@ const ModalSignIn = ({ handleCloseModalSignIn }) => {
         <GoogleIcon
           className={styles.icon}
           onClick={() => {
-            signInWithPopup(auth, new GoogleAuthProvider())
-              .then(function (result) {
-                console.log("result", result);
-              })
-              .catch(function (error) {
-                // console.error(error);
-              });
+            signInWithPopup(auth, new GoogleAuthProvider()).catch(function (
+              error
+            ) {
+              // console.error(error);
+            });
           }}
         ></GoogleIcon>
         <FacebookIcon className={styles.icon}></FacebookIcon>

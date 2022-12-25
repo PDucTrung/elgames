@@ -102,7 +102,7 @@ export const selectProductById = (productId) => (state) =>
   state.products.data.find((product) => product.id == productId);
 
 export const selectProductStatus = (state) =>
-  state.products.loading || state.blogs.loading || state.users.loading;
+  state.products.loading || state.blogs.loading;
 
 export const selectProductsList = (state) => {
   const filteredProducts = state.products.data.filter((product) => {

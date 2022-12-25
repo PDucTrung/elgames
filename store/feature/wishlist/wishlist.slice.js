@@ -8,22 +8,24 @@ const wishlistSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, { payload: { productId } }) => {
-      const itemIndex = state.findIndex((item) => item.productId == productId);
-      if (itemIndex !== -1) {
-        toast.warning("This game is already on wishlist", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        const newItem = [...state, { productId }];
-        return newItem;
-      }
+      // const itemIndex = state.findIndex((item) => item.productId == productId);
+      // if (itemIndex !== -1) {
+      //   toast.warning("This game is already on wishlist", {
+      //     position: "top-right",
+      //     autoClose: 5000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: false,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      // } else {
+      //   const newItem = [...state, { productId }];
+      //   return newItem;
+      // }
+      const newItem = [...state, { productId }];
+      return newItem;
     },
 
     removeItem: (state, action) => {

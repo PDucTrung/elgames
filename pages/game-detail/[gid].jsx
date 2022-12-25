@@ -40,7 +40,6 @@ const GameDetail = () => {
   const gameSimilar = games.filter((item) => item.genres == game.genres);
   const [qty, setQty] = useState(1);
 
-  
   const changeImg = (e) => {
     document.querySelector(".big-img").src = e.target.src;
   };
@@ -51,7 +50,8 @@ const GameDetail = () => {
 
   // check wishlist
   const { items } = useSelector(selectWishlist);
-  const checkWishlist = items.filter((item) => item.id == gid).length;
+  const checkWishlist = items.filter((item) => item.game.id == gid).length;
+  console.log(checkWishlist);
 
   // user
   const user = useSelector(selectUser);
@@ -101,7 +101,7 @@ const GameDetail = () => {
         color: "var(--bg)",
       }}
     >
-      {"Add to cart successful!"}
+      {"Add" + game.name + "to cart successful!"}
     </span>
   );
   const handleClickaddToCart = () => {
@@ -603,7 +603,6 @@ const GameDetail = () => {
                       <button
                         disabled={true}
                         className={styles["btn-disable-list"]}
-                        onClick={handleClickaddToWishlist}
                       >
                         In Whishlist
                       </button>

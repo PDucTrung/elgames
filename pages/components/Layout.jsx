@@ -18,7 +18,6 @@ import {
   selectProductStatus,
 } from "../../store/feature/games/games.slice";
 import { loadBlogs } from "../../store/feature/blogs/blogs.slice";
-import { loadUsers } from "../../store/feature/users/users.slice";
 import { ToastContainer } from "react-toastify";
 
 const Layout = (props) => {
@@ -28,7 +27,6 @@ const Layout = (props) => {
   useEffect(() => {
     dispatch(loadProduct());
     dispatch(loadBlogs());
-    dispatch(loadUsers());
   }, []);
 
   return (
