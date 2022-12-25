@@ -105,7 +105,7 @@ const Games = () => {
 
       <section className={games["section-games"]}>
         <Container>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item={true} xs={12} md={3}>
               <section className={games["box-filter"]}>
                 <div>
@@ -325,9 +325,9 @@ const Games = () => {
             </Grid>
             <Grid item={true} xs={12} md={9}>
               <section className={games["box-list-games"]}>
-                <Grid container xs={12}>
+                <Grid container>
                   {products.map((item) => (
-                    <CardGame item={item} key={item.id}></CardGame>
+                    <CardGame item={true} key={item.id}></CardGame>
                   ))}
                 </Grid>
               </section>
