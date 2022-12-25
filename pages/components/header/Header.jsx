@@ -234,26 +234,8 @@ const Header = () => {
                     Help
                   </a>
                 </Grid>
-                <Grid
-                  padding={"18px 30px"}
-                  borderRight={"1px solid var(--gray-light)"}
-                  display={{ xs: "none", md: "block" }}
-                >
-                  <Link className={header.link} href={"/games/Games"}>
-                    Weekly sale
-                  </Link>
-                </Grid>
               </Grid>
               <Grid display={"flex"}>
-                <Grid
-                  padding={"18px 30px"}
-                  borderLeft={"1px solid var(--gray-light)"}
-                  display={{ xs: "none", md: "block" }}
-                >
-                  <Link className={header.link} href={"/games/Games"}>
-                    Track Order
-                  </Link>
-                </Grid>
                 <Grid
                   padding={"18px 0"}
                   borderLeft={"1px solid var(--gray-light)"}
