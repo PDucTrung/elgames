@@ -327,7 +327,7 @@ const Games = () => {
               <section className={games["box-list-games"]}>
                 <Grid container>
                   {products.map((item) => (
-                    <CardGame item={true} key={item.id}></CardGame>
+                    <CardGame item={item} key={item.id}></CardGame>
                   ))}
                 </Grid>
               </section>
