@@ -34,7 +34,6 @@ const Profile = () => {
       });
   }, []);
 
-  console.log(bill);
   return (
     <div>
       <Box
