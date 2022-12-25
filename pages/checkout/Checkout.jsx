@@ -9,34 +9,7 @@ import { useSelector } from "react-redux";
 import { selectCart } from "../../store/feature/cart/cart.slice";
 
 const Checkout = () => {
-   const { items, totalPrice } =
-     useSelector(selectCart);
-  const cartLsit = [
-    {
-      id: 1,
-      img: "/img/game-1.jpg",
-      name: "Far Cry 6 Standard Edition",
-      price: 990000,
-      platform: "Window",
-      quanlity: 1,
-    },
-    {
-      id: 2,
-      img: "/img/game-2.jpg",
-      name: "Marvel’s Spider-Man: Miles Morales",
-      price: 1043000,
-      platform: "Window",
-      quanlity: 2,
-    },
-    {
-      id: 3,
-      img: "/img/game-3.jpg",
-      name: "Gotham Knights",
-      price: 900000,
-      platform: "Window",
-      quanlity: 3,
-    },
-  ];
+  const { items, totalPrice } = useSelector(selectCart);
 
   const {
     register,
@@ -49,14 +22,6 @@ const Checkout = () => {
 
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
-  };
-
-  const totalSum = () => {
-    let total = 0;
-    for (let i = 0; i < cartLsit.length; i++) {
-      total += cartLsit[i].quanlity * cartLsit[i].price;
-    }
-    return total;
   };
 
   if (items.length == 0) {
@@ -451,10 +416,7 @@ const Checkout = () => {
                             padding: "12px",
                           }}
                         >
-                          {convertVnd(
-                            item.quantity * item.product.price
-                          )}{" "}
-                          đ
+                          {convertVnd(item.quantity * item.product.price)} đ
                         </Grid>
                       </Grid>
                     </div>
@@ -511,7 +473,7 @@ const Checkout = () => {
                           padding: "12px",
                         }}
                       >
-                        <strong>{convertVnd(totalSum())} đ</strong>
+                        <strong>{convertVnd(totalPrice)} đ</strong>
                       </Grid>
                     </Grid>
                   </div>
