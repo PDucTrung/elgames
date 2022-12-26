@@ -9,6 +9,7 @@ const initialState = {
   loading: true,
   sort: "",
   default: [],
+  dataSearch: [],
 };
 
 const PAGE_SIZE = 9;
@@ -63,18 +64,12 @@ const productsSlice = createSlice({
       };
     },
     filterByPrice: (state, action) => {
-      const filteredPrice = state.data.filter((game) => {
-        {
-          const money = (game.price * (100 - game.sale)) / 100;
-          return money >= action.payload[0] && money <= action.payload[1];
-        }
-      });
+      const filteredPrice = state.data.filter(
+        (game) =>
+          game.price >= action.payload[0] && game.price <= action.payload[1]
+      );
       const array = [...state.default];
-      array.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
-        return c - d;
-      });
+      array.sort((a, b) => a.price - b.price);
       return {
         ...state,
         currentPage: 0,
@@ -108,11 +103,7 @@ const productsSlice = createSlice({
       };
     },
     sortAscNumber: (state, action) => {
-      const ascNumber = state.data.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
-        return c - d;
-      });
+      const ascNumber = state.data.sort((a, b) => a.price - b.price);
 
       return void {
         ...state,
@@ -121,11 +112,7 @@ const productsSlice = createSlice({
       };
     },
     sortDesNumber: (state, action) => {
-      const desNumber = state.data.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
-        return d - c;
-      });
+      const desNumber = state.data.sort((a, b) => b.price - a.price);
 
       return void {
         ...state,
@@ -141,6 +128,19 @@ const productsSlice = createSlice({
         data: [...state.default],
       };
     },
+    searchPrHeader: (state, action) => {
+      const filteredgames = state.dataSearch.filter((game) =>
+        game.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+
+      return {
+        ...state,
+        dataSearch:
+          action.payload.length > 0
+            ? filteredgames.slice(0, 4)
+            : [...state.default],
+      };
+    },
   },
 
   extraReducers: (builder) => {
@@ -149,6 +149,7 @@ const productsSlice = createSlice({
         ...state,
         data: action.payload,
         default: action.payload,
+        dataSearch: action.payload,
         loading: false,
       };
     });
@@ -167,6 +168,8 @@ export const {
   sortAscNumber,
   sortDesNumber,
   clearFilter,
+  //
+  searchPrHeader,
 } = productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.data;
@@ -211,5 +214,13 @@ export const selectProductsList = (state) => {
     clearFilter,
     //
     loading: state.loading,
+  };
+};
+
+//
+export const selectPrSearch = (state) => {
+  return {
+    pr: state.products.dataSearch,
+    searchPrHeader,
   };
 };

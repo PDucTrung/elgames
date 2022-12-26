@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Modal } from "@mui/material";
+import { AppBar, Box, Container, Grid, Modal } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -14,9 +14,10 @@ import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
 import Link from "next/link";
 import Navigation from "../navigation/Navigation";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
 import {
   selectTotalwishlistItem,
   selectWishlist,
@@ -25,8 +26,7 @@ import {
   selectCart,
   selectTotalCartItem,
 } from "../../../store/feature/cart/cart.slice";
-import { selectUser } from "../../../store/feature/auth/auth.slice";
-import CircularProgress from "@mui/material/CircularProgress";
+import { selectPrSearch } from "../../../store/feature/games/games.slice";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -43,6 +43,22 @@ const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const auth = getAuth(app);
+  useEffect(() => {
+    auth.onAuthStateChanged((auth, error) => {
+      if (auth && !user) {
+        dispatch(
+          setUser({
+            accessToken: auth.accessToken,
+            uid: auth.uid,
+            displayName: auth.displayName,
+            email: auth.email,
+          })
+        );
+      } else {
+        dispatch(setUser(null));
+      }
+    });
+  }, []);
 
   // clear cart and list
   const { clearList } = useSelector(selectWishlist);
@@ -151,6 +167,14 @@ const Header = () => {
     </Box>
   );
 
+  //
+  const [show, setShow] = useState(false);
+  const { pr, searchPrHeader } = useSelector(selectPrSearch);
+
+  const convertVnd = (item) => {
+    return Intl.NumberFormat().format(item).split(".").join(",");
+  };
+
   return (
     <div className={header.header}>
       <div className={header["bg-header"]}>
@@ -214,12 +238,30 @@ const Header = () => {
                   borderRight={"1px solid var(--gray-light)"}
                   display={{ xs: "none", lg: "block" }}
                 >
-                  <Link className={header.link} href={"/help/Help"}>
+                  <a className={header.link} href="#">
                     Help
+                  </a>
+                </Grid>
+                <Grid
+                  padding={"18px 30px"}
+                  borderRight={"1px solid var(--gray-light)"}
+                  display={{ xs: "none", md: "block" }}
+                >
+                  <Link className={header.link} href={"/games/Games"}>
+                    Weekly sale
                   </Link>
                 </Grid>
               </Grid>
               <Grid display={"flex"}>
+                <Grid
+                  padding={"18px 30px"}
+                  borderLeft={"1px solid var(--gray-light)"}
+                  display={{ xs: "none", md: "block" }}
+                >
+                  <Link className={header.link} href={"/games/Games"}>
+                    Track Order
+                  </Link>
+                </Grid>
                 <Grid
                   padding={"18px 0"}
                   borderLeft={"1px solid var(--gray-light)"}
@@ -231,7 +273,7 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        Login / Register
+                        Account
                       </div>
                       {/* menu account */}
                       <Menu
@@ -311,11 +353,9 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        {auth.currentUser.displayName == null ? (
-                          <CircularProgress size={20} />
-                        ) : (
-                          auth.currentUser.displayName
-                        )}
+                        {auth.currentUser.displayName == null
+                          ? "my account"
+                          : auth.currentUser.displayName}
                       </div>
                       {/* menu account */}
                       <Menu
@@ -348,15 +388,15 @@ const Header = () => {
                       >
                         <MenuItem>
                           <Link
-                            margin={"auto"}
-                            fontFamily={"var(--font-default)"}
-                            as={"/profile/[userName]"}
+                            as={"/profile/[uname]"}
                             href={{
-                              pathname: "/profile/[userName]",
+                              pathname: "/profile/[uname]",
                               query: {
-                                userName: user == null ? "" : user.displayName,
+                                uname: user == null ? "" : user.displayName,
                               },
                             }}
+                            margin={"auto"}
+                            fontFamily={"var(--font-default)"}
                             style={{
                               width: "100%",
                               textAlign: "center",
@@ -365,15 +405,25 @@ const Header = () => {
                             Profile
                           </Link>
                         </MenuItem>
-                        {/* <MenuItem>
-                          {" "}
-                          <Grid
+                        <MenuItem>
+                          <Link
+                            as={"/library/[lib]"}
+                            href={{
+                              pathname: "/library/[lib]",
+                              query: {
+                                lib: user == null ? "" : user.displayName,
+                              },
+                            }}
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                            }}
                           >
                             Library
-                          </Grid>
-                        </MenuItem> */}
+                          </Link>
+                        </MenuItem>
                         <MenuItem>
                           <Link
                             href={"/"}
@@ -493,6 +543,10 @@ const Header = () => {
                   name="ip-search"
                   id="ip-search"
                   placeholder="Search games"
+                  onKeyUp={(e) => {
+                    e.target.value.length > 0 ? setShow(true) : setShow(false);
+                    dispatch(searchPrHeader(e.target.value));
+                  }}
                 />
                 <SearchIcon
                   sx={{
@@ -507,6 +561,116 @@ const Header = () => {
                     },
                   }}
                 ></SearchIcon>
+
+                {/*  */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    position: "absolute",
+                    padding: "5px",
+                    left: "0",
+                    backgroundColor: "var(--dark-2)",
+                    borderLeft: "1px solid var(--gray)",
+                    borderRight: "1px solid var(--gray)",
+                    borderBottom: "1px solid var(--gray)",
+                  }}
+                  display={show ? "block" : "none"}
+                >
+                  <Box
+                    display={"flex"}
+                    gap={"12px"}
+                    width={"100%"}
+                    flexDirection="column"
+                  >
+                    {/*  */}
+                    {pr.map((i) => (
+                      <Link
+                        key={i.id}
+                        as={"/game-detail/[gid]"}
+                        href={{
+                          pathname: "/game-detail/[gid]",
+                          query: { gid: i.id },
+                        }}
+                      >
+                        <Grid
+                          container
+                          sx={{
+                            cursor: "pointer",
+                            ":hover": {
+                              backgroundColor: "black",
+                              "& img": {
+                                opacity: 0.5,
+                              },
+                            },
+                          }}
+                        >
+                          <Grid item={true} xs={3}>
+                            <img
+                              src={i.img}
+                              alt="game"
+                              style={{
+                                maxWidth: "100%",
+                                verticalAlign: "middle",
+                              }}
+                            />
+                          </Grid>
+                          <Grid
+                            item={true}
+                            xs={9}
+                            padding={"10px"}
+                            display={"flex"}
+                            flexDirection={"column"}
+                            alignItems={"center"}
+                            justifyContent={"start"}
+                            gap={"8px"}
+                          >
+                            <div
+                              style={{
+                                fontFamily: "var(--font-title)",
+                                fontWeight: "600",
+                                fontSize: "15px",
+                                width: "100%",
+                                color: "white",
+                              }}
+                            >
+                              {i.name}
+                            </div>
+                            <div
+                              style={{
+                                width: "100%",
+                                color: "var(--blue)",
+                                fontSize: "13px",
+                              }}
+                            >
+                              {convertVnd((i.price * (100 - i.sale)) / 100)} đ
+                            </div>
+                          </Grid>
+                        </Grid>
+                      </Link>
+                    ))}
+
+                    {pr.length == 4 ? (
+                      <Link href={"/games/Games"}>
+                        <Box
+                          sx={{
+                            marginBottom: "5px",
+                            textAlign: "center",
+                            color: "white",
+                            cursor: "pointer",
+                            ":hover": {
+                              color: "var(--blue)",
+                            },
+                          }}
+                        >
+                          <strong>View more</strong>
+                        </Box>
+                      </Link>
+                    ) : null}
+                    {/*  */}
+                  </Box>
+                </Box>
+
+                {/*  */}
               </Grid>
             </Grid>
           </Container>
