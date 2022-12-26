@@ -9,7 +9,6 @@ import { app } from "../../lib/firebase";
 
 const Profile = () => {
   const user = useSelector(selectUser);
-  console.log(user);
   const [bill, setBill] = useState([]);
   const checkoutRef = collection(getFirestore(app), "checkout");
   const convertVnd = (item) => {
