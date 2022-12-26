@@ -230,9 +230,9 @@ const Header = () => {
                   borderRight={"1px solid var(--gray-light)"}
                   display={{ xs: "none", lg: "block" }}
                 >
-                  <a className={header.link} href="#">
+                  <Link className={header.link} href={"/help/Help"}>
                     Help
-                  </a>
+                  </Link>
                 </Grid>
               </Grid>
               <Grid display={"flex"}>
@@ -379,7 +379,7 @@ const Header = () => {
                             Profile
                           </Link>
                         </MenuItem>
-                        <MenuItem>
+                        {/* <MenuItem>
                           {" "}
                           <Grid
                             margin={"auto"}
@@ -387,7 +387,7 @@ const Header = () => {
                           >
                             Library
                           </Grid>
-                        </MenuItem>
+                        </MenuItem> */}
                         <MenuItem>
                           <Link
                             href={"/"}

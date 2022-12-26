@@ -165,6 +165,7 @@ const Profile = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      letterSpacing: "1.5px",
                     }}
                   >
                     {i.date}
