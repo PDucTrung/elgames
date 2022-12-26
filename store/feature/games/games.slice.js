@@ -172,10 +172,10 @@ export const {
   searchPrHeader,
 } = productsSlice.actions;
 
-export const selectAllProducts = (state) => state.products.data;
+export const selectAllProducts = (state) => state.products.default;
 
 export const selectProductById = (productId) => (state) =>
-  state.products.data.find((product) => product.id == productId);
+  state.products.default.find((product) => product.id == productId);
 
 export const selectProductStatus = (state) =>
   state.products.loading || state.blogs.loading;
