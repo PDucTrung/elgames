@@ -4,34 +4,28 @@ import profile from "../profile/Profile.module.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/feature/auth/auth.slice";
-import { getFirestore, query, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../lib/firebase";
 
 const Profile = () => {
   const user = useSelector(selectUser);
+  console.log(user);
   const [bill, setBill] = useState([]);
+  const checkoutRef = collection(getFirestore(app), "checkout");
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",") + " đ";
   };
   useEffect(() => {
-    const q = query(collection(getFirestore(app), "checkout"));
-
-    getDocs(q)
-      .then((snapshot) => {
-        const data = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-
-        setBill(
-          data.filter(
-            (item) => item.uid == (user == null ? "default" : user.uid)
-          )
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const getChekout = async () => {
+      const data = await getDocs(checkoutRef);
+      const checkout = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setBill(
+        checkout.filter(
+          (item) => item.uid == (user == null ? "default" : user.uid)
+        )
+      );
+    };
+    getChekout();
   }, []);
 
   return (

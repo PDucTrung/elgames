@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, Modal } from "@mui/material";
+import { Box, Container, Grid, Modal } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -14,10 +14,9 @@ import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
 import Link from "next/link";
 import Navigation from "../navigation/Navigation";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
 import {
   selectTotalwishlistItem,
   selectWishlist,
@@ -26,6 +25,8 @@ import {
   selectCart,
   selectTotalCartItem,
 } from "../../../store/feature/cart/cart.slice";
+import { selectUser } from "../../../store/feature/auth/auth.slice";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Header = () => {
   const [flag, setFlag] = useState("");
@@ -42,23 +43,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const auth = getAuth(app);
-
-  useEffect(() => {
-    auth.onAuthStateChanged((auth, error) => {
-      if (auth && !user) {
-        dispatch(
-          setUser({
-            accessToken: auth.accessToken,
-            uid: auth.uid,
-            displayName: auth.displayName,
-            email: auth.email,
-          })
-        );
-      } else {
-        dispatch(setUser(null));
-      }
-    });
-  }, []);
 
   // clear cart and list
   const { clearList } = useSelector(selectWishlist);
@@ -327,9 +311,11 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        {auth.currentUser.displayName == null
-                          ? "My account"
-                          : auth.currentUser.displayName}
+                        {auth.currentUser.displayName == null ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          auth.currentUser.displayName
+                        )}
                       </div>
                       {/* menu account */}
                       <Menu

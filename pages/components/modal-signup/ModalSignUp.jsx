@@ -5,12 +5,16 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import styles from "../modal-signup/ModalSignUp.module.css";
 import { useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
 import { app } from "../../../lib/firebase";
 
 const ModalSignUp = ({ handleCloseModalSignUp }) => {
   const auth = getAuth(app);
+
   const {
     register,
     formState: { errors },

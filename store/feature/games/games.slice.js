@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { collection, getFirestore, getDocs, query } from "firebase/firestore";
+import { collection, getFirestore, getDocs } from "firebase/firestore";
 import { app } from "../../../lib/firebase";
+
+const gamesRef = collection(getFirestore(app), "games");
 
 const initialState = {
   data: [],
@@ -15,49 +17,11 @@ const PAGE_SIZE = 9;
 export const loadProduct = createAsyncThunk(
   "products/loadProduct",
   async () => {
-    const q = query(collection(getFirestore(app), "games"));
-
-    const promise = getDocs(q)
-      .then((snapshot) => {
-        const data = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        return data;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    const data = await promise;
-
+    const games = await getDocs(gamesRef);
+    const data = games.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return data;
   }
 );
-
-// export const loadProductById = createAsyncThunk("products/byId", async (id) => {
-//   const q = query(collection(getFirestore(app), "games"));
-
-//   const promise = getDocs(q)
-//     .then((snapshot) => {
-//       const games = snapshot.docs.map((item) => ({
-//         id: item.id,
-//         ...item.data(),
-//       }));
-//       const game = games.splice(
-//         games.findIndex((item) => item.id == id),
-//         1
-//       )[0];
-//       return data;
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     });
-
-//   const data = await promise;
-
-//   return data;
-// });
 
 const productsSlice = createSlice({
   name: "products",
