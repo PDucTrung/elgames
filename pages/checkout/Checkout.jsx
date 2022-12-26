@@ -114,7 +114,7 @@ const Checkout = () => {
 
       <section className={checkout["section-checkout"]}>
         <Container>
-          <Grid container xs={12} width={"100%"}>
+          <Grid container  width={"100%"}>
             <Grid
               item={true}
               xs={12}
@@ -395,7 +395,7 @@ const Checkout = () => {
                 <br />
                 <div className={checkout["box-order"]}>
                   <div className={checkout["card-order"]}>
-                    <Grid container xs={12}>
+                    <Grid container >
                       <Grid
                         item={true}
                         xs={8}
@@ -425,7 +425,7 @@ const Checkout = () => {
                   {/* card */}
                   {items.map((item) => (
                     <div className={checkout["card-order"]} key={item.id}>
-                      <Grid container xs={12}>
+                      <Grid container >
                         <Grid
                           item={true}
                           xs={8}
@@ -472,7 +472,7 @@ const Checkout = () => {
                   ))}
 
                   <div className={checkout["card-order"]}>
-                    <Grid container xs={12}>
+                    <Grid container >
                       <Grid
                         item={true}
                         xs={8}
@@ -500,7 +500,7 @@ const Checkout = () => {
                   </div>
 
                   <div className={checkout["card-order"]}>
-                    <Grid container xs={12}>
+                    <Grid container>
                       <Grid
                         item={true}
                         xs={8}

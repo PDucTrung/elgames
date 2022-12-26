@@ -107,7 +107,6 @@ const Favorites = () => {
               <Grid
                 key={item.id}
                 container
-                xs={12}
                 width={"100%"}
                 sx={{
                   backgroundColor: "var(--dark-2)",

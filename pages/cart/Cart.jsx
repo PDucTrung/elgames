@@ -26,7 +26,7 @@ const Cart = () => {
       }
     });
   };
-console.log(items)
+
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
@@ -97,10 +97,10 @@ console.log(items)
 
       <section className={cart["section-cart"]}>
         <Container>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item={true} xs={12} md={9} padding={2}>
               <div className={cart["box-left"]}>
-                <Grid container xs={12} borderBottom={"1px solid var(--gray)"}>
+                <Grid container borderBottom={"1px solid var(--gray)"}>
                   {/* head */}
                   <Grid
                     item={true}
@@ -132,7 +132,7 @@ console.log(items)
                   <Grid
                     key={item.product.id}
                     container
-                    xs={12}
+                   
                     borderBottom={"1px solid var(--gray)"}
                   >
                     <Grid
@@ -144,7 +144,7 @@ console.log(items)
                     >
                       <Grid
                         container
-                        xs={12}
+                       
                         width={"100%"}
                         height={"100%"}
                         display={"flex"}
@@ -153,7 +153,7 @@ console.log(items)
                           item={true}
                           xs={12}
                           md={8}
-                          container
+                        
                           borderRight={{ xs: "0", md: "1px solid var(--gray)" }}
                           borderBottom={{
                             xs: "1px solid var(--gray)",

@@ -62,7 +62,7 @@ const Blog = () => {
       <section className={blog["section-blog-list"]}>
         <Container>
           <Box className={blog["blog-list"]}>
-            <Grid container xs={12}>
+            <Grid container>
               {blogs.map((item) => (
                 <Grid
                   key={item.id}

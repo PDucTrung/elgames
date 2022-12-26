@@ -29,7 +29,6 @@ const Count = () => {
           }}
         />
         <Grid
-          xs={12}
           container
           sx={{
             width: "100%",

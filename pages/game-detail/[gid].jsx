@@ -51,8 +51,7 @@ const GameDetail = () => {
   // check wishlist
   const { items } = useSelector(selectWishlist);
   const checkWishlist = items.filter((item) => item.game.id == gid).length;
-  console.log(checkWishlist);
-
+  
   // user
   const user = useSelector(selectUser);
 
@@ -207,7 +206,7 @@ const GameDetail = () => {
               {game.rate}
             </Grid>
           </Grid>
-          <Grid container xs={12}>
+          <Grid container>
             {/* left */}
             <Grid
               item={true}
@@ -342,7 +341,6 @@ const GameDetail = () => {
                   <br />
                   <Grid
                     container
-                    xs={12}
                     paddingTop={2}
                     borderTop={"1px solid var(--gray)"}
                   >
@@ -556,7 +554,7 @@ const GameDetail = () => {
 
                 <p>Sale ends 1/5/2023 at 11:00 PM</p>
                 <br />
-                <Grid container xs={12}>
+                <Grid container>
                   <Grid
                     item={true}
                     xs={4}
