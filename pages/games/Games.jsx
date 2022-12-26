@@ -56,7 +56,7 @@ const Games = () => {
 
   // search
   const changeSearchTerm = (e) => {
-    // dispatch(searchByName(e.target.value));
+    dispatch(searchByName(e.target.value));
   };
 
   // sort
@@ -71,7 +71,7 @@ const Games = () => {
   // filter price
   const handleChangeValue = (event, newValue) => {
     setValue(newValue);
-    // dispatch(filterByPrice(newValue));
+    dispatch(filterByPrice(newValue));
   };
 
   // cv
