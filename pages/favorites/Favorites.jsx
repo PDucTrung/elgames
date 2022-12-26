@@ -204,7 +204,7 @@ const Favorites = () => {
                       </div>
                       <div className={favorites["box-price"]}>
                         <p className={favorites["text-sale"]}>
-                          {convertVnd(item.price)} đ
+                          {convertVnd(item.game.price)} đ
                         </p>
                         <p>
                           {convertVnd(
