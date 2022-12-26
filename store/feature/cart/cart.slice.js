@@ -77,7 +77,7 @@ export const { addCart, incQty, decQty, removeItem, clearCart } =
 export const selectTotalCartItem = (state) => state.cart.length;
 
 export const selectCart = (state) => {
-  const products = state.products.data;
+  const products = state.products.default;
   const cart = state.cart;
 
   const items = cart.map((item) => ({

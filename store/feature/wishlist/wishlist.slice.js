@@ -47,7 +47,7 @@ export const { addItem, removeItem, clearList } = wishlistSlice.actions;
 export const selectTotalwishlistItem = (state) => state.wishlist.length;
 
 export const selectWishlist = (state) => {
-  const products = state.products.data;
+  const products = state.products.default;
   const wishlist = state.wishlist;
 
   const items = wishlist.map((item) => ({
