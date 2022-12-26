@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, Modal } from "@mui/material";
+import { Box, Container, Grid, Modal } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -14,10 +14,9 @@ import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
 import Link from "next/link";
 import Navigation from "../navigation/Navigation";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setUser } from "../../../store/feature/auth/auth.slice";
 import {
   selectTotalwishlistItem,
   selectWishlist,
@@ -26,6 +25,8 @@ import {
   selectCart,
   selectTotalCartItem,
 } from "../../../store/feature/cart/cart.slice";
+import { selectUser } from "../../../store/feature/auth/auth.slice";
+import CircularProgress from "@mui/material/CircularProgress";
 import { selectPrSearch } from "../../../store/feature/games/games.slice";
 
 const Header = () => {
@@ -43,22 +44,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const auth = getAuth(app);
-  useEffect(() => {
-    auth.onAuthStateChanged((auth, error) => {
-      if (auth && !user) {
-        dispatch(
-          setUser({
-            accessToken: auth.accessToken,
-            uid: auth.uid,
-            displayName: auth.displayName,
-            email: auth.email,
-          })
-        );
-      } else {
-        dispatch(setUser(null));
-      }
-    });
-  }, []);
 
   // clear cart and list
   const { clearList } = useSelector(selectWishlist);
@@ -174,7 +159,6 @@ const Header = () => {
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
-
   return (
     <div className={header.header}>
       <div className={header["bg-header"]}>
@@ -238,30 +222,12 @@ const Header = () => {
                   borderRight={"1px solid var(--gray-light)"}
                   display={{ xs: "none", lg: "block" }}
                 >
-                  <a className={header.link} href="#">
+                  <Link className={header.link} href={"/help/Help"}>
                     Help
-                  </a>
-                </Grid>
-                <Grid
-                  padding={"18px 30px"}
-                  borderRight={"1px solid var(--gray-light)"}
-                  display={{ xs: "none", md: "block" }}
-                >
-                  <Link className={header.link} href={"/games/Games"}>
-                    Weekly sale
                   </Link>
                 </Grid>
               </Grid>
               <Grid display={"flex"}>
-                <Grid
-                  padding={"18px 30px"}
-                  borderLeft={"1px solid var(--gray-light)"}
-                  display={{ xs: "none", md: "block" }}
-                >
-                  <Link className={header.link} href={"/games/Games"}>
-                    Track Order
-                  </Link>
-                </Grid>
                 <Grid
                   padding={"18px 0"}
                   borderLeft={"1px solid var(--gray-light)"}
@@ -273,7 +239,7 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        Account
+                        Login / Register
                       </div>
                       {/* menu account */}
                       <Menu
@@ -353,9 +319,11 @@ const Header = () => {
                         onClick={handleClick}
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
-                        {auth.currentUser.displayName == null
-                          ? "my account"
-                          : auth.currentUser.displayName}
+                        {auth.currentUser.displayName == null ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          auth.currentUser.displayName
+                        )}
                       </div>
                       {/* menu account */}
                       <Menu
@@ -388,15 +356,15 @@ const Header = () => {
                       >
                         <MenuItem>
                           <Link
-                            as={"/profile/[uname]"}
-                            href={{
-                              pathname: "/profile/[uname]",
-                              query: {
-                                uname: user == null ? "" : user.displayName,
-                              },
-                            }}
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
+                            as={"/profile/[userName]"}
+                            href={{
+                              pathname: "/profile/[userName]",
+                              query: {
+                                userName: user == null ? "" : user.displayName,
+                              },
+                            }}
                             style={{
                               width: "100%",
                               textAlign: "center",
@@ -405,25 +373,15 @@ const Header = () => {
                             Profile
                           </Link>
                         </MenuItem>
-                        <MenuItem>
-                          <Link
-                            as={"/library/[lib]"}
-                            href={{
-                              pathname: "/library/[lib]",
-                              query: {
-                                lib: user == null ? "" : user.displayName,
-                              },
-                            }}
+                        {/* <MenuItem>
+                          {" "}
+                          <Grid
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
-                            style={{
-                              width: "100%",
-                              textAlign: "center",
-                            }}
                           >
                             Library
-                          </Link>
-                        </MenuItem>
+                          </Grid>
+                        </MenuItem> */}
                         <MenuItem>
                           <Link
                             href={"/"}
@@ -561,7 +519,6 @@ const Header = () => {
                     },
                   }}
                 ></SearchIcon>
-
                 {/*  */}
                 <Box
                   sx={{
