@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { collection, getFirestore, getDocs } from "firebase/firestore";
+import { collection, getFirestore, getDocs, query } from "firebase/firestore";
 import { app } from "../../../lib/firebase";
-
-const gamesRef = collection(getFirestore(app), "games");
 
 const initialState = {
   data: [],
@@ -10,6 +8,7 @@ const initialState = {
   filter: [],
   loading: true,
   sort: "",
+  default: [],
 };
 
 const PAGE_SIZE = 9;
@@ -17,8 +16,22 @@ const PAGE_SIZE = 9;
 export const loadProduct = createAsyncThunk(
   "products/loadProduct",
   async () => {
-    const games = await getDocs(gamesRef);
-    const data = games.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const q = query(collection(getFirestore(app), "games"));
+
+    const promise = getDocs(q)
+      .then((snapshot) => {
+        const data = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data(),
+        }));
+        return data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    const data = await promise;
+
     return data;
   }
 );
@@ -38,9 +51,81 @@ const productsSlice = createSlice({
       };
     },
     //
-    filterByPrice: (state, { payload: { a, b } }) => {
-      // console.log(a);
-      // console.log(b);
+    searchByName: (state, action) => {
+      const filteredgames = state.data.filter((game) =>
+        game.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+
+      return {
+        ...state,
+        currentPage: 0,
+        data: action.payload.length > 0 ? filteredgames : [...state.default],
+      };
+    },
+    filterByPrice: (state, action) => {
+      const filteredPrice = state.data.filter(
+        (game) =>
+          game.price >= action.payload[0] && game.price <= action.payload[1]
+      );
+      const array = [...state.default];
+      array.sort((a, b) => a.price - b.price);
+      return {
+        ...state,
+        currentPage: 0,
+        data:
+          action.payload[0] <= array[0].price &&
+          action.payload[1] >= array[array.length - 1].price
+            ? [...state.default]
+            : filteredPrice,
+      };
+    },
+    sortAscName: (state, action) => {
+      const ascName = state.data.sort((a, b) =>
+        a.name !== b.name ? (a.name < b.name ? -1 : 1) : 0
+      );
+
+      return void {
+        ...state,
+        currentPage: 0,
+        data: ascName,
+      };
+    },
+    sortDesName: (state, action) => {
+      const desName = state.data.sort((a, b) =>
+        a.name !== b.name ? (a.name > b.name ? -1 : 1) : 0
+      );
+
+      return void {
+        ...state,
+        currentPage: 0,
+        data: desName,
+      };
+    },
+    sortAscNumber: (state, action) => {
+      const ascNumber = state.data.sort((a, b) => a.price - b.price);
+
+      return void {
+        ...state,
+        currentPage: 0,
+        data: ascNumber,
+      };
+    },
+    sortDesNumber: (state, action) => {
+      const desNumber = state.data.sort((a, b) => b.price - a.price);
+
+      return void {
+        ...state,
+        currentPage: 0,
+        data: desNumber,
+      };
+    },
+    clearFilter: (state, action) => {
+      return {
+        ...state,
+        currentPage: 0,
+        filter: [],
+        data: [...state.default],
+      };
     },
   },
 
@@ -49,6 +134,7 @@ const productsSlice = createSlice({
       return {
         ...state,
         data: action.payload,
+        default: action.payload,
         loading: false,
       };
     });
@@ -57,8 +143,17 @@ const productsSlice = createSlice({
 
 export const productsReducer = productsSlice.reducer;
 
-export const { pageChanged, filterChanged, filterByPrice } =
-  productsSlice.actions;
+export const {
+  pageChanged,
+  filterChanged,
+  filterByPrice,
+  searchByName,
+  sortAscName,
+  sortDesName,
+  sortAscNumber,
+  sortDesNumber,
+  clearFilter,
+} = productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.data;
 
@@ -94,6 +189,12 @@ export const selectProductsList = (state) => {
     filterChanged,
     //
     filterByPrice,
+    searchByName,
+    sortAscName,
+    sortDesName,
+    sortAscNumber,
+    sortDesNumber,
+    clearFilter,
     //
     loading: state.loading,
   };

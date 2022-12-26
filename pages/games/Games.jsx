@@ -36,6 +36,12 @@ const Games = () => {
     filterChanged,
     genres,
     filterByPrice,
+    searchByName,
+    sortAscName,
+    sortDesName,
+    sortAscNumber,
+    sortDesNumber,
+    clearFilter,
   } = useSelector(selectProductsList);
   const [sort, setSort] = React.useState(0);
   const [value, setValue] = React.useState([0, 2000000]);
@@ -48,15 +54,24 @@ const Games = () => {
     dispatch(pageChanged(value - 1));
   };
 
+  // search
+  const changeSearchTerm = (e) => {
+    dispatch(searchByName(e.target.value));
+  };
+
   // sort
   const handleChange = (event) => {
     setSort(event.target.value);
+    if (event.target.value == 10) dispatch(sortAscName());
+    else if (event.target.value == 20) dispatch(sortDesName());
+    else if (event.target.value == 30) dispatch(sortAscNumber());
+    else if (event.target.value == 40) dispatch(sortDesNumber());
   };
 
   // filter price
   const handleChangeValue = (event, newValue) => {
-    dispatch(filterByPrice({ a: value[0], b: value[1] }));
     setValue(newValue);
+    dispatch(filterByPrice(newValue));
   };
 
   // cv
@@ -122,8 +137,9 @@ const Games = () => {
                           className={games["ip-search"]}
                           type="text"
                           name="ip-search"
-                          id="ip-search"
+                          id="ip-search-2"
                           placeholder="Search games"
+                          onKeyUp={(e) => changeSearchTerm(e)}
                         />
                         <SearchIcon
                           sx={{
@@ -188,7 +204,6 @@ const Games = () => {
                         label="Sort by"
                         onChange={handleChange}
                       >
-                        <MenuItem value={0}>Default</MenuItem>
                         <MenuItem value={10}>ascending name</MenuItem>
                         <MenuItem value={20}>descending name</MenuItem>
                         <MenuItem value={30}>ascending price</MenuItem>
@@ -319,7 +334,21 @@ const Games = () => {
                 <br />
                 <br />
                 <div>
-                  <button className="btn">Clear Filter</button>
+                  <button
+                    className="btn"
+                    onClick={(e) => {
+                      const textSearch = document.getElementById("ip-search-2");
+                      const checkbox =
+                        document.querySelectorAll(".form-check-input");
+                      textSearch.value = "";
+                      checkbox.forEach((item) => (item.checked = false));
+                      setSort(0);
+                      setValue([0, 2000000]);
+                      dispatch(clearFilter());
+                    }}
+                  >
+                    Clear Filter
+                  </button>
                 </div>
               </section>
             </Grid>
