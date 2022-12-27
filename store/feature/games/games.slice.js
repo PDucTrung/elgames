@@ -64,12 +64,16 @@ const productsSlice = createSlice({
       };
     },
     filterByPrice: (state, action) => {
-      const filteredPrice = state.data.filter(
-        (game) =>
-          game.price >= action.payload[0] && game.price <= action.payload[1]
-      );
+      const filteredPrice = state.data.filter((game) => {
+        const money = (game.price * (100 - game.sale)) / 100;
+        return money >= action.payload[0] && money <= action.payload[1];
+      });
       const array = [...state.default];
-      array.sort((a, b) => a.price - b.price);
+      array.sort((a, b) => {
+        const c = (a.price * (100 - a.sale)) / 100;
+        const d = (b.price * (100 - b.sale)) / 100;
+        return c - d;
+      });
       return {
         ...state,
         currentPage: 0,
@@ -103,7 +107,11 @@ const productsSlice = createSlice({
       };
     },
     sortAscNumber: (state, action) => {
-      const ascNumber = state.data.sort((a, b) => a.price - b.price);
+      const ascNumber = state.data.sort((a, b) => {
+        const c = (a.price * (100 - a.sale)) / 100;
+        const d = (b.price * (100 - b.sale)) / 100;
+        return c - d;
+      });
 
       return void {
         ...state,
@@ -112,7 +120,11 @@ const productsSlice = createSlice({
       };
     },
     sortDesNumber: (state, action) => {
-      const desNumber = state.data.sort((a, b) => b.price - a.price);
+      const desNumber = state.data.sort((a, b) => {
+        const c = (a.price * (100 - a.sale)) / 100;
+        const d = (b.price * (100 - b.sale)) / 100;
+        return d - c;
+      });
 
       return void {
         ...state,

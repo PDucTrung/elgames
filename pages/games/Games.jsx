@@ -303,7 +303,7 @@ const Games = () => {
                       }}
                       min={0}
                       max={2000000}
-                      step={10}
+                      step={5}
                     />
                   </Box>
                   <div className={games["box-price"]}>
