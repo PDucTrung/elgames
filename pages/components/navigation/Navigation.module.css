@@ -6,3 +6,10 @@
   padding: 30px;
 }
 
+.active {
+  color: var(--blue);
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 30px;
+}

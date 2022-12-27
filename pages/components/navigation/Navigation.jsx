@@ -1,9 +1,11 @@
 import { Grid } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import nav from "../navigation/Navigation.module.css";
 
 const Navigation = () => {
+  const router = useRouter();
   return (
     <Grid
       sx={{
@@ -41,7 +43,10 @@ const Navigation = () => {
           },
         }}
       >
-        <Link className={nav.link} href={"/"}>
+        <Link
+          className={router.pathname == "/" ? nav.active : nav.link}
+          href={"/"}
+        >
           Home
         </Link>
       </Grid>
@@ -73,7 +78,10 @@ const Navigation = () => {
           },
         }}
       >
-        <Link className={nav.link} href={"/games/Games"}>
+        <Link
+          className={router.pathname == "/games/Games" ? nav.active : nav.link}
+          href={"/games/Games"}
+        >
           Store
         </Link>
       </Grid>
@@ -105,7 +113,10 @@ const Navigation = () => {
           },
         }}
       >
-        <Link className={nav.link} href={"/about/About"}>
+        <Link
+          className={router.pathname == "/about/About" ? nav.active : nav.link}
+          href={"/about/About"}
+        >
           About
         </Link>
       </Grid>
@@ -137,7 +148,12 @@ const Navigation = () => {
           },
         }}
       >
-        <Link className={nav.link} href={"/contact/Contact"}>
+        <Link
+          className={
+            router.pathname == "/contact/Contact" ? nav.active : nav.link
+          }
+          href={"/contact/Contact"}
+        >
           Contact
         </Link>
       </Grid>
@@ -169,7 +185,10 @@ const Navigation = () => {
           },
         }}
       >
-        <Link className={nav.link} href={"/blog/Blog"}>
+        <Link
+          className={router.pathname == "/blog/Blog" ? nav.active : nav.link}
+          href={"/blog/Blog"}
+        >
           Blog
         </Link>
       </Grid>
