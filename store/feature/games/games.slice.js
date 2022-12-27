@@ -65,13 +65,13 @@ const productsSlice = createSlice({
     },
     filterByPrice: (state, action) => {
       const filteredPrice = state.data.filter((game) => {
-        const money = (game.price * (100 - game.sale)) / 100;
+        const money = game.price * (1 - game.sale / 100);
         return money >= action.payload[0] && money <= action.payload[1];
       });
       const array = [...state.default];
       array.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
+        const c = a.price * (1 - a.sale / 100);
+        const d = b.price * (1 - b.sale / 100);
         return c - d;
       });
       return {
@@ -108,8 +108,8 @@ const productsSlice = createSlice({
     },
     sortAscNumber: (state, action) => {
       const ascNumber = state.data.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
+        const c = a.price * (1 - a.sale / 100);
+        const d = b.price * (1 - b.sale / 100);
         return c - d;
       });
 
@@ -121,8 +121,8 @@ const productsSlice = createSlice({
     },
     sortDesNumber: (state, action) => {
       const desNumber = state.data.sort((a, b) => {
-        const c = (a.price * (100 - a.sale)) / 100;
-        const d = (b.price * (100 - b.sale)) / 100;
+        const c = a.price * (1 - a.sale / 100);
+        const d = b.price * (1 - b.sale / 100);
         return d - c;
       });
 
