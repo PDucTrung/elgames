@@ -202,7 +202,16 @@ const Help = () => {
                   >
                     {item.title}
                   </p>
-                  <KeyboardArrowDownIcon onClick={(e) => handleToggle(e)} />
+                  <KeyboardArrowDownIcon
+                    sx={{
+                      cursor: "pointer",
+                      ":hover": {
+                        color: "var(--blue)",
+                      },
+                      transform: isActive ? "rotate(180deg)" : "rotate(0)",
+                    }}
+                    onClick={(e) => handleToggle(e)}
+                  />
                 </Box>
                 <Box
                   display={"none"}
