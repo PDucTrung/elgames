@@ -212,8 +212,8 @@ const Help = () => {
                     onClick={(e) => {
                       handleToggle(e);
                       e.currentTarget.style.transform = isActive
-                        ? "rotate(180deg)"
-                        : "rotate(0)";
+                        ? "rotate(0)"
+                        : "rotate(180deg)";
                     }}
                   />
                 </Box>
