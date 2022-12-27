@@ -4,7 +4,12 @@ import profile from "../profile/Profile.module.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/feature/auth/auth.slice";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { app } from "../../lib/firebase";
 
 const Profile = () => {
@@ -15,16 +20,17 @@ const Profile = () => {
     return Intl.NumberFormat().format(item).split(".").join(",") + " đ";
   };
   useEffect(() => {
-    const getChekout = async () => {
-      const data = await getDocs(checkoutRef);
-      const checkout = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const q = query(checkoutRef);
+    const pay = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
       setBill(
-        checkout.filter(
-          (item) => item.uid == (user == null ? "default" : user.uid)
-        )
+        data.filter((item) => item.uid == (user == null ? "default" : user.uid))
       );
-    };
-    getChekout();
+    });
+    return () => pay();
   }, []);
 
   return (
