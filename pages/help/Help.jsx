@@ -208,9 +208,13 @@ const Help = () => {
                       ":hover": {
                         color: "var(--blue)",
                       },
-                      transform: isActive ? "rotate(180deg)" : "rotate(0)",
                     }}
-                    onClick={(e) => handleToggle(e)}
+                    onClick={(e) => {
+                      handleToggle(e);
+                      e.currentTarget.style.transform = isActive
+                        ? "rotate(180deg)"
+                        : "rotate(0)";
+                    }}
                   />
                 </Box>
                 <Box
