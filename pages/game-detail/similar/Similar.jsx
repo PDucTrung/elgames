@@ -104,9 +104,12 @@ const Similar = ({ gameSimilar }) => {
                     <Grid
                       width={"100%"}
                       position="absolute"
-                      left={0}
+                      left={"50%"}
                       bottom={0}
                       display={"flex"}
+                      sx={{
+                        transform: "translateX(-50%)",
+                      }}
                     >
                       <Grid
                         sx={{
