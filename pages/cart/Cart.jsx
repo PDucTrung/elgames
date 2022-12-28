@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Grid, Box } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import cart from "../cart/Cart.module.css";
@@ -6,15 +6,64 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCart } from "../../store/feature/cart/cart.slice";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import {
+  getFirestore,
+  collection,
+  doc,
+  deleteDoc,
+  setDoc,
+  onSnapshot,
+  updateDoc,
+  query,
+} from "firebase/firestore";
+import { app } from "../../lib/firebase";
+import { selectUser } from "../../store/feature/auth/auth.slice";
 
 const Cart = () => {
-  const { items, totalPrice, incQty, decQty, removeItem } =
-    useSelector(selectCart);
-  const dispatch = useDispatch();
-  const handleDel = (productId) => {
+  const user = useSelector(selectUser);
+  // cart
+  const cartRef = collection(getFirestore(app), "cart");
+  const [carts, setCart] = useState([]);
+
+  useEffect(() => {
+    const q = query(cartRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setCart(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+  // update cart
+
+  const incrementCart = async (id, quantity) => {
+    const reference = doc(cartRef, id);
+    await updateDoc(reference, {
+      quantity: quantity + 1,
+    });
+  };
+
+  const DecrementCart = async (id, quantity) => {
+    const reference = doc(cartRef, id);
+    await updateDoc(reference, {
+      quantity: quantity - 1,
+    });
+  };
+
+  // delete cart item
+  const Delete = async (id) => {
+    const reference = doc(cartRef, id);
+    await deleteDoc(reference);
+  };
+
+  const handleDelete = (id) => {
     Swal.fire({
       title: "Do you want to delete ?",
       showDenyButton: true,
@@ -22,17 +71,22 @@ const Cart = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("OK!", "", "success");
-        dispatch(removeItem(productId));
+        Delete(id);
       }
     });
   };
+
+  const total = carts.reduce(
+    (total, item) =>
+      (total += item.price * (1 - item.sale / 100) * item.quantity),
+    0
+  );
 
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
 
-
-  if (items.length == 0) {
+  if (carts.length == 0) {
     return (
       <div className={cart["no-game"]}>
         <div>
@@ -128,11 +182,10 @@ const Cart = () => {
                 </Grid>
 
                 {/* body */}
-                {items.map((item) => (
+                {carts.map((item) => (
                   <Grid
-                    key={item.product.id}
+                    key={item.id}
                     container
-                   
                     borderBottom={"1px solid var(--gray)"}
                   >
                     <Grid
@@ -144,7 +197,6 @@ const Cart = () => {
                     >
                       <Grid
                         container
-                       
                         width={"100%"}
                         height={"100%"}
                         display={"flex"}
@@ -164,7 +216,7 @@ const Cart = () => {
                           <Grid item={true} xs={12} lg={5}>
                             <Link href={"/game-detail/GameDetail"}>
                               <img
-                                src={item.product.img}
+                                src={item.img}
                                 alt="img-game-cart"
                                 style={{
                                   maxWidth: "100%",
@@ -194,7 +246,7 @@ const Cart = () => {
                                   color: "var(--gray)",
                                 }}
                               >
-                                {item.product.name}
+                                {item.name}
                               </span>
                             </p>
                             <p>
@@ -204,7 +256,17 @@ const Cart = () => {
                                   color: "var(--gray)",
                                 }}
                               >
-                                {item.product.system}
+                                {item.system}
+                              </span>
+                            </p>
+                            <p>
+                              <span className={cart.title}>Sale: </span>{" "}
+                              <span
+                                style={{
+                                  color: "var(--green)",
+                                }}
+                              >
+                                -{item.sale}%
                               </span>
                             </p>
                             <p>
@@ -214,7 +276,8 @@ const Cart = () => {
                                   color: "var(--blue)",
                                 }}
                               >
-                                {convertVnd(item.product.price)} ₫
+                                {convertVnd(item.price * (1 - item.sale / 100))}{" "}
+                                ₫
                               </span>
                             </p>
                           </Grid>
@@ -239,13 +302,17 @@ const Cart = () => {
                           <div className={cart["box-quanlity"]}>
                             <div
                               className={cart["icon-qty"]}
-                              onClick={() => dispatch(incQty(item.product.id))}
+                              onClick={() => {
+                                incrementCart(item.id, item.quantity);
+                              }}
                             >
                               <AddIcon></AddIcon>
                             </div>
                             <div
                               className={cart["icon-qty"]}
-                              onClick={() => dispatch(decQty(item.product.id))}
+                              onClick={() => {
+                                DecrementCart(item.id, item.quantity);
+                              }}
                             >
                               <RemoveIcon></RemoveIcon>
                             </div>
@@ -265,7 +332,9 @@ const Cart = () => {
                       }}
                     >
                       <p>
-                        {convertVnd(item.product.price * item.quantity)}{" "}
+                        {convertVnd(
+                          item.price * (1 - item.sale / 100) * item.quantity
+                        )}{" "}
                         <span>₫</span>
                       </p>
                     </Grid>
@@ -279,7 +348,7 @@ const Cart = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <div onClick={() => handleDel(item.product.id)}>
+                      <div onClick={() => handleDelete(item.id)}>
                         <DeleteIcon
                           sx={{
                             ":hover": {
@@ -335,7 +404,7 @@ const Cart = () => {
                     }}
                   >
                     {" "}
-                    {convertVnd(totalPrice)} ₫
+                    {convertVnd(total)} ₫
                   </div>
                 </Box>
                 <Box
@@ -353,7 +422,7 @@ const Cart = () => {
                     }}
                   >
                     {" "}
-                    {convertVnd(totalPrice)} ₫
+                    {convertVnd(total)} ₫
                   </div>
                 </Box>
                 <Box

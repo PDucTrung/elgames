@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import Drawer from "@mui/material/Drawer";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import header from "../header/Header.module.css";
 import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
@@ -17,10 +17,6 @@ import Navigation from "../navigation/Navigation";
 import { getAuth } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectCart,
-  selectTotalCartItem,
-} from "../../../store/feature/cart/cart.slice";
 import { selectUser } from "../../../store/feature/auth/auth.slice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { selectPrSearch } from "../../../store/feature/games/games.slice";
@@ -51,7 +47,25 @@ const Header = () => {
       );
     });
     return () => wishlist();
-  }, [wishlist]);
+  }, [user == null ? null : user.uid]);
+
+  // cart
+  const cartRef = collection(getFirestore(app), "cart");
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const q = query(cartRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setCart(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, [user == null ? null : user.uid]);
 
   const dispatch = useDispatch();
   const [flag, setFlag] = useState("");
@@ -61,10 +75,6 @@ const Header = () => {
   const [state, setState] = React.useState({
     left: false,
   });
-  const totalCart = useSelector(selectTotalCartItem);
-
-  // clear cart and list
-  const { clearCart } = useSelector(selectCart);
 
   // select language
   const handleChange = (event) => {
@@ -162,7 +172,9 @@ const Header = () => {
           <Grid>
             <Link className={header["link-icon"]} href={"/cart/Cart"}>
               <LocalMallIcon></LocalMallIcon>
-              <Grid className={header["number-icon"]}>{totalCart}</Grid>
+              <Grid className={header["number-icon"]}>
+                {user == null ? 0 : cart.length}
+              </Grid>
             </Link>
           </Grid>
         </Grid>
@@ -339,7 +351,7 @@ const Header = () => {
                         style={{ cursor: "pointer", padding: "0 30px" }}
                       >
                         {auth.currentUser.displayName == null ? (
-                          <CircularProgress size={20} />
+                          <CircularProgress size={16} />
                         ) : (
                           auth.currentUser.displayName
                         )}
@@ -392,15 +404,6 @@ const Header = () => {
                             Profile
                           </Link>
                         </MenuItem>
-                        {/* <MenuItem>
-                          {" "}
-                          <Grid
-                            margin={"auto"}
-                            fontFamily={"var(--font-default)"}
-                          >
-                            Library
-                          </Grid>
-                        </MenuItem> */}
                         <MenuItem>
                           <Link
                             href={"/"}
@@ -411,7 +414,6 @@ const Header = () => {
                             margin={"auto"}
                             fontFamily={"var(--font-default)"}
                             onClick={() => {
-                              dispatch(clearCart());
                               auth.signOut();
                               setOpenModalSignIn(false);
                             }}
@@ -446,7 +448,7 @@ const Header = () => {
                   <Link className={header["link-icon"]} href={"/cart/Cart"}>
                     <LocalMallIcon></LocalMallIcon>
                     <Grid className={header["number-icon"]}>
-                      {user == null ? 0 : totalCart}
+                      {user == null ? 0 : cart.length}
                     </Grid>
                   </Link>
                 </Grid>

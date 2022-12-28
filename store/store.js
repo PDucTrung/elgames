@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./feature/auth/auth.slice";
 import { blogsReducer } from "./feature/blogs/blogs.slice";
-import { cartReducer } from "./feature/cart/cart.slice";
 import { productsReducer } from "./feature/games/games.slice";
 
 const store = configureStore({
@@ -9,7 +8,6 @@ const store = configureStore({
     products: productsReducer,
     blogs: blogsReducer,
     auth: authReducer,
-    cart: cartReducer,
   },
 });
 

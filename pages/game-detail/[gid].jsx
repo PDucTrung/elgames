@@ -24,13 +24,13 @@ import {
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { selectUser } from "../../store/feature/auth/auth.slice";
-import { addCart } from "../../store/feature/cart/cart.slice";
 import {
   getFirestore,
   collection,
   doc,
   setDoc,
   onSnapshot,
+  updateDoc,
   query,
 } from "firebase/firestore";
 import { app } from "../../lib/firebase";
@@ -114,23 +114,65 @@ const GameDetail = () => {
       {"Add" + game.name + "to cart successful!"}
     </span>
   );
-  const handleClickaddToCart = () => {
-    if (user !== null) {
-      dispatch(addCart({ productId: String(gid), quantity: qty }));
-      toast(<Msg></Msg>);
-    } else {
-      toast.warning("You need to login to perform this function", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+
+  // cart
+
+  const cartRef = collection(getFirestore(app), "cart");
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const q = query(cartRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
       });
-    }
-  };
+      setCart(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+    const handleAddCart = async (game) => {
+      // message
+      const Msg = () => (
+        <span
+          style={{
+            color: "var(--bg)",
+            fontFamily: "var(--font-default)",
+          }}
+        >
+          <CheckCircleOutlineIcon
+            sx={{
+              color: "var(--green)",
+            }}
+          ></CheckCircleOutlineIcon>{" "}
+          {"Add" + game.name + " to wishlist successful!"}
+        </span>
+      );
+
+      // check game exist
+      const check = cart.filter(
+        (item) => item.uid == user.uid && item.name == game.name
+      );
+      if (check.length > 0) {
+        const reference = doc(cartRef, check[0].id);
+        await updateDoc(reference, {
+          quantity: check[0].quantity + qty,
+        });
+        toast(<Msg></Msg>);
+      } else {
+        const reference = doc(cartRef);
+        await setDoc(reference, {
+          uid: user.uid,
+          gameId: game.id,
+          quantity: 1,
+          ...game,
+        });
+        toast(<Msg></Msg>);
+      }
+    };
 
   return (
     <div>
@@ -662,7 +704,25 @@ const GameDetail = () => {
                 <br />
                 <button
                   className={styles["btn-add"]}
-                  onClick={handleClickaddToCart}
+                  onClick={()=> {
+                    if (user !== null) {
+                      handleAddCart(game);
+                    } else {
+                      toast.warning(
+                        "You need to login to perform this function",
+                        {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: false,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "light",
+                        }
+                      );
+                    }
+                  }}
                 >
                   Add to cart
                 </button>

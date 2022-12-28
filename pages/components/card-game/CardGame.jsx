@@ -7,9 +7,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/feature/auth/auth.slice";
-import { addCart } from "../../../store/feature/cart/cart.slice";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {
   getFirestore,
@@ -18,6 +17,7 @@ import {
   deleteDoc,
   setDoc,
   onSnapshot,
+  updateDoc,
   query,
 } from "firebase/firestore";
 import { app } from "../../../lib/firebase";
@@ -25,7 +25,6 @@ import { app } from "../../../lib/firebase";
 const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
   const [isActive, setIsActive] = React.useState(false);
-  const dispatch = useDispatch();
 
   // wishlist
   const wishlistRef = collection(getFirestore(app), "wishlist");
@@ -86,31 +85,61 @@ const CardGame = ({ item }) => {
     }
   };
 
-  // add cart
-  const Msg = () => (
-    <span
-      style={{
-        color: "var(--bg)",
-      }}
-    >
-      {"Add " + item.name + " to cart successful!"}
-    </span>
-  );
-  const handleClickaddToCart = () => {
-    if (user !== null) {
-      dispatch(addCart({ productId: item.id, quantity: 1 }));
+  // cart
+  const cartRef = collection(getFirestore(app), "cart");
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const q = query(cartRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setCart(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+  const handleAddCart = async (game) => {
+    // message
+    const Msg = () => (
+      <span
+        style={{
+          color: "var(--bg)",
+          fontFamily: "var(--font-default)",
+        }}
+      >
+        <CheckCircleOutlineIcon
+          sx={{
+            color: "var(--green)",
+          }}
+        ></CheckCircleOutlineIcon>{" "}
+        {"Add" + item.name + " to wishlist successful!"}
+      </span>
+    );
+
+    // check game exist
+    const check = cart.filter(
+      (item) => item.uid == user.uid && item.name == game.name
+    );
+    if (check.length > 0) {
+      const reference = doc(cartRef, check[0].id);
+      await updateDoc(reference, {
+        quantity: check[0].quantity + 1,
+      });
       toast(<Msg></Msg>);
     } else {
-      toast.warning("You need to login to perform this function", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      const reference = doc(cartRef);
+      await setDoc(reference, {
+        uid: user.uid,
+        gameId: game.id,
+        quantity: 1,
+        ...game,
       });
+      toast(<Msg></Msg>);
     }
   };
 
@@ -262,7 +291,22 @@ const CardGame = ({ item }) => {
                   },
                 },
               }}
-              onClick={handleClickaddToCart}
+              onClick={() => {
+                if (user !== null) {
+                  handleAddCart(item);
+                } else {
+                  toast.warning("You need to login to perform this function", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }
+              }}
             >
               <ShoppingCartIcon
                 sx={{

@@ -1,23 +1,59 @@
 import { Container, Box, Grid, FormControlLabel } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import checkout from "../checkout/Checkout.module.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useForm } from "react-hook-form";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCart } from "../../store/feature/cart/cart.slice";
 import { app } from "../../lib/firebase";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { selectUser } from "../../store/feature/auth/auth.slice";
 import Swal from "sweetalert2";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  deleteDoc,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
-  const { items, totalPrice } = useSelector(selectCart);
-
   const user = useSelector(selectUser);
-  const { clearCart } = useSelector(selectCart);
-  const dispatch = useDispatch();
+
+  // cart
+  const cartRef = collection(getFirestore(app), "cart");
+  const [carts, setCart] = useState([]);
+
+  useEffect(() => {
+    const q = query(cartRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setCart(
+        data.filter((item) => item.uid == (user == null ? null : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+  const total = carts.reduce(
+    (total, item) =>
+      (total += item.price * (1 - item.sale / 100) * item.quantity),
+    0
+  );
+
+  const deleteAll = async (id) => {
+    const reference = doc(cartRef, id);
+    await deleteDoc(reference);
+  };
+
+  const clearCart = () => {
+    carts.forEach((item) => deleteAll(item.id));
+  };
 
   const {
     register,
@@ -49,7 +85,7 @@ const Checkout = () => {
     return [day, month, year].join("-") + " " + [h, m, s].join(":");
   };
 
-  if (items.length == 0) {
+  if (carts.length == 0) {
     return (
       <div className={checkout["no-game"]}>
         <div>
@@ -114,7 +150,7 @@ const Checkout = () => {
 
       <section className={checkout["section-checkout"]}>
         <Container>
-          <Grid container  width={"100%"}>
+          <Grid container width={"100%"}>
             <Grid
               item={true}
               xs={12}
@@ -143,16 +179,16 @@ const Checkout = () => {
                           getFirestore(app),
                           "checkout"
                         );
-                        dispatch(clearCart());
                         const bill = {
-                          uid: user == null ? "" : user.uid,
+                          uid: user == null ? null : user.uid,
                           infor: data,
-                          payment: items,
+                          bill: carts,
                           date: date(),
-                          total: totalPrice,
+                          total: total,
                         };
 
                         addDoc(reference, bill).catch(console.error);
+                        clearCart();
                       }
                     });
                   })}
@@ -395,7 +431,7 @@ const Checkout = () => {
                 <br />
                 <div className={checkout["box-order"]}>
                   <div className={checkout["card-order"]}>
-                    <Grid container >
+                    <Grid container>
                       <Grid
                         item={true}
                         xs={8}
@@ -423,9 +459,9 @@ const Checkout = () => {
                   </div>
 
                   {/* card */}
-                  {items.map((item) => (
+                  {carts.map((item) => (
                     <div className={checkout["card-order"]} key={item.id}>
-                      <Grid container >
+                      <Grid container>
                         <Grid
                           item={true}
                           xs={8}
@@ -437,7 +473,7 @@ const Checkout = () => {
                           }}
                         >
                           <img
-                            src={item.product.img}
+                            src={item.img}
                             alt="img-game"
                             style={{
                               maxWidth: "40%",
@@ -446,7 +482,7 @@ const Checkout = () => {
                           />
 
                           <p>
-                            {item.product.name}{" "}
+                            {item.name}{" "}
                             <strong
                               style={{
                                 color: "var(--blue)",
@@ -465,14 +501,17 @@ const Checkout = () => {
                             padding: "12px",
                           }}
                         >
-                          {convertVnd(item.quantity * item.product.price)} đ
+                          {convertVnd(
+                            item.quantity * item.price * (1 - item.sale / 100)
+                          )}{" "}
+                          đ
                         </Grid>
                       </Grid>
                     </div>
                   ))}
 
                   <div className={checkout["card-order"]}>
-                    <Grid container >
+                    <Grid container>
                       <Grid
                         item={true}
                         xs={8}
@@ -494,7 +533,7 @@ const Checkout = () => {
                           padding: "12px",
                         }}
                       >
-                        <strong>{convertVnd(totalPrice)} đ</strong>
+                        <strong>{convertVnd(total)} đ</strong>
                       </Grid>
                     </Grid>
                   </div>
@@ -522,7 +561,7 @@ const Checkout = () => {
                           padding: "12px",
                         }}
                       >
-                        <strong>{convertVnd(totalPrice)} đ</strong>
+                        <strong>{convertVnd(total)} đ</strong>
                       </Grid>
                     </Grid>
                   </div>

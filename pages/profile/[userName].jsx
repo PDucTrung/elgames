@@ -27,7 +27,7 @@ const Profile = () => {
         data.push({ ...doc.data(), id: doc.id });
       });
       setBill(
-        data.filter((item) => item.uid == (user == null ? "default" : user.uid))
+        data.filter((item) => item.uid == (user == null ? null : user.uid))
       );
     });
     return () => pay();
@@ -170,10 +170,10 @@ const Profile = () => {
                     {i.date}
                   </Grid>
                   <Grid item={true} padding={"10px"} xs={6}>
-                    {i.payment.map((item) => (
+                    {i.bill.map((item) => (
                       <Box key={item == null ? null : item.id}>
                         <strong>
-                          {item == null ? null : item.product.name}
+                          {item == null ? null : item.name}
                         </strong>{" "}
                         {item == null ? null : "x"}{" "}
                         <span
