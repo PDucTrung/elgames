@@ -52,7 +52,18 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                   displayName: data.displayName,
                 });
               })
-              .catch(console.error);
+              .catch(function (error) {
+                toast.error("Email already exists", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              });
           })}
         >
           <Grid>
