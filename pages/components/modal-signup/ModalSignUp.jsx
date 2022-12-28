@@ -11,6 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { app } from "../../../lib/firebase";
+import { toast } from "react-toastify";
 
 const ModalSignUp = ({ handleCloseModalSignUp }) => {
   const auth = getAuth(app);
