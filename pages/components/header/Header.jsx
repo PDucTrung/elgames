@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import Drawer from "@mui/material/Drawer";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import header from "../header/Header.module.css";
 import ModalSignIn from "../modal-signin/ModalSignIn";
 import ModalSignUp from "../modal-signup/ModalSignUp";
@@ -18,18 +18,42 @@ import { getAuth } from "firebase/auth";
 import { app } from "../../../lib/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectTotalwishlistItem,
-  selectWishlist,
-} from "../../../store/feature/wishlist/wishlist.slice";
-import {
   selectCart,
   selectTotalCartItem,
 } from "../../../store/feature/cart/cart.slice";
 import { selectUser } from "../../../store/feature/auth/auth.slice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { selectPrSearch } from "../../../store/feature/games/games.slice";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 
 const Header = () => {
+  // auth
+  const user = useSelector(selectUser);
+  const auth = getAuth(app);
+  // wishlist
+  const wishlistRef = collection(getFirestore(app), "wishlist");
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const q = query(wishlistRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setWishlist(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, [wishlist]);
+
+  const dispatch = useDispatch();
   const [flag, setFlag] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModalSignIn, setOpenModalSignIn] = useState(false);
@@ -37,16 +61,9 @@ const Header = () => {
   const [state, setState] = React.useState({
     left: false,
   });
-  const totalWishlist = useSelector(selectTotalwishlistItem);
   const totalCart = useSelector(selectTotalCartItem);
 
-  // auth
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const auth = getAuth(app);
-
   // clear cart and list
-  const { clearList } = useSelector(selectWishlist);
   const { clearCart } = useSelector(selectCart);
 
   // select language
@@ -137,7 +154,9 @@ const Header = () => {
           <Grid>
             <Link className={header["link-icon"]} href={"/favorites/Favorites"}>
               <FavoriteBorderIcon></FavoriteBorderIcon>
-              <Grid className={header["number-icon"]}>{totalWishlist}</Grid>
+              <Grid className={header["number-icon"]}>
+                {user == null ? 0 : wishlist.length}
+              </Grid>
             </Link>
           </Grid>
           <Grid>
@@ -393,7 +412,6 @@ const Header = () => {
                             fontFamily={"var(--font-default)"}
                             onClick={() => {
                               dispatch(clearCart());
-                              dispatch(clearList());
                               auth.signOut();
                               setOpenModalSignIn(false);
                             }}
@@ -416,7 +434,7 @@ const Header = () => {
                   >
                     <FavoriteBorderIcon></FavoriteBorderIcon>
                     <Grid className={header["number-icon"]}>
-                      {user == null ? 0 : totalWishlist}
+                      {user == null ? 0 : wishlist.length}
                     </Grid>
                   </Link>
                 </Grid>

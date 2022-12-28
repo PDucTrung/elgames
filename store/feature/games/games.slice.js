@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { collection, getFirestore, getDocs, query } from "firebase/firestore";
+import { set } from "react-hook-form";
 import { app } from "../../../lib/firebase";
 
 const initialState = {
@@ -17,22 +18,6 @@ const PAGE_SIZE = 9;
 export const loadProduct = createAsyncThunk(
   "products/loadProduct",
   async () => {
-    // const q = query(collection(getFirestore(app), "games"));
-
-    // const promise = getDocs(q)
-    //   .then((snapshot) => {
-    //     const data = snapshot.docs.map((item) => ({
-    //       id: item.id,
-    //       ...item.data(),
-    //     }));
-    //     return data;
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-
-    // const data = await promise;
-
     const games = await getDocs(collection(getFirestore(app), "games"));
     const data = games.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     return data;
@@ -182,11 +167,13 @@ export const {
   sortAscNumber,
   sortDesNumber,
   clearFilter,
-  //
   searchPrHeader,
 } = productsSlice.actions;
 
 export const selectAllProducts = (state) => state.products.default;
+
+export const selectGenres = (state) =>
+  state.products.default.map((item) => item.genres.trim());
 
 export const selectProductById = (productId) => (state) =>
   state.products.default.find((product) => product.id == productId);
@@ -212,13 +199,11 @@ export const selectProductsList = (state) => {
   );
 
   return {
-    genres: state.genres.data,
     products: productsByPage,
     currentPage: state.products.currentPage,
     totalPage,
     pageChanged,
     filterChanged,
-    //
     filterByPrice,
     searchByName,
     sortAscName,
@@ -226,7 +211,6 @@ export const selectProductsList = (state) => {
     sortAscNumber,
     sortDesNumber,
     clearFilter,
-    //
     loading: state.loading,
   };
 };

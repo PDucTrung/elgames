@@ -1,17 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Grid, Box } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import favorites from "../favorites/Favorites.module.css";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { selectWishlist } from "../../store/feature/wishlist/wishlist.slice";
 import Swal from "sweetalert2";
+import { selectUser } from "../../store/feature/auth/auth.slice";
+import {
+  getFirestore,
+  collection,
+  doc,
+  deleteDoc,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+import { app } from "../../lib/firebase";
 
 const Favorites = () => {
-  const { items, removeItem } = useSelector(selectWishlist);
-  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
-  const handleDelete = (productId) => {
+  // wishlist
+  const wishlistRef = collection(getFirestore(app), "wishlist");
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const q = query(wishlistRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setWishlist(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+  const Delete = async (id) => {
+    const reference = doc(wishlistRef, id);
+    await deleteDoc(reference);
+  };
+
+  const handleDelete = (id) => {
     Swal.fire({
       title: "Do you want to delete ?",
       showDenyButton: true,
@@ -19,7 +50,7 @@ const Favorites = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("OK!", "", "success");
-        dispatch(removeItem(productId));
+        Delete(id);
       }
     });
   };
@@ -28,7 +59,7 @@ const Favorites = () => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
 
-  if (items.length == 0) {
+  if (wishlist.length == 0) {
     return (
       <div className={favorites["no-game"]}>
         <div>
@@ -103,7 +134,7 @@ const Favorites = () => {
               flexDirection: "column",
             }}
           >
-            {items.map((item) => (
+            {wishlist.map((item) => (
               <Grid
                 key={item.id}
                 container
@@ -114,7 +145,7 @@ const Favorites = () => {
               >
                 <Grid item={true} xs={12} sm={6} md={2} padding={"24px 24px"}>
                   <img
-                    src={item.game.img}
+                    src={item.img}
                     alt="img-game"
                     style={{
                       maxWidth: "100%",
@@ -135,7 +166,7 @@ const Favorites = () => {
                   }}
                 >
                   <p>
-                    <strong>{item.game.name}</strong>
+                    <strong>{item.name}</strong>
                   </p>
                   <p>
                     <span
@@ -145,7 +176,7 @@ const Favorites = () => {
                     >
                       Genres:
                     </span>{" "}
-                    {item.game.genres}
+                    {item.genres}
                   </p>
                   <p>
                     <span
@@ -155,7 +186,7 @@ const Favorites = () => {
                     >
                       Developer:
                     </span>{" "}
-                    {item.game.developer}
+                    {item.developer}
                   </p>
                   <p>
                     <span
@@ -165,7 +196,7 @@ const Favorites = () => {
                     >
                       Publisher:
                     </span>{" "}
-                    {item.game.publisher}
+                    {item.publisher}
                   </p>
                   <p>
                     <span
@@ -175,7 +206,7 @@ const Favorites = () => {
                     >
                       OS:
                     </span>{" "}
-                    {item.game.system}
+                    {item.system}
                   </p>
                 </Grid>
                 <Grid
@@ -199,25 +230,22 @@ const Favorites = () => {
                     }}
                   >
                     <div className={favorites["box-price-wishlist"]}>
-                      <div className={favorites["box-sale"]}>
-                        -{item.game.sale}%
-                      </div>
+                      <div className={favorites["box-sale"]}>-{item.sale}%</div>
                       <div className={favorites["box-price"]}>
                         <p className={favorites["text-sale"]}>
-                          {convertVnd(item.game.price)} đ
+                          {convertVnd(item.price)} đ
                         </p>
                         <p>
-                          {convertVnd(
-                            (item.game.price * (100 - item.game.sale)) / 100
-                          )}{" "}
-                          đ
+                          {convertVnd((item.price * (100 - item.sale)) / 100)} đ
                         </p>
                       </div>
                       <Link
                         as={"/game-detail/[gid]"}
                         href={{
                           pathname: "/game-detail/[gid]",
-                          query: { gid: item.id },
+                          query: {
+                            gid: item.gameId,
+                          },
                         }}
                       >
                         <div className={favorites["box-view"]}>View detail</div>
@@ -233,7 +261,7 @@ const Favorites = () => {
                   >
                     <button
                       className={favorites["box-remove"]}
-                      onClick={() => handleDelete(item.game.id)}
+                      onClick={() => handleDelete(item.id)}
                     >
                       Remove
                     </button>

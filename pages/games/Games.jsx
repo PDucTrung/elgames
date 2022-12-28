@@ -10,22 +10,17 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
-import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import SearchIcon from "@mui/icons-material/Search";
-//
 import CardGame from "../components/card-game/CardGame";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Link from "next/link";
 import { Form } from "react-bootstrap";
-//
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProductsList } from "../../store/feature/games/games.slice";
+import {
+  selectGenres,
+  selectProductsList,
+} from "../../store/feature/games/games.slice";
 
 const Games = () => {
   const {
@@ -34,7 +29,6 @@ const Games = () => {
     totalPage,
     pageChanged,
     filterChanged,
-    genres,
     filterByPrice,
     searchByName,
     sortAscName,
@@ -47,6 +41,7 @@ const Games = () => {
   const [value, setValue] = React.useState([0, 2000000]);
   const dispatch = useDispatch();
   const filterRef = useRef();
+  const genres = [...new Set(useSelector(selectGenres))];
 
   // pagination
   const handleChangePage = (event, value) => {

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BackToTop from "./back-to-top/BackToTop";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
 import { getAuth } from "firebase/auth";
 import { app } from "../../lib/firebase";
-
 import LoadAnimation from "./load/LoadAnimation";
 import {
   loadProduct,
@@ -58,6 +57,7 @@ const Layout = (props) => {
           <Footer />
 
           <BackToTop />
+
           <ToastContainer />
         </div>
       )}

@@ -1,33 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import card from "../card-game/CardGame.module.css";
 import { Box, Container, Grid } from "@mui/material";
 import Link from "next/link";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addItem,
-  selectWishlist,
-} from "../../../store/feature/wishlist/wishlist.slice";
 import { selectUser } from "../../../store/feature/auth/auth.slice";
 import { addCart } from "../../../store/feature/cart/cart.slice";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import {
+  getFirestore,
+  collection,
+  doc,
+  deleteDoc,
+  setDoc,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+import { app } from "../../../lib/firebase";
 
 const CardGame = ({ item }) => {
   const user = useSelector(selectUser);
   const [isActive, setIsActive] = React.useState(false);
-  const { items, removeItem } = useSelector(selectWishlist);
-  // const newId = Date.now().toString().slice(-5);
-
   const dispatch = useDispatch();
-  const handleClickaddToWishlist = () => {
-    dispatch(addItem({ productId: item.id }));
+
+  // wishlist
+  const wishlistRef = collection(getFirestore(app), "wishlist");
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const q = query(wishlistRef);
+    const wishlist = onSnapshot(q, (querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setWishlist(
+        data.filter((item) => item.uid == (user == null ? "" : user.uid))
+      );
+    });
+    return () => wishlist();
+  }, []);
+
+  const handleAdd = async (game) => {
+    const check = wishlist.filter(
+      (item) => item.uid == user.uid && item.name == game.name
+    );
+    if (check.length > 0) {
+      toast.error("The game is already on the wish list", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      const reference = doc(wishlistRef);
+      await setDoc(reference, {
+        uid: user.uid,
+        gameId: game.id,
+        ...game,
+      });
+      const Msg = () => (
+        <span
+          style={{
+            color: "var(--bg)",
+            fontFamily: "var(--font-default)",
+          }}
+        >
+          <CheckCircleOutlineIcon
+            sx={{
+              color: "var(--green)",
+            }}
+          ></CheckCircleOutlineIcon>{" "}
+          {"Add" + item.name + " to wishlist successful!"}
+        </span>
+      );
+      toast(<Msg></Msg>);
+    }
   };
 
   // add cart
@@ -61,6 +117,7 @@ const CardGame = ({ item }) => {
   const convertVnd = (item) => {
     return Intl.NumberFormat().format(item).split(".").join(",");
   };
+
   return (
     <Grid
       xs={6}
@@ -239,46 +296,8 @@ const CardGame = ({ item }) => {
               }}
               onClick={() => {
                 if (user !== null) {
-                  const list = items.filter((i) => i.id == item.id);
-                  if (list.length > 0) {
-                    setIsActive(false);
-                    dispatch(removeItem(item.id));
-                    const Msg = () => (
-                      <span
-                        style={{
-                          color: "var(--bg)",
-                          fontFamily: "var(--font-default)",
-                        }}
-                      >
-                        <ErrorOutlineIcon
-                          sx={{
-                            color: "var(--red)",
-                          }}
-                        ></ErrorOutlineIcon>{" "}
-                        {"Delete " + item.name + " to wishlist successful!"}
-                      </span>
-                    );
-                    toast(<Msg></Msg>);
-                  } else {
-                    setIsActive(true);
-                    handleClickaddToWishlist();
-                    const Msg = () => (
-                      <span
-                        style={{
-                          color: "var(--bg)",
-                          fontFamily: "var(--font-default)",
-                        }}
-                      >
-                        <CheckCircleOutlineIcon
-                          sx={{
-                            color: "var(--green)",
-                          }}
-                        ></CheckCircleOutlineIcon>{" "}
-                        {"Add" + item.name + " to wishlist successful!"}
-                      </span>
-                    );
-                    toast(<Msg></Msg>);
-                  }
+                  handleAdd(item);
+                  setIsActive(true);
                 } else {
                   toast.warning("You need to login to perform this function", {
                     position: "top-right",
