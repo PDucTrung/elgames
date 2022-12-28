@@ -153,7 +153,7 @@ const Cart = () => {
                           item={true}
                           xs={12}
                           md={8}
-                        
+                          container
                           borderRight={{ xs: "0", md: "1px solid var(--gray)" }}
                           borderBottom={{
                             xs: "1px solid var(--gray)",

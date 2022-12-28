@@ -116,7 +116,7 @@ const GameDetail = () => {
   );
   const handleClickaddToCart = () => {
     if (user !== null) {
-      dispatch(addCart({ productId: Number(gid), quantity: qty }));
+      dispatch(addCart({ productId: String(gid), quantity: qty }));
       toast(<Msg></Msg>);
     } else {
       toast.warning("You need to login to perform this function", {
