@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { selectBlogsById } from "../../store/feature/blogs/blogs.slice";
 import { useSelector } from "react-redux";
+import Banner from "../components/banner/Banner";
 
 const BlogDetail = () => {
   const router = useRouter();
@@ -24,47 +25,8 @@ const BlogDetail = () => {
   const onSubmit = (e) => console.log(e);
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-          display="flex"
-          justifyContent={"center"}
-        >
-          <p className="title">{blog.name}</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Blog</Grid>
+      <Banner parent="Blog" children={blog.name} />
 
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>
-            <span className="title">{blog.name}</span>
-          </Grid>
-        </Grid>
-      </Box>
       <section className={blogdetal["section-blog-detail"]}>
         <Container>
           <Grid container xs={12}>

@@ -7,47 +7,12 @@ import AllGame from "./all-games/AllGame";
 import People from "./people/People";
 import Feature from "./feature/Feature";
 import Count from "./Count/Count";
+import Banner from "../components/banner/Banner";
 
 const About = () => {
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>About</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Home</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>About</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Home" children="About" />
 
       <section className={about["seciton-all-games"]}>
         <AllGame></AllGame>

@@ -18,6 +18,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import Banner from "../components/banner/Banner";
 
 const Checkout = () => {
   const user = useSelector(selectUser);
@@ -33,9 +34,7 @@ const Checkout = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setCart(
-        data.filter((item) => item.uid == (user == null ? null : user.uid))
-      );
+      setCart(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, []);
@@ -110,43 +109,7 @@ const Checkout = () => {
 
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Checkout</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Cart</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Checkout</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Cart" children="Checkout" />
 
       <section className={checkout["section-checkout"]}>
         <Container>

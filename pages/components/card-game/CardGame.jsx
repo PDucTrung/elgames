@@ -37,9 +37,7 @@ const CardGame = ({ item }) => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setWishlist(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setWishlist(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, []);
@@ -96,9 +94,7 @@ const CardGame = ({ item }) => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setCart(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setCart(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, []);

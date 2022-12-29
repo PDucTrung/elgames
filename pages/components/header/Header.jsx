@@ -42,12 +42,10 @@ const Header = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setWishlist(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setWishlist(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
-  }, [user == null ? null : user.uid]);
+  }, [user && user.uid]);
 
   // cart
   const cartRef = collection(getFirestore(app), "cart");
@@ -60,9 +58,7 @@ const Header = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setCart(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setCart(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, [user == null ? null : user.uid]);
@@ -393,7 +389,7 @@ const Header = () => {
                             href={{
                               pathname: "/profile/[userName]",
                               query: {
-                                userName: user == null ? "" : user.displayName,
+                                userName: user && user.displayName,
                               },
                             }}
                             style={{

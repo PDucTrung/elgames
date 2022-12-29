@@ -7,6 +7,7 @@ import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { useForm } from "react-hook-form";
+import Banner from "../components/banner/Banner";
 
 const Contact = () => {
   const {
@@ -19,43 +20,7 @@ const Contact = () => {
   const onSubmit = (e) => console.log(e);
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Contact</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Home</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Contact</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Home" children="Contact" />
 
       <section className={contact["secion-info"]}>
         <Container

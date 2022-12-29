@@ -11,6 +11,7 @@ import {
   query,
 } from "firebase/firestore";
 import { app } from "../../lib/firebase";
+import Banner from "../components/banner/Banner";
 
 const Profile = () => {
   const user = useSelector(selectUser);
@@ -26,52 +27,14 @@ const Profile = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setBill(
-        data.filter((item) => item.uid == (user == null ? null : user.uid))
-      );
+      setBill(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => pay();
   }, []);
 
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Profile</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>My Account</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Profile</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Profile" children={user && user.displayName} />
 
       <section className={profile["section-profile"]}>
         <Container
@@ -105,7 +68,7 @@ const Profile = () => {
                   type="text"
                   placeholder="Your Email"
                   className="input"
-                  value={user == null ? "" : user.email}
+                  value={user && user.email}
                   readOnly
                 />
               </div>
@@ -115,7 +78,7 @@ const Profile = () => {
                   type="text"
                   placeholder="Your Password"
                   className="input"
-                  value={user == null ? "" : user.displayName}
+                  value={user && user.displayName}
                   readOnly
                 />
               </div>
@@ -171,17 +134,14 @@ const Profile = () => {
                   </Grid>
                   <Grid item={true} padding={"10px"} xs={6}>
                     {i.bill.map((item) => (
-                      <Box key={item == null ? null : item.id}>
-                        <strong>
-                          {item == null ? null : item.name}
-                        </strong>{" "}
-                        {item == null ? null : "x"}{" "}
+                      <Box key={item && item.id}>
+                        <strong>{item && item.name}</strong> {"x"}{" "}
                         <span
                           style={{
                             color: "var(--blue)",
                           }}
                         >
-                          {item == null ? null : item.quantity}
+                          {item && item.quantity}
                         </span>
                       </Box>
                     ))}
@@ -196,7 +156,7 @@ const Profile = () => {
                       justifyContent: "center",
                     }}
                   >
-                    {i.total == null ? null : convertVnd(i.total)}
+                    {i.total && convertVnd(i.total)}
                   </Grid>
                 </Grid>
               ))}

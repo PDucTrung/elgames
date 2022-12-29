@@ -1,18 +1,12 @@
 import * as React from "react";
 import help from "../help/Help.module.css";
-import {
-  Box,
-  Container,
-  Grid,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Banner from "../components/banner/Banner";
 
 const Help = () => {
   const [active, setActive] = React.useState([]);
-  console.log(active);
   const data = [
     {
       id: 1,
@@ -133,43 +127,7 @@ const Help = () => {
   };
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Help</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Home</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Help</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Home" children="Help" />
 
       <section className={help["section-help"]}>
         <Container>

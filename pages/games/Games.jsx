@@ -21,6 +21,7 @@ import {
   selectGenres,
   selectProductsList,
 } from "../../store/feature/games/games.slice";
+import Banner from "../components/banner/Banner";
 
 const Games = () => {
   const {
@@ -75,43 +76,7 @@ const Games = () => {
   };
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Games</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Home</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Games</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Home" children="Store" />
 
       <section className={games["section-games"]}>
         <Container>

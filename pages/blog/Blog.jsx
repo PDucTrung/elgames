@@ -8,6 +8,7 @@ import blog from "../blog/Blog.module.css";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBlogsList } from "../../store/feature/blogs/blogs.slice";
+import Banner from "../components/banner/Banner";
 
 const Blog = () => {
   const { blogs, currentPage, totalPage, pageChanged } =
@@ -21,43 +22,7 @@ const Blog = () => {
   };
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-        >
-          <p>Blog</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Home</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>Blog</Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Home" children="Blog" />
 
       <section className={blog["section-blog-list"]}>
         <Container>

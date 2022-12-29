@@ -34,6 +34,7 @@ import {
   query,
 } from "firebase/firestore";
 import { app } from "../../lib/firebase";
+import Banner from "../components/banner/Banner";
 
 const GameDetail = () => {
   const user = useSelector(selectUser);
@@ -48,9 +49,7 @@ const GameDetail = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setWishlist(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setWishlist(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, []);
@@ -127,96 +126,54 @@ const GameDetail = () => {
       querySnapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setCart(
-        data.filter((item) => item.uid == (user == null ? "" : user.uid))
-      );
+      setCart(data.filter((item) => item.uid == (user && user.uid)));
     });
     return () => wishlist();
   }, []);
 
-    const handleAddCart = async (game) => {
-      // message
-      const Msg = () => (
-        <span
-          style={{
-            color: "var(--bg)",
-            fontFamily: "var(--font-default)",
+  const handleAddCart = async (game) => {
+    // message
+    const Msg = () => (
+      <span
+        style={{
+          color: "var(--bg)",
+          fontFamily: "var(--font-default)",
+        }}
+      >
+        <CheckCircleOutlineIcon
+          sx={{
+            color: "var(--green)",
           }}
-        >
-          <CheckCircleOutlineIcon
-            sx={{
-              color: "var(--green)",
-            }}
-          ></CheckCircleOutlineIcon>{" "}
-          {"Add" + game.name + " to wishlist successful!"}
-        </span>
-      );
+        ></CheckCircleOutlineIcon>{" "}
+        {"Add" + game.name + " to wishlist successful!"}
+      </span>
+    );
 
-      // check game exist
-      const check = cart.filter(
-        (item) => item.uid == user.uid && item.name == game.name
-      );
-      if (check.length > 0) {
-        const reference = doc(cartRef, check[0].id);
-        await updateDoc(reference, {
-          quantity: check[0].quantity + qty,
-        });
-        toast(<Msg></Msg>);
-      } else {
-        const reference = doc(cartRef);
-        await setDoc(reference, {
-          uid: user.uid,
-          gameId: game.id,
-          quantity: 1,
-          ...game,
-        });
-        toast(<Msg></Msg>);
-      }
-    };
+    // check game exist
+    const check = cart.filter(
+      (item) => item.uid == user.uid && item.name == game.name
+    );
+    if (check.length > 0) {
+      const reference = doc(cartRef, check[0].id);
+      await updateDoc(reference, {
+        quantity: check[0].quantity + qty,
+      });
+      toast(<Msg></Msg>);
+    } else {
+      const reference = doc(cartRef);
+      await setDoc(reference, {
+        uid: user.uid,
+        gameId: game.id,
+        quantity: 1,
+        ...game,
+      });
+      toast(<Msg></Msg>);
+    }
+  };
 
   return (
     <div>
-      <Box
-        sx={{
-          width: "100%",
-          textAlign: "center",
-          padding: " 70px 0",
-          backgroundColor: "var(--dark)",
-          color: "white",
-        }}
-      >
-        <Grid
-          fontFamily={"var(--font-title)"}
-          fontSize={{
-            xs: "24px",
-            sm: "40px",
-          }}
-          fontWeight="bold"
-          color={"white"}
-          display="flex"
-          justifyContent={"center"}
-        >
-          <p className="title">{game.name}</p>
-        </Grid>
-        <Grid
-          sx={{
-            fontFamily: "var(--font-default)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "500",
-            gap: "16px",
-          }}
-        >
-          <Grid color={"var(--gray)"}>Store</Grid>
-
-          <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
-
-          <Grid color={"var(--blue)"}>
-            <span className="title">{game.name}</span>
-          </Grid>
-        </Grid>
-      </Box>
+      <Banner parent="Store" children={game.name} />
 
       <section className={styles["section-gamedetail"]}>
         <Container>
@@ -704,7 +661,7 @@ const GameDetail = () => {
                 <br />
                 <button
                   className={styles["btn-add"]}
-                  onClick={()=> {
+                  onClick={() => {
                     if (user !== null) {
                       handleAddCart(game);
                     } else {
