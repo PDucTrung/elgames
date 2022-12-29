@@ -12,7 +12,7 @@ import Banner from "../components/banner/Banner";
 const About = () => {
   return (
     <div>
-      <Banner parent="Home" children="About" />
+      <Banner parent="Home" linkChildren="About" />
 
       <section className={about["seciton-all-games"]}>
         <AllGame></AllGame>

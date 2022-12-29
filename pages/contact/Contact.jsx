@@ -20,7 +20,7 @@ const Contact = () => {
   const onSubmit = (e) => console.log(e);
   return (
     <div>
-      <Banner parent="Home" children="Contact" />
+      <Banner parent="Home" linkChildren="Contact" />
 
       <section className={contact["secion-info"]}>
         <Container

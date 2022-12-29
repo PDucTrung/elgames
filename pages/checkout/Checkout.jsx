@@ -109,7 +109,7 @@ const Checkout = () => {
 
   return (
     <div>
-      <Banner parent="Cart" children="Checkout" />
+      <Banner parent="Cart" linkChildren="Checkout" />
 
       <section className={checkout["section-checkout"]}>
         <Container>

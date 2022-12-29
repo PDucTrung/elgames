@@ -76,7 +76,7 @@ const Games = () => {
   };
   return (
     <div>
-      <Banner parent="Home" children="Store" />
+      <Banner parent="Home" linkChildren="Store" />
 
       <section className={games["section-games"]}>
         <Container>

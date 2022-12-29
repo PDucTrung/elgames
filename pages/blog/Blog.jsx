@@ -22,7 +22,7 @@ const Blog = () => {
   };
   return (
     <div>
-      <Banner parent="Home" children="Blog" />
+      <Banner parent="Home" linkChildren="Blog" />
 
       <section className={blog["section-blog-list"]}>
         <Container>

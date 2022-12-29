@@ -34,7 +34,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Banner parent="Profile" children={user && user.displayName} />
+      <Banner parent="Profile" linkChildren={user && user.displayName} />
 
       <section className={profile["section-profile"]}>
         <Container

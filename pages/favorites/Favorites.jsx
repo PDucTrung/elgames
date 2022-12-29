@@ -85,7 +85,7 @@ const Favorites = () => {
 
   return (
     <div>
-      <Banner parent="Home" children="Wishlist" />
+      <Banner parent="Home" linkChildren="Wishlist" />
 
       <section className={favorites["section-wishlist"]}>
         <Container>

@@ -110,7 +110,7 @@ const Cart = () => {
 
   return (
     <div>
-      <Banner parent="Home" children="Cart" />
+      <Banner parent="Home" linkChildren="Cart" />
 
       <section className={cart["section-cart"]}>
         <Container>

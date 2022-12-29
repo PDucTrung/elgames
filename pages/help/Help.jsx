@@ -127,7 +127,7 @@ const Help = () => {
   };
   return (
     <div>
-      <Banner parent="Home" children="Help" />
+      <Banner parent="Home" linkChildren="Help" />
 
       <section className={help["section-help"]}>
         <Container>

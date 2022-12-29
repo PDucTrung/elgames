@@ -32,7 +32,7 @@ const Banner = (props) => {
           margin="0 auto"
           className={banner.text}
         >
-          {props.children}
+          {props.linkChildren}
         </Box>
       </Grid>
       <Grid
@@ -58,7 +58,7 @@ const Banner = (props) => {
           }}
           className={banner.text}
         >
-          {props.children}
+          {props.linkChildren}
         </Grid>
       </Grid>
     </Box>

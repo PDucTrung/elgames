@@ -173,7 +173,7 @@ const GameDetail = () => {
 
   return (
     <div>
-      <Banner parent="Store" children={game.name} />
+      <Banner parent="Store" linkChildren={game.name} />
 
       <section className={styles["section-gamedetail"]}>
         <Container>

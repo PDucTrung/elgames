@@ -25,7 +25,7 @@ const BlogDetail = () => {
   const onSubmit = (e) => console.log(e);
   return (
     <div>
-      <Banner parent="Blog" children={blog.name} />
+      <Banner parent="Blog" linkChildren={blog.name} />
 
       <section className={blogdetal["section-blog-detail"]}>
         <Container>
