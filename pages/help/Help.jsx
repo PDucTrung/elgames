@@ -11,7 +11,8 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const Help = () => {
-  const [isActive, setIsActive] = React.useState(false);
+  const [active, setActive] = React.useState([]);
+  console.log(active);
   const data = [
     {
       id: 1,
@@ -119,13 +120,16 @@ const Help = () => {
       ],
     },
   ];
-  const handleToggle = (e) => {
-    setIsActive(!isActive);
-    isActive
-      ? (e.currentTarget.parentNode.parentElement.lastElementChild.style.display =
-          "none")
-      : (e.currentTarget.parentNode.parentElement.lastElementChild.style.display =
-          "block");
+  const handleToggle = (id) => {
+    console.log(id);
+    setActive((prev) => {
+      const isActive = active.includes(id);
+      if (isActive) {
+        return active.filter((item) => item !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
   };
   return (
     <div>
@@ -191,7 +195,12 @@ const Help = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
+                    cursor: "pointer",
+                    ":hover": {
+                      color: "var(--blue)",
+                    },
                   }}
+                  onClick={() => handleToggle(item.id)}
                 >
                   <p
                     style={{
@@ -208,17 +217,14 @@ const Help = () => {
                       ":hover": {
                         color: "var(--blue)",
                       },
-                    }}
-                    onClick={(e) => {
-                      handleToggle(e);
-                      e.currentTarget.style.transform = isActive
-                        ? "rotate(0)"
-                        : "rotate(180deg)";
+                      transform: active.includes(item.id)
+                        ? "rotate(180deg)"
+                        : "rotate(0)",
                     }}
                   />
                 </Box>
                 <Box
-                  display={"none"}
+                  display={active.includes(item.id) ? "block" : "none"}
                   sx={{
                     marginTop: "16px",
                     color: "var(--gray)",
