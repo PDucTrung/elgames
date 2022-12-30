@@ -61,7 +61,7 @@ const HomeSlider = () => {
                 display={"flex"}
                 flexDirection={"column"}
                 justifyContent={"center"}
-                alignItems={{ xs: "center", lg: "start" }}
+                alignItems={{ xs: "center", lg: "flex-start" }}
                 gap={{ xs: "20px", md: "30px", lg: "40px" }}
               >
                 <Grid
@@ -129,7 +129,7 @@ const HomeSlider = () => {
                 display={"flex"}
                 flexDirection="column"
                 justifyContent={"center"}
-                alignItems={{ xs: "center", lg: "start" }}
+                alignItems={{ xs: "center", lg: "flex-start" }}
                 gap={{ xs: "20px", md: "30px", lg: "40px" }}
               >
                 <Grid

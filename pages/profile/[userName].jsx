@@ -111,9 +111,9 @@ const Profile = () => {
                 </Grid>
               </Grid>
 
-              {bill.map((i) => (
+              {bill.map((i, index) => (
                 <Grid
-                  key={i}
+                  key={index}
                   container
                   sx={{
                     borderTop: "1px solid var(--gray)",

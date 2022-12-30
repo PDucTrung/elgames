@@ -38,7 +38,7 @@ const Games = () => {
     sortDesNumber,
     clearFilter,
   } = useSelector(selectProductsList);
-  const [sort, setSort] = React.useState(0);
+  const [sort, setSort] = React.useState("");
   const [value, setValue] = React.useState([0, 2000000]);
   const dispatch = useDispatch();
   const filterRef = useRef();
@@ -302,7 +302,7 @@ const Games = () => {
                         document.querySelectorAll(".form-check-input");
                       textSearch.value = "";
                       checkbox.forEach((item) => (item.checked = false));
-                      setSort(0);
+                      setSort("");
                       setValue([0, 2000000]);
                       dispatch(clearFilter());
                     }}

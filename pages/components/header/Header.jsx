@@ -138,7 +138,7 @@ const Header = () => {
         <Grid
           sx={{
             display: "flex",
-            justifyContent: "end",
+            justifyContent: "flex-end",
             width: "100%",
             borderBottom: "1px solid var(--gray)",
             padding: "20px 0",
@@ -594,7 +594,7 @@ const Header = () => {
                             display={"flex"}
                             flexDirection={"column"}
                             alignItems={"center"}
-                            justifyContent={"start"}
+                            justifyContent={"flex-start"}
                             gap={"8px"}
                           >
                             <div

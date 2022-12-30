@@ -70,7 +70,7 @@ const Live = () => {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "end",
+                justifyContent: "flex-end",
                 padding: "10px",
               }}
             >

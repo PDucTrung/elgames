@@ -13,15 +13,19 @@ const Help = () => {
       title: "Purchases",
       content: [
         {
+          id: 1,
           p: "I can't complete my purchase on the Steam Store",
         },
         {
+          id: 2,
           p: "I need help with a Gift Card or Wallet Code",
         },
         {
+          id: 3,
           p: "I have charges from Steam that I didn't make",
         },
         {
+          id: 4,
           p: "View complete purchasing history",
         },
       ],
@@ -31,15 +35,19 @@ const Help = () => {
       title: "My Games, Software, etc.",
       content: [
         {
+          id: 1,
           p: "Counter-Strike: Global Offensive",
         },
         {
+          id: 2,
           p: "Dota 2",
         },
         {
+          id: 3,
           p: "PUBG: BATTLEGROUNDS",
         },
         {
+          id: 4,
           p: "Grand Theft Auto V",
         },
       ],
@@ -49,12 +57,15 @@ const Help = () => {
       title: "Endless games Winter Sale and Rewards",
       content: [
         {
+          id: 1,
           p: "Help with Purchase Issues",
         },
         {
+          id: 2,
           p: "Help with Gifting",
         },
         {
+          id: 3,
           p: "View your Winter Sale badge progress",
         },
       ],
@@ -64,18 +75,23 @@ const Help = () => {
       title: "My Account",
       content: [
         {
+          id: 1,
           p: "Manage Account Details (email, phone, payment, country)",
         },
         {
+          id: 2,
           p: "Phone Number",
         },
         {
+          id: 3,
           p: "My account is stolen or hijacked",
         },
         {
+          id: 4,
           p: "Help me sign in to my account",
         },
         {
+          id: 5,
           p: "Data Related to Your elgames Account",
         },
       ],
@@ -85,15 +101,19 @@ const Help = () => {
       title: "Endless games Client",
       content: [
         {
+          id: 1,
           p: "Endless games Client Crashes",
         },
         {
+          id: 2,
           p: "Endless games Can't Contact Login Servers",
         },
         {
+          id: 3,
           p: "Endless games Cloud",
         },
         {
+          id: 4,
           p: "Endless games Gift Card or Wallet Code",
         },
       ],
@@ -102,13 +122,13 @@ const Help = () => {
       id: 6,
       title: "I have charges from elgames that I didn't make",
       content: [
+        { id: 1, p: "I have a elgames account" },
         {
-          p: "I have a elgames account",
-        },
-        {
+          id: 2,
           p: "I am not a elgames user",
         },
         {
+          id: 3,
           p: "I have a different payment issue",
         },
       ],
@@ -197,7 +217,7 @@ const Help = () => {
                     }}
                   >
                     {item.content.map((i) => (
-                      <li key={i}>{i.p}</li>
+                      <li key={i.id}>{i.p}</li>
                     ))}
                   </ul>
                 </Box>

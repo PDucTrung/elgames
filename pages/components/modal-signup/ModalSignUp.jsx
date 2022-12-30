@@ -30,7 +30,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "end",
+          justifyContent: "flex-end",
         }}
       >
         <Grid style={{ cursor: "pointer" }} onClick={handleCloseModalSignUp}>

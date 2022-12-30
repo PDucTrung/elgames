@@ -29,7 +29,7 @@ const BlogDetail = () => {
 
       <section className={blogdetal["section-blog-detail"]}>
         <Container>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item={true} xs={12} lg={8}>
               <div className={blogdetal["box-left"]}>
                 <Box

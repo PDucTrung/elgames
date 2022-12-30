@@ -30,7 +30,7 @@
   display: flex;
   gap: 0 10px;
   width: 100%;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 16px;
   color: var(--gray);
 }

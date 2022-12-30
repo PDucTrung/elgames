@@ -191,7 +191,7 @@ const Favorites = () => {
                     sx={{
                       width: "100%",
                       display: "flex",
-                      justifyContent: "end",
+                      justifyContent: "flex-end",
                     }}
                   >
                     <div className={favorites["box-price-wishlist"]}>
@@ -221,7 +221,7 @@ const Favorites = () => {
                     sx={{
                       width: "100%",
                       display: "flex",
-                      justifyContent: "end",
+                      justifyContent: "flex-end",
                     }}
                   >
                     <button

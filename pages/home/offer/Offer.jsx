@@ -84,7 +84,7 @@ const Offer = ({ games }) => {
                   textAlign: "center",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "end",
+                  justifyContent: "flex-end",
                   flexDirection: "column",
                   paddingBottom: "40px",
                   gap: "30px",
