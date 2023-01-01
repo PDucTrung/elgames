@@ -61,7 +61,7 @@ const Count = () => {
                 {CounterOn && (
                   <CountUp
                     start={0}
-                    end={2022}
+                    end={2023}
                     duration={3}
                     delay={0}
                   ></CountUp>
@@ -149,7 +149,7 @@ const Count = () => {
                 },
               }}
             >
-              <Grid>Cunstomer</Grid>
+              <Grid>Customer</Grid>
             </Grid>
           </Grid>
         </Grid>
