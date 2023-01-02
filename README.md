@@ -9,7 +9,7 @@ yarn dev
 ```
 ## API: 
 * Firebase 
-* MocApi with JSON Server( deloy on vercel)
+* Fake Api with JSON Server( deloy on vercel)
 
 # Deloy on vercel
 # Copyright by Duc Trung
