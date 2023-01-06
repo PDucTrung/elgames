@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta charSet="UTF-8" />
         <meta name="description" content="games store by reactjs" />
         <link rel="icon" href="/img/logo-head.png" />
       </Head>
