@@ -274,7 +274,7 @@ const Cart = () => {
                             <div
                               className={cart["icon-qty"]}
                               onClick={() => {
-                                DecrementCart(item.id, item.quantity);
+                                if(item.quantity > 1) DecrementCart(item.id, item.quantity);
                               }}
                             >
                               <RemoveIcon></RemoveIcon>
