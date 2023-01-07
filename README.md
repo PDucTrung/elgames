@@ -12,4 +12,6 @@ yarn dev
 * Fake Api with JSON Server( deloy on vercel)
 
 # Deloy on vercel
+
+* sale website
 # Copyright by Duc Trung
