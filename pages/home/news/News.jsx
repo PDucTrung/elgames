@@ -88,6 +88,7 @@ const News = ({ games }) => {
                     width={"90%"}
                     margin={"auto"}
                     position={"relative"}
+                    maxWidth="360px"
                     sx={{
                       ":hover": {
                         "& img": {
