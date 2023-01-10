@@ -42,7 +42,7 @@ const Comments = () => {
             textAlign: "center",
           }}
         >
-          New and trending
+          Users Rate
         </div>
         <Swiper
           className={comments["slider-news"]}
