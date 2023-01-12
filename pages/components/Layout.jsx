@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BackToTop from "./back-to-top/BackToTop";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
@@ -42,6 +42,19 @@ const Layout = (props) => {
     });
   }, []);
 
+  const [ShowGoToTop, SetHowGoToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      SetHowGoToTop(window.scrollY >= 200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
   return (
     <main>
       {loading ? (
@@ -56,7 +69,7 @@ const Layout = (props) => {
 
           <Footer />
 
-          <BackToTop />
+          {ShowGoToTop && <BackToTop />}
 
           <ToastContainer />
         </div>
