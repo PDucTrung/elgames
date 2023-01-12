@@ -142,7 +142,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                 validate: {
                   match: (v) =>
                     v === getValues("password") ||
-                    "Mật khẩu nhập lại không chính xác",
+                    "Re-entered password is incorrect",
                 },
               })}
             />
