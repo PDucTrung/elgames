@@ -56,11 +56,10 @@ const Sales = () => {
         src="/img/bg-big-sale.jpg"
         alt="sale"
         style={{
-          maxWidth: "100%",
+          width: "100%",
           verticalAlign: "middle",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
+          objectFit: 'cover',
+          minHeight: "400px",
           filter: "brightness(50%)",
         }}
       />

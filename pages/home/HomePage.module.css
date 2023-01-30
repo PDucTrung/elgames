@@ -7,10 +7,10 @@
 }
 
 .bg-slider {
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   vertical-align: middle;
+  object-fit: cover;
+  width: 100%;
+  min-height: 800px;
 }
 
 .Container-slider {

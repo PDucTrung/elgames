@@ -22,7 +22,7 @@ const Live = () => {
         src="/img/bg-live.jpg"
         alt="bg-live"
         style={{
-          maxWidth: "100%",
+          width: "100%",
           verticalAlign: "middle",
           filter: "brightness(60%)",
         }}
