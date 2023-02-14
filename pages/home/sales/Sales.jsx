@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const Sales = () => {
   const [countdownDate, setCountdownDate] = useState(
-    new Date("31/03/2023").getTime()
+    new Date("03/31/2023").getTime()
   );
   const [state, setState] = useState({
     days: 0,
