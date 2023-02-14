@@ -66,7 +66,7 @@ const ModalSignUp = ({ handleCloseModalSignUp }) => {
                 });
               });
           })}
-        >
+        > 
           <Grid>
             <input
               className={styles.input}
